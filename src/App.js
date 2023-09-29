@@ -1,24 +1,21 @@
-import logo from './logo.svg';
 import './App.css';
-
+// import banner_img from './assets/banner.png'
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <section className="landingPage">
+      <div className="logo">DRESSR</div>
+      <div className="welcome">
+        We think of  the weather<br/>so you don't have to...
+      </div>
+      <div className="buttons">
+        <button id="btn-start">Get Started</button>
+        <button id="btn-sign">Sign in</button>
+      </div>
+      
+      <div className="socials">
+
+      </div>
+    </section>
   );
 }
 
