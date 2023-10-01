@@ -1,7 +1,7 @@
 // once these items are created, i want to store them in a SQL db
 // the db will have the unique (primary key) of userID to link them
 class item{
-    constructor(name, color, size, type, season="all", gender="neutral"){
+    constructor(name, color, size, type, season, gender="all"){
         this.name = name;
         this.color = color;
         this.size = size;
@@ -21,7 +21,7 @@ class item{
     }
 }
 class wardrbe{
-    // could implement a tree that stores clothes in relation to one another
+    // implement a tree that stores clothes in relation to one another
     // this would make sorting through them and finding the optimal clothing item
     // more efficent and reduce time complexity
     hats = [];
@@ -45,10 +45,10 @@ class wardrbe{
             case item.type ='tops':
                 this.tops.push(item);
                 break;
-            case item.type =='hats':
+            case item.type ='hats':
                 this.hats.push(item);
                 break;
-            case item.type =='accessories':
+            case item.type ='accessories':
                 this.accessories.push(item);
                 break;
             default:
@@ -57,8 +57,7 @@ class wardrbe{
         }
         return null;
     }
-    // add functions for removing items, editing would be the same as removing and adding
-    // a new item
+    // add functions for removing items, editing would be the same as removing and adding a new item
 }
 class weather{
     constructor(temp, windspeed, humidity, season){
@@ -70,11 +69,9 @@ class weather{
 }
 function getRandomElement(arr) {
     const randomIndex = Math.floor(Math.random() * arr.length); //random index
-    let randElement = arr[randomIndex];
-    console.log(randElement.name);
-    return randElement.name, randElement.color, randElement.size, randElement.type, randElement.season, randElement.gender;
+    return arr[randomIndex];
 }
-function algo(wardrobe, weather) { //maybe this should exist within the wardrbe class?
+function algo(wardrobe, weather) { // this could be a function within wardrbe ex: myWardrobe.getOutfit();
     const modifiedWardrobe = new wardrbe();
     const hats = [];
     const tops = [];
@@ -83,47 +80,54 @@ function algo(wardrobe, weather) { //maybe this should exist within the wardrbe 
     const footwear = [];
     const accessories = [];
 
-    for (item in wardrobe.footwear) {
-        if (item.season == weather.season) {
-            footwear.push(item);
+    for (let i = 0; i < wardrobe.footwear.length; i++) {
+        const item = wardrobe.footwear[i];
+        if (item.season === weather.season) {
+          footwear.push(item);
         }
     }
-    let footwearItem = new item(getRandomElement(footwear));
+    let footwearItem = getRandomElement(footwear);
 
-    for (item in wardrobe.layers) {
-        if (item.season == weather.season) {
+
+    for (let i = 0; i < wardrobe.layers.length; i++) {
+        const item = wardrobe.layers[i];
+        if (item.season === weather.season) {
             layers.push(item);
         }
     }
-    let layersItem = new item(getRandomElement(layers));
+    let layersItem = (getRandomElement(layers));
 
-    for (item in wardrobe.tops) {
-        if (item.season == weather.season) {
+    for (let i = 0; i < wardrobe.tops.length; i++) {
+        const item = wardrobe.tops[i];
+        if (item.season === weather.season) {
             tops.push(item);
         }
     }
-    let topsItem = new item(getRandomElement(tops));
+    let topsItem = (getRandomElement(tops));
 
-    for (item in wardrobe.bottoms) {
-        if (item.season == weather.season) {
+    for (let i = 0; i < wardrobe.bottoms.length; i++) {
+        const item = wardrobe.bottoms[i];
+        if (item.season === weather.season) {
             bottoms.push(item);
         }
     }
-    let bottomsItem = new item(getRandomElement(bottoms));
+    let bottomsItem =(getRandomElement(bottoms));
 
-    for (item in wardrobe.hats) {
-        if (item.season == weather.season) {
+    for (let i = 0; i < wardrobe.hats.length; i++) {
+        const item = wardrobe.hats[i];
+        if (item.season === weather.season) {
             hats.push(item);
         }
     }
-    let hatsItem = new item(getRandomElement(hats));
+    let hatsItem = (getRandomElement(hats));
 
-    for (item in wardrobe.accessories) {
-        if (item.season == weather.season) {
+    for (let i = 0; i < wardrobe.accessories.length; i++) {
+        const item = wardrobe.accessories[i];
+        if (item.season === weather.season) {
             accessories.push(item);
         }
     }
-    let accessoriesItem = new item(getRandomElement(accessories));
+    let accessoriesItem = (getRandomElement(accessories));
     
     modifiedWardrobe.add(footwearItem);
     modifiedWardrobe.add(layersItem);
@@ -133,25 +137,24 @@ function algo(wardrobe, weather) { //maybe this should exist within the wardrbe 
     modifiedWardrobe.add(accessoriesItem);
 
 
-  // Return the modified wardrobe
+  // return the modified wardrobe
   return modifiedWardrobe;
 }
 
-const wardrobe = new wardrbe();
-wardrobe.add(new item('Winter Boots', 'Black', 'L', 'footwear', 'summer'));
-wardrobe.add(new item('Sneakers', 'White', 'M', 'footwear', 'summer'));
-wardrobe.add(new item('Winter Jacket', 'Blue', 'XL', 'layers', 'summer'));
-wardrobe.add(new item('Leather Jacket', 'Brown', 'M', 'layers', 'summer'));
-wardrobe.add(new item('Slim Fit Jeans', 'Blue', '32', 'bottoms', 'summer'));
-wardrobe.add(new item('Cashmere Sweater', 'Gray', 'S', 'tops', 'summer'));
-wardrobe.add(new item('Ankle Boots', 'Taupe', '7', 'footwear', 'summer'));
-wardrobe.add(new item('Silk Blouse', 'Ivory', 'XS', 'tops', 'summer'));
-wardrobe.add(new item('Pleated Skirt', 'Burgundy', 'M', 'bottoms', 'summer'));
-wardrobe.add(new item('Trench Coat', 'Beige', 'L', 'layers', 'summer'));
-wardrobe.add(new item('High-Top Sneakers', 'White', '9', 'footwear', 'summer'));
-wardrobe.add(new item('Knit Beanie', 'Navy', 'One Size', 'accessories', 'summer'));
-wardrobe.add(new item('Floral Sundress', 'Pink', 'S', 'tops', 'summer'));
+// const wardrobe = new wardrbe();
+// wardrobe.add(new item('Winter Boots', 'Black', 'L', 'footwear', 'summer'));
+// wardrobe.add(new item('Sneakers', 'White', 'M', 'footwear', 'summer'));
+// wardrobe.add(new item('Winter Jacket', 'Blue', 'XL', 'layers', 'summer'));
+// wardrobe.add(new item('Leather Jacket', 'Brown', 'M', 'hats', 'summer'));
+// wardrobe.add(new item('Slim Fit Jeans', 'Blue', '32', 'bottoms', 'summer'));
+// wardrobe.add(new item('Cashmere Sweater', 'Gray', 'S', 'tops', 'summer'));
+// wardrobe.add(new item('Ankle Boots', 'Taupe', '7', 'footwear', 'summer'));
+// wardrobe.add(new item('Silk Blouse', 'Ivory', 'XS', 'tops', 'summer'));
+// wardrobe.add(new item('Pleated Skirt', 'Burgundy', 'M', 'bottoms', 'summer'));
+// wardrobe.add(new item('Trench Coat', 'Beige', 'L', 'layers', 'summer'));
+// wardrobe.add(new item('High-Top Sneakers', 'White', '9', 'footwear', 'summer'));
+// wardrobe.add(new item('Knit Beanie', 'Navy', 'One Size', 'accessories', 'summer'));
+// wardrobe.add(new item('Floral Sundress', 'Pink', 'S', 'tops', 'summer'));
+// const currentWeather = new weather(30, 10, 50, 'summer'); // Example weather conditions
 
-const currentWeather = new weather(30, 10, 50, 'summer'); // Example weather conditions
-
-console.log(algo(wardrobe, currentWeather));
+// console.log(algo(wardrobe, currentWeather));
