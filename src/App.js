@@ -5,7 +5,7 @@ function App() {
     <section className="landingPage">
       <div className="logo">DRESSR</div>
       <div className="welcome">
-        We think of  the weather<br/>so you don't have to...
+        We think of  the weather<br/>so you don't have to ...
       </div>
       <div className="buttons">
         <button id="btn-start">Get Started</button>
