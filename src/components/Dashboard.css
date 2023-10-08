@@ -1,9 +1,12 @@
 @font-face {
     font-family: cinzel;
-    src: url('./assets/CinzelDecorative-Regular.ttf');
+    src: url('../assets/CinzelDecorative-Regular.ttf');
 }
 body{
     background-color: #F0E5DE;
+}
+.dashboard{
+    height: 100vh;
 }
 .firstLine{
     display: inline-flex;
@@ -29,7 +32,7 @@ body{
     width: 200px;
     height: 200px;
     border-radius: 50%;
-    background-image: url('./assets/alexa.png');
+    background-image: url('../assets/alexa.png');
     background-repeat: no-repeat;
     background-position: center;
 }

@@ -1,9 +1,8 @@
 import './Dashboard.css';
-import {useState} from "react";
 function Dashboard(){
     
     return (
-        <div className="">
+        <div className="dashboard">
             <div className='firstLine'>
                 <div className="profilePic"></div>
                 <div className="logo">DRESSR</div>
