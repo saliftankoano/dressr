@@ -1,4 +1,29 @@
-# Getting Started with Create React App
+# How Information is Stored
+The application stores information using file `algo.js` for now. 
+## class `item`
+The `item` class contains instances of each item that is created by the user and assigned to the wardrbe.
+The constructor allows for adding only name, color, size, type, season, and gender of the item added. Unfornately, JS only allows for one constructor per class, which is kinda wack. So this will do for now, functions can be created to edit certain features later. 
+
+The class also contains a copy function to copy over items from another item to the existing item. This has no use as of now.
+
+## class `wardrbe`
+The `wardrbe` class contains lists that hold the items for hats, tops, bottoms, layers, footwear, and accessories. The `add()` function adds `item` objects to their respective list. 
+
+ex: "Red Soxs Hat" gets added to `hats` list.
+That's all it has for now.
+
+## class `weather`
+Simply contains a constructor for taking in temperature, windspeed, humidity, and season. 
+
+## function `algo(wardrobe, weather)`
+Takes in a generic `wardrbe` object "wardrobe" (confusing, ik) and `weather` object "weather".
+
+Creates a modified `wardrbe` object populated with randomly selected objects with respect to their type and season type. 
+
+# Clothing Algorithm Design
+
+
+# Read Before Installing
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -13,6 +38,10 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
+
+### `npm install use-local-storage-state`
+
+Using local storage for now, must install!
 
 ### `npm test`
 
