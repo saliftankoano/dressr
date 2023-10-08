@@ -1,5 +1,14 @@
+# How Pages are Routed
+`App.js` allows for us to route the user from page to page
+
+- Using import `BrowserRouter, Route, Routes from 'react-router-dom'`
+- Pages are imported using their address
+    - ex: `import Wardrbe from "./components/Wardrbe";`
+- Within the function `App()`, routes to different pages are set up using the `<Route>` attribute 
+    - ex: `<Route path= '/wardrbe' element={<Wardrbe/>}/>`
+
 # How Information is Stored
-The application stores information using file `algo.js` for now. 
+The application processes information using file `algo.js` for now. 
 ## class `item`
 The `item` class contains instances of each item that is created by the user and assigned to the wardrbe.
 The constructor allows for adding only name, color, size, type, season, and gender of the item added. Unfornately, JS only allows for one constructor per class, which is kinda wack. So this will do for now, functions can be created to edit certain features later. 
