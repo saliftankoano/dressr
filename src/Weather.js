@@ -36,8 +36,9 @@ function Weather() {
     };
 
     return (
-        <div>
-            <h1>Weather Information</h1>
+        <div align="center">
+            <h1>Weather Information for Zipcode: {zipcode}</h1>
+            <br/>
             <form onSubmit={handleSubmit}>
                 <label>
                     Zipcode:
