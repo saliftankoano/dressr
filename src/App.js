@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import LandingPage from "./components/LandingPage";
 import Dashboard from "./components/Dashboard"
 import Login from "./components/Login";
+import Wardrbe from "./components/Wardrbe";
 
 function App(){
     return (
@@ -15,6 +16,7 @@ function App(){
                     <Route index element={<LandingPage/>} />
                     <Route path='/login' element={<Login/>} />
                     <Route path='/dashboard' element={<Dashboard/>} />
+                    <Route path= '/wardrbe' element={<Wardrbe/>}/>
                 </Routes>
             </BrowserRouter>
         </div>
