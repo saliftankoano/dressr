@@ -13,7 +13,7 @@
   width: 17rem;
 }
 .landingPage{
-  background-image: url('./assets/banner2.png');
+  background-image: url('../assets/alexa.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

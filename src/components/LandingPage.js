@@ -1,5 +1,5 @@
 import './LandingPage.css';
-// import banner_img from './assets/banner.png'
+
 function LandingPage() {
   function animationStart(){
     document.querySelector("#start-btn").addEventListener("click", function(){

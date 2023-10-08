@@ -1,11 +1,7 @@
 import './Dashboard.css';
-import Toggle from './Toggle';
 import {useState} from "react";
 function Dashboard(){
-    const [toggle, setToggle]= useState(false);
-    const handleToggle = ()=>{
-        setToggle(!toggle);
-    };
+    
     return (
         <div className="">
             <div className='firstLine'>
@@ -23,7 +19,7 @@ function Dashboard(){
                     Wardrobe
                 </div>
             </div>
-            <Toggle toggle={toggle} handleToggle={handleToggle}/>
+            
         </div>
     );
 }
