@@ -1,7 +1,18 @@
 import './LandingPage.css';
 // import banner_img from './assets/banner.png'
 function LandingPage() {
-  
+  function animationStart(){
+    document.querySelector("#start-btn").addEventListener("click", function(){
+      document.querySelector(".popup").classList.add("active")
+    });
+  }
+  function animationClose(){
+    console.log("Bingo we got action: in Animation close!");
+    document.querySelector(".popup .close-btn").addEventListener("click", function(){
+      document.querySelector(".popup").classList.remove("active")
+    });
+  }
+
   return (
     <section className="landingPage">
       <div className="logo">DRESSR</div>
@@ -26,12 +37,13 @@ function LandingPage() {
           </div>
           <div className="form-element">
             <input type="checkbox"id="remember-me" />
-            <label for="remember-me">Remember me</label>
+            <label for="remember-me" style={{color: "black"}}>Remember me</label>
           </div>
-          <div className="form-element">
+          <div className="form-element sign-in">
             <button id="btn-sign">Sign in</button>
           </div>
-          <div className="form-element">
+          <div className="form-element sign-up-link">
+            <p>Don't have an account?<a href="./">Sign up</a></p>
             <a href="./">Forgot password?</a>
           </div>
         </div>
@@ -41,15 +53,4 @@ function LandingPage() {
   );
 }
 
-function animationStart(){
-  document.querySelector("#start-btn").addEventListener("click", function(){
-    document.querySelector(".popup").classList.add("active")
-  });
-}
-function animationClose(){
-  console.log("Bingo we got action: in Animation close!");
-  document.querySelector(".popup .close-btn").addEventListener("click", function(){
-    document.querySelector(".popup").classList.remove("active")
-  });
-}
 export default LandingPage;

@@ -1,0 +1,58 @@
+@font-face {
+    font-family: cinzel;
+    src: url('./assets/CinzelDecorative-Regular.ttf');
+}
+body{
+    background-color: #F0E5DE;
+}
+.firstLine{
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+}
+.logo{
+    font-family: cinzel, 'Times New Roman', Times, serif;
+    display: flex;
+    position: relative;
+    top: 0%;
+    color: black;
+    font-size: 3rem;
+    font-weight: 500;
+    width: 13rem;
+    margin-left: 2rem;
+}
+.profilePic{
+    margin-left: 5%;
+    margin-top: 1%;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-image: url('./assets/alexa.png');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.userName{
+    width: 60%;
+    margin-left: 20%;
+    font-size: 7rem;
+    text-align: center;
+    font-family: cinzel;
+    text-transform: uppercase;
+    position: relative;
+    top: 0%;
+    margin-bottom: 2%;
+}
+.buttons{
+    width: 60%;
+    margin-left: 20%;
+    display: inline-flex;
+    justify-content: space-evenly;
+}
+.weatherBtn, .wardrobeBtn{
+    padding: 0.25rem 1rem;
+    text-transform: uppercase;
+    border: 2px solid black;
+    font-size: 2rem;
+}
