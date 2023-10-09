@@ -1,13 +1,14 @@
 // once these items are created, i want to store them in a SQL db
 // the db will have the unique (primary key) of userID to link them
 class item{
-    constructor(name, color, size, type, season, gender="all"){
+    constructor(name, color, size, type, season, gender="all", photo){
         this.name = name;
         this.color = color;
         this.size = size;
         this.type = type; // type of clothing item
         this.season = season;
         this.gender = gender;
+        this.photo = photo;
     }
     copyFrom(otherItem) {
         return new item(
@@ -16,7 +17,8 @@ class item{
         otherItem.size,
         otherItem.type,
         otherItem.season,
-        otherItem.gender
+        otherItem.gender,
+        otherItem.photo
         );
     }
 }
@@ -30,6 +32,10 @@ class wardrbe{
     layers = []; // jackets, sweaters, etc.
     footwear = [];
     accessories = [];
+
+    constructor(){
+        console.log('wardrbe made');
+    }
 
     add(item){
         switch(item.type){
