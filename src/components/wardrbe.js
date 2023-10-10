@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
-// import * as module from './algo.js';
 import { UserWardrbe, Item, Weather, algo } from './WardrbeBackend.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import {Container, Row, Col} from 'react-bootstrap';
+import './styles.css'
+
+// Styling Begin
+// const keepRight = {
+// 	text-align: left;
+// }
+// Styling End
+
 const wardrbe = new UserWardrbe();
 
 function updateWardrbe(itemName, itemColor, itemSize, itemType, itemSeason, itemGender, itemPhoto){ // handles invalid item submissions
@@ -16,9 +25,26 @@ function fetchWardrbe(){
 	return null;
 }
 
-function displayWardrbe(){
-	return null;
-}
+function DisplayWardrbe(){
+	return (
+    <div>
+      <h2>Wardrobe</h2>
+      {Object.keys(wardrbe).map((category) => (
+        <div key={category}>
+          <h2>{category}</h2>
+          <ul>
+            {wardrbe[category].map((item, index) => (
+              <li key={index}>
+                {item.name}: {item.color}, {item.season}, {item.size}, {item.type}, {item.season}, {item.gender}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 // Function to handle form submission
 
 const Wardrbe = () => {
@@ -37,16 +63,18 @@ const Wardrbe = () => {
   
 	return (
 	<> 
-	<div>
-		<h2>Enter Item Data</h2>
+	<Container>
+	<Row>
+	<Col xs='6' className='left'>
+		<h1>Enter Item Data</h1>
 		<form onSubmit={(e) => {
-		e.preventDefault(); // Prevent the default form submission behavior
-		updateWardrbe(itemName, itemColor, itemSize, itemType, itemSeason, itemGender, itemPhoto);
+			e.preventDefault(); // Prevent the default form submission behavior
+			updateWardrbe(itemName, itemColor, itemSize, itemType, itemSeason, itemGender, itemPhoto);
 		}}>
-		
+
 		{/* Name */}
 		<div>
-			<label htmlFor="itemName">Item Name:</label><br/>
+			<h2 htmlFor="itemName">Item Name:</h2><br/>
 			<input
 				type="text"
 				id="itemName"
@@ -58,7 +86,7 @@ const Wardrbe = () => {
 
 		{/* Color */}
 		<div>
-			<label htmlFor="itemColor">Color:</label><br/>
+			<h2 htmlFor="itemColor">Color:</h2><br/>
 			<input
 				type="text"
 				id="itemColor"
@@ -70,7 +98,7 @@ const Wardrbe = () => {
 
 		{/* Size */}
 		<div>
-			<label>Size:</label>
+			<h2>Size:</h2>
 			<div>
 				<input
 				type="radio"
@@ -123,7 +151,7 @@ const Wardrbe = () => {
 
 		{/* Item Type */}
 		<div>
-			<label>Item Type:</label>
+			<h2>Item Type:</h2>
 			<div>
 				<input
 				type="radio"
@@ -200,7 +228,7 @@ const Wardrbe = () => {
 
 		{/* Season - no option for multiseason? - could use checkbox*/}
 		<div>
-			<label>Season:</label>
+			<h2>Season:</h2>
 			<div>
 				<input
 				type="radio"
@@ -250,10 +278,10 @@ const Wardrbe = () => {
 				<label htmlFor="winter">Winter</label>
 			</div>
 		</div>
-		
+
 		{/* Gender */}
 		<div>
-			<label>Gender:</label>
+			<h2>Gender:</h2>
 			<div>
 				<input
 					type="radio"
@@ -292,7 +320,7 @@ const Wardrbe = () => {
 
 		{/* Photo */}
 		<div>
-		<label htmlFor="itemPhoto">Photo:</label><br/>
+		<h2 htmlFor="itemPhoto">Photo:</h2><br/>
 		<input
 			type="file"
 			id="itemPhoto"
@@ -306,7 +334,19 @@ const Wardrbe = () => {
 			<button type="submit">Submit</button>
 		</div>
 		</form>
-	  </div>
+		{/* only allow "save" button when theres >=1 item saved */}
+	</Col>
+	{/* saved items */}
+	<Col xs='6'>
+	<div>
+		<h1>Saved Items</h1>
+		<DisplayWardrbe></DisplayWardrbe>
+		<img src="https://media.gq.com/photos/6153752c430fd1b65067ee50/16:9/w_1280,c_limit/GettyImages-1195887867.jpeg"></img>
+	</div>
+	</Col>
+	</Row>
+	</Container>
+
 	</>
 	);
 };
