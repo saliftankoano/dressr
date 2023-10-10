@@ -58,7 +58,7 @@ export class UserWardrbe{
                 this.accessories.push(item);
                 break;
             default:
-                console.log('Invalid Item Type:', item, '\nItem Type:', item.type);
+                console.log('Invalid Item Type:', item.type);
                 break;
         }
         return null;
