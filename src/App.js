@@ -1,10 +1,10 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
-import LandingPage from "./components/LandingPage";
-import Dashboard from "./components/Dashboard"
-import Login from "./components/Login";
-import Wardrbe from "./components/Wardrbe";
+import LandingPage from "./components/LandingPage.js";
+import Dashboard from "./components/Dashboard.js"
+import Login from "./components/Login.js";
+import Wardrbe from "./components/wardrbe.js";
 
 function App(){
     return (

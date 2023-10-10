@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Button from "react-bootstrap/Button"
-import * as module from './algo.js';
+// import * as module from './algo.js';
+import { UserWardrbe, Item, Weather, algo } from './algo.js';
 
 function updateWardrbe(item, userWardrbe){ // handles invalid item submissions
 	let newItem = new module.item(item.name, item.color, item.size, item.type, item.season, item.gender);
@@ -20,7 +20,7 @@ function displayWardrbe(){
 
 const Wardrbe = () => {
 	// create new default wardrbe for user
-	let userWardrbe = new module.wardrbe();
+	const wardrbe = new UserWardrbe();
 
 	// Define state variables to store user inputs
 	const [itemName, setItemName] = useState('');

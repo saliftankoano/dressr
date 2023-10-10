@@ -1,4 +1,5 @@
-# How Pages are Routed
+# How It's Done
+## How Pages are Routed
 `App.js` allows for us to route the user from page to page
 
 - Using import `BrowserRouter, Route, Routes from 'react-router-dom'`
@@ -6,6 +7,14 @@
     - ex: `import Wardrbe from "./components/Wardrbe";`
 - Within the function `App()`, routes to different pages are set up using the `<Route>` attribute 
     - ex: `<Route path= '/wardrbe' element={<Wardrbe/>}/>`
+
+## How functions are Imported
+In order for functions to be imported from other pages, we have to enable `"type": "module"` in `package.json`. This creates a bit of an annoyance because now *every single* import needs to include extensions. Sorry about that. 
+
+But this allows us to import functions and classes from other files using the following syntax:
+```
+import { className, functionName } from './file.js';
+```
 
 # How Information is Stored
 The application processes information using file `algo.js` for now. 
