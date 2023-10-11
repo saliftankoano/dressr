@@ -3,14 +3,7 @@ import { UserWardrbe, Item, Weather, algo } from './WardrbeBackend.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Container, Row, Col} from 'react-bootstrap';
 import './styles.css'
-
-// Styling Begin
-// const keepRight = {
-// 	text-align: left;
-// }
-// Styling End
-
-const wardrbe = new UserWardrbe();
+const wardrbe = new UserWardrbe(); // blank wardrbe - should be populated with user's wardrbe
 
 function updateWardrbe(itemName, itemColor, itemSize, itemType, itemSeason, itemGender, itemPhoto){ // handles invalid item submissions
 	console.log('updateWardrbe called');
@@ -21,15 +14,11 @@ function updateWardrbe(itemName, itemColor, itemSize, itemType, itemSeason, item
 	return null;
 }
 
-function fetchWardrbe(){
-	return null;
-}
-
 function DisplayWardrbe(){
 	return (
     <div>
       <h2>Wardrobe</h2>
-      {Object.keys(wardrbe).map((category) => (
+      {Object.keys(wardrbe).map((category) => ( //
         <div key={category}>
           <h2>{category}</h2>
           <ul>
