@@ -5,6 +5,7 @@ import LandingPage from "./components/LandingPage.js";
 import Dashboard from "./components/Dashboard.js"
 import Login from "./components/Login.js";
 import Wardrbe from "./components/wardrbe.js";
+import Weather from "./Weather.js";
 
 function App(){
     return (
@@ -17,6 +18,7 @@ function App(){
                     <Route path='/login' element={<Login/>} />
                     <Route path='/dashboard' element={<Dashboard/>} />
                     <Route path= '/wardrbe' element={<Wardrbe/>}/>
+                    <Route path='/weather' element={<Weather/>}/>
                 </Routes>
             </BrowserRouter>
         </div>
