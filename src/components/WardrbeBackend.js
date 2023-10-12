@@ -1,5 +1,7 @@
 // once these items are created, i want to store them in a SQL db
 // the db will have the unique (primary key) of userID to link them
+import { FetchWeather } from './WeatherBackend.js'; // error broski tripping frfr
+
 export class Item{
     constructor(name, color, size, type, season, gender="all", photo){
         this.name = name;
@@ -66,12 +68,22 @@ export class UserWardrbe{
     // add functions for removing items, editing would be the same as removing and adding a new item
 }
 export class Weather{
-    constructor(temp, windspeed, humidity, season){
-        this.temp = temp;
-        this.windspeed = windspeed;
-        this.humidity = humidity;
-        this.season = season;
-    }
+    constructor(zipcode){ // presumably fetched from person object
+        const weather = FetchWeather(zipcode);
+
+        if (weather.feelslike_f >= 70) {
+            this.season = 'summer';
+        } else if (weather.feelslike_f <= 50) {
+            this.season = 'winter';
+        } else if (weather.feelslike_f > 50 || weather.feelslike_f < 70) {
+            this.season = 'spring-fall';
+        } else {
+            this.season = 'spring-fall';
+        }
+
+        this.temp = weather.feelslike_f;
+        this.windspeed = weather.wind_mph;
+    };
 }
 
 export function algo(wardrobe, weather) { // this could be a function within wardrbe ex: myWardrobe.getOutfit();
@@ -164,6 +176,6 @@ export function algo(wardrobe, weather) { // this could be a function within war
 // wardrobe.add(new Item('High-Top Sneakers', 'White', '9', 'footwear', 'summer'));
 // wardrobe.add(new Item('Knit Beanie', 'Navy', 'One Size', 'accessories', 'summer'));
 // wardrobe.add(new Item('Floral Sundress', 'Pink', 'S', 'tops', 'summer'));
-// const currentWeather = new Weather(30, 10, 50, 'summer'); // Example weather conditions
+// const currentWeather = new Weather('11735'); // Example weather conditions
 
 // console.log(algo(wardrobe, currentWeather));

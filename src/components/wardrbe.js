@@ -218,7 +218,7 @@ const Wardrbe = () => {
 		{/* Season - no option for multiseason? - could use checkbox*/}
 		<div>
 			<h2>Season:</h2>
-			<div>
+			{/* <div>
 				<input
 				type="radio"
 				id="spring"
@@ -229,7 +229,7 @@ const Wardrbe = () => {
 				required
 				/>
 				<label htmlFor="spring">Spring</label>
-			</div>
+			</div> */}
 			<div>
 				<input
 				type="radio"
@@ -245,14 +245,13 @@ const Wardrbe = () => {
 			<div>
 				<input
 				type="radio"
-				id="fall"
+				id="spring-fall"
 				name="itemSeason"
-				value="fall"
-				checked={itemSeason === "fall"}
+				value="spring-fall"
+				checked={itemSeason === "spring-fall"}
 				onChange={(e) => setItemSeason(e.target.value)}
 				required
-				/>
-				<label htmlFor="fall">Fall</label>
+				/> <label htmlFor="spring-fall">Spring / Fall</label>
 			</div>
 			<div>
 				<input
