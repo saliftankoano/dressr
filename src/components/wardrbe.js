@@ -330,7 +330,7 @@ const Wardrbe = () => {
 	<div>
 		<h1>Saved Items</h1>
 		<DisplayWardrbe></DisplayWardrbe>
-		<img src="https://media.gq.com/photos/6153752c430fd1b65067ee50/16:9/w_1280,c_limit/GettyImages-1195887867.jpeg"></img>
+		{/* <img src="https://media.gq.com/photos/6153752c430fd1b65067ee50/16:9/w_1280,c_limit/GettyImages-1195887867.jpeg"></img> */}
 	</div>
 	</Col>
 	</Row>
