@@ -1,6 +1,7 @@
 import { FetchWeather } from './WeatherBackend.js';
 import fs from 'fs';
 let OUTFITPATH = 'outfits.json';
+let OUTFITMINPATH = 'outfitsMin.json';
 
 export class Item{
     constructor(name, color, size, type, season, gender="all", photo){
@@ -179,15 +180,16 @@ export function algo(wardrobe, weather) { // this could be a function within war
   // return the modified wardrobe
   return modifiedWardrobe;
 }
-
 export function SaveWardrbe(wardrobe){
     const jsonFileContents = fs.readFileSync(OUTFITPATH, 'utf8');
 
     const jsonObject = JSON.parse(jsonFileContents);
     jsonObject.push(wardrobe);
-    const jsonString = JSON.stringify(jsonObject, null, 2);
+    const jsonString = JSON.stringify(jsonObject, null, 2); // pretty format
+    const jsonMinString = JSON.stringify(jsonObject, null, 0); // min format
 
     fs.writeFileSync(OUTFITPATH, jsonString, 'utf8');
+    fs.writeFileSync(OUTFITMINPATH, jsonMinString, 'utf8');
 }
 
 const wardrobe = new UserWardrbe();
