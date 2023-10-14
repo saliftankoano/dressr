@@ -5,7 +5,8 @@ import LandingPage from "./components/LandingPage.js";
 import Dashboard from "./components/Dashboard.js"
 import Login from "./components/Login.js";
 import Wardrbe from "./components/wardrbe.js";
-import Weather from "./Weather.js";
+import Weather from "./components/Weather.js";
+import Dressr from "./components/Dressr.js";
 
 function App(){
     return (
@@ -17,8 +18,9 @@ function App(){
                     <Route index element={<LandingPage/>} />
                     <Route path='/login' element={<Login/>} />
                     <Route path='/dashboard' element={<Dashboard/>} />
-                    <Route path= '/wardrbe' element={<Wardrbe/>}/>
-                    <Route path= '/weather' element={<Weather/>}/>
+                    <Route path='/wardrbe' element={<Wardrbe/>}/>
+                    <Route path='/weather' element={<Weather/>}/>
+                    <Route path='/' element={<Dressr/>}/>
                 </Routes>
             </BrowserRouter>
         </div>
