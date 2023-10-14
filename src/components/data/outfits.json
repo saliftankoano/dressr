@@ -9,6 +9,22 @@
         "type": "hats",
         "season": "summer",
         "gender": "all"
+      },
+      {
+        "name": "Timbs",
+        "color": "Brown",
+        "size": "7",
+        "type": "hats",
+        "season": "spring-fall",
+        "gender": "all"
+      },
+      {
+        "name": "Timbs",
+        "color": "Brown",
+        "size": "7",
+        "type": "hats",
+        "season": "spring-fall",
+        "gender": "all"
       }
     ],
     "tops": [
@@ -104,6 +120,14 @@
         "size": "9",
         "type": "footwear",
         "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "Timbs",
+        "color": "Brown",
+        "size": "7",
+        "type": "footwear",
+        "season": "spring-fall",
         "gender": "all"
       }
     ],
