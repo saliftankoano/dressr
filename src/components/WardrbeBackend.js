@@ -1,6 +1,8 @@
 // once these items are created, i want to store them in a SQL db
 // the db will have the unique (primary key) of userID to link them
 import { FetchWeather } from './WeatherBackend.js'; // error broski tripping frfr
+import fs from 'fs';
+let OUTFITPATH = 'outfits.json';
 
 export class Item{
     constructor(name, color, size, type, season, gender="all", photo){
@@ -28,6 +30,7 @@ export class UserWardrbe{
     // implement a tree that stores clothes in relation to one another
     // this would make sorting through them and finding the optimal clothing item
     // more efficent and reduce time complexity
+    userId = 0;
     hats = [];
     tops = [];
     bottoms = [];
@@ -36,7 +39,8 @@ export class UserWardrbe{
     accessories = [];
 
     constructor(){
-        console.log('wardrbe made');
+        this.userId = GetUniqueId();
+        console.log('wardrbe made, id:', this.userId);
     }
 
     add(item){
@@ -65,7 +69,7 @@ export class UserWardrbe{
         }
         return null;
     }
-    // add functions for removing items, editing would be the same as removing and adding a new item
+    // add functions for removing items
 }
 export class Weather{
     constructor(zipcode){ // presumably fetched from person object
@@ -85,7 +89,6 @@ export class Weather{
         this.windspeed = weather.wind_mph;
     };
 }
-
 export function algo(wardrobe, weather) { // this could be a function within wardrbe ex: myWardrobe.getOutfit();
     
     function getRandomElement(arr) {
@@ -161,21 +164,48 @@ export function algo(wardrobe, weather) { // this could be a function within war
   // return the modified wardrobe
   return modifiedWardrobe;
 }
+export function GetUniqueId() { // can add switch here to get uniqueId for different parameters
+    const postsJsonObject = JSON.parse(fs.readFileSync(OUTFITPATH, 'utf8'));
 
-// const wardrobe = new UserWardrbe();
-// wardrobe.add(new Item('Winter Boots', 'Black', 'L', 'footwear', 'summer'));
-// wardrobe.add(new Item('Sneakers', 'White', 'M', 'footwear', 'summer'));
-// wardrobe.add(new Item('Winter Jacket', 'Blue', 'XL', 'layers', 'summer'));
-// wardrobe.add(new Item('Leather Jacket', 'Brown', 'M', 'hats', 'summer'));
-// wardrobe.add(new Item('Slim Fit Jeans', 'Blue', '32', 'bottoms', 'summer'));
-// wardrobe.add(new Item('Cashmere Sweater', 'Gray', 'S', 'tops', 'summer'));
-// wardrobe.add(new Item('Ankle Boots', 'Taupe', '7', 'footwear', 'summer'));
-// wardrobe.add(new Item('Silk Blouse', 'Ivory', 'XS', 'tops', 'summer'));
-// wardrobe.add(new Item('Pleated Skirt', 'Burgundy', 'M', 'bottoms', 'summer'));
-// wardrobe.add(new Item('Trench Coat', 'Beige', 'L', 'layers', 'summer'));
-// wardrobe.add(new Item('High-Top Sneakers', 'White', '9', 'footwear', 'summer'));
-// wardrobe.add(new Item('Knit Beanie', 'Navy', 'One Size', 'accessories', 'summer'));
-// wardrobe.add(new Item('Floral Sundress', 'Pink', 'S', 'tops', 'summer'));
-// const currentWeather = new Weather('11735'); // Example weather conditions
+    // Create a set of all the existing post IDs.
+    const existingUserIds = new Set();
+    for (const post of postsJsonObject) {
+        existingUserIds.add(post.userId);
+    }
 
+    // Generate a random integer until we find a unique one.
+    let uniqueId;
+    do {
+        uniqueId = Math.floor(Math.random() * 100000);
+    } while (existingUserIds.has(uniqueId));
+
+    return uniqueId;
+}
+
+export function SaveWardrbe(wardrobe){
+    const jsonFileContents = fs.readFileSync(OUTFITPATH, 'utf8');
+
+    const jsonObject = JSON.parse(jsonFileContents);
+    jsonObject.push(wardrobe);
+    const jsonString = JSON.stringify(jsonObject, null, 2);
+
+    fs.writeFileSync(OUTFITPATH, jsonString, 'utf8');
+}
+
+const wardrobe = new UserWardrbe();
+wardrobe.add(new Item('Winter Boots', 'Black', 'L', 'footwear', 'summer'));
+wardrobe.add(new Item('Sneakers', 'White', 'M', 'footwear', 'summer'));
+wardrobe.add(new Item('Winter Jacket', 'Blue', 'XL', 'layers', 'summer'));
+wardrobe.add(new Item('Leather Jacket', 'Brown', 'M', 'hats', 'summer'));
+wardrobe.add(new Item('Slim Fit Jeans', 'Blue', '32', 'bottoms', 'summer'));
+wardrobe.add(new Item('Cashmere Sweater', 'Gray', 'S', 'tops', 'summer'));
+wardrobe.add(new Item('Ankle Boots', 'Taupe', '7', 'footwear', 'summer'));
+wardrobe.add(new Item('Silk Blouse', 'Ivory', 'XS', 'tops', 'summer'));
+wardrobe.add(new Item('Pleated Skirt', 'Burgundy', 'M', 'bottoms', 'summer'));
+wardrobe.add(new Item('Trench Coat', 'Beige', 'L', 'layers', 'summer'));
+wardrobe.add(new Item('High-Top Sneakers', 'White', '9', 'footwear', 'summer'));
+wardrobe.add(new Item('Knit Beanie', 'Navy', 'One Size', 'accessories', 'summer'));
+wardrobe.add(new Item('Floral Sundress', 'Pink', 'S', 'tops', 'summer'));
+const currentWeather = new Weather('11735'); // Example weather conditions
+SaveWardrbe(wardrobe);
 // console.log(algo(wardrobe, currentWeather));
