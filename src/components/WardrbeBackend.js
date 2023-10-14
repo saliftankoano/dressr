@@ -1,6 +1,4 @@
-// once these items are created, i want to store them in a SQL db
-// the db will have the unique (primary key) of userID to link them
-import { FetchWeather } from './WeatherBackend.js'; // error broski tripping frfr
+import { FetchWeather } from './WeatherBackend.js';
 import fs from 'fs';
 let OUTFITPATH = 'outfits.json';
 
@@ -39,7 +37,7 @@ export class UserWardrbe{
     accessories = [];
 
     constructor(){
-        this.userId = GetUniqueId();
+        this.userId = this.GetUniqueId();
         console.log('wardrbe made, id:', this.userId);
     }
 
@@ -68,6 +66,23 @@ export class UserWardrbe{
                 break;
         }
         return null;
+    }
+    GetUniqueId() { // can add switch here to get uniqueId for different parameters
+        const postsJsonObject = JSON.parse(fs.readFileSync(OUTFITPATH, 'utf8'));
+
+        // Create a set of all the existing post IDs.
+        const existingUserIds = new Set();
+        for (const post of postsJsonObject) {
+            existingUserIds.add(post.userId);
+        }
+
+        // Generate a random integer until we find a unique one.
+        let uniqueId;
+        do {
+            uniqueId = Math.floor(Math.random() * 100000);
+        } while (existingUserIds.has(uniqueId));
+
+        return uniqueId;
     }
     // add functions for removing items
 }
@@ -163,23 +178,6 @@ export function algo(wardrobe, weather) { // this could be a function within war
 
   // return the modified wardrobe
   return modifiedWardrobe;
-}
-export function GetUniqueId() { // can add switch here to get uniqueId for different parameters
-    const postsJsonObject = JSON.parse(fs.readFileSync(OUTFITPATH, 'utf8'));
-
-    // Create a set of all the existing post IDs.
-    const existingUserIds = new Set();
-    for (const post of postsJsonObject) {
-        existingUserIds.add(post.userId);
-    }
-
-    // Generate a random integer until we find a unique one.
-    let uniqueId;
-    do {
-        uniqueId = Math.floor(Math.random() * 100000);
-    } while (existingUserIds.has(uniqueId));
-
-    return uniqueId;
 }
 
 export function SaveWardrbe(wardrobe){
