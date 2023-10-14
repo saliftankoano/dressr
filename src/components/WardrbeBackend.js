@@ -105,7 +105,7 @@ export class Weather{
         this.windspeed = weather.wind_mph;
     };
 }
-export function algo(wardrobe, weather) { // this could be a function within wardrbe ex: myWardrobe.getOutfit();
+export function GenerateOutfit(wardrobe, weather) { // this could be a function within wardrbe ex: myWardrobe.getOutfit();
     
     function getRandomElement(arr) {
         const randomIndex = Math.floor(Math.random() * arr.length); //random index
@@ -193,19 +193,19 @@ export function SaveWardrbe(wardrobe){
 }
 
 const wardrobe = new UserWardrbe();
-wardrobe.add(new Item('Winter Boots', 'Black', 'L', 'footwear', 'summer'));
-wardrobe.add(new Item('Sneakers', 'White', 'M', 'footwear', 'summer'));
-wardrobe.add(new Item('Winter Jacket', 'Blue', 'XL', 'layers', 'summer'));
-wardrobe.add(new Item('Leather Jacket', 'Brown', 'M', 'hats', 'summer'));
-wardrobe.add(new Item('Slim Fit Jeans', 'Blue', '32', 'bottoms', 'summer'));
-wardrobe.add(new Item('Cashmere Sweater', 'Gray', 'S', 'tops', 'summer'));
-wardrobe.add(new Item('Ankle Boots', 'Taupe', '7', 'footwear', 'summer'));
-wardrobe.add(new Item('Silk Blouse', 'Ivory', 'XS', 'tops', 'summer'));
-wardrobe.add(new Item('Pleated Skirt', 'Burgundy', 'M', 'bottoms', 'summer'));
-wardrobe.add(new Item('Trench Coat', 'Beige', 'L', 'layers', 'summer'));
-wardrobe.add(new Item('High-Top Sneakers', 'White', '9', 'footwear', 'summer'));
-wardrobe.add(new Item('Knit Beanie', 'Navy', 'One Size', 'accessories', 'summer'));
-wardrobe.add(new Item('Floral Sundress', 'Pink', 'S', 'tops', 'summer'));
+wardrobe.add(new Item('Winter Boots', 'Black', 'L', 'footwear', 'spring-fall'));
+wardrobe.add(new Item('Sneakers', 'White', 'M', 'footwear', 'spring-fall'));
+wardrobe.add(new Item('Winter Jacket', 'Blue', 'XL', 'layers', 'spring-fall'));
+wardrobe.add(new Item('Leather Jacket', 'Brown', 'M', 'hats', 'spring-fall'));
+wardrobe.add(new Item('Slim Fit Jeans', 'Blue', '32', 'bottoms', 'spring-fall'));
+wardrobe.add(new Item('Cashmere Sweater', 'Gray', 'S', 'tops', 'spring-fall'));
+wardrobe.add(new Item('Ankle Boots', 'Taupe', '7', 'footwear', 'spring-fall'));
+wardrobe.add(new Item('Silk Blouse', 'Ivory', 'XS', 'tops', 'spring-fall'));
+wardrobe.add(new Item('Pleated Skirt', 'Burgundy', 'M', 'bottoms', 'spring-fall'));
+wardrobe.add(new Item('Trench Coat', 'Beige', 'L', 'layers', 'spring-fall'));
+wardrobe.add(new Item('High-Top Sneakers', 'White', '9', 'footwear', 'spring-fall'));
+wardrobe.add(new Item('Knit Beanie', 'Navy', 'One Size', 'accessories', 'spring-fall'));
+wardrobe.add(new Item('Floral Sundress', 'Pink', 'S', 'tops', 'spring-fall'));
 const currentWeather = new Weather('11735'); // Example weather conditions
 SaveWardrbe(wardrobe);
-// console.log(algo(wardrobe, currentWeather));
+// console.log(GenerateOutfit(wardrobe, currentWeather));

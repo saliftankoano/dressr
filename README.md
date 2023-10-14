@@ -16,8 +16,8 @@ But this allows us to import functions and classes from other files using the fo
 import { className, functionName } from './file.js';
 ```
 
-# How Information is Stored
-The application processes information using file `algo.js` for now. 
+## How the Wardrbe is Processed
+The application processes information using file `WardrbeBackend.js`. 
 ## class `item`
 The `item` class contains instances of each item that is created by the user and assigned to the wardrbe.
 The constructor allows for adding only name, color, size, type, season, and gender of the item added. Unfornately, JS only allows for one constructor per class, which is kinda wack. So this will do for now, functions can be created to edit certain features later. 
@@ -28,18 +28,24 @@ The class also contains a copy function to copy over items from another item to 
 The `wardrbe` class contains lists that hold the items for hats, tops, bottoms, layers, footwear, and accessories. The `add()` function adds `item` objects to their respective list. 
 
 ex: "Red Soxs Hat" gets added to `hats` list.
-That's all it has for now.
+
+The constructor gives the instance a `userId`, since a user can only have one `wardrbe`.
+For this, a `GetUniqueId()` function exists within `wardrbe` to generate a UNIQUE id per wardrbe
 
 ## class `weather`
-Simply contains a constructor for taking in temperature, windspeed, humidity, and season. 
+Contains a constructor for taking in the user's zipcode, which is used by the `WeatherBackend.js` function `FetchWeather(zipcode)` to get information about the weather.
 
-## function `algo(wardrobe, weather)`
+The weather information is just used to calculate a phony "season" attribute to help the `GenerateOutfit()` function generate an appropiate outfit.
+
+## function `GenerateOutfit(wardrobe, weather)`
 Takes in a generic `wardrbe` object "wardrobe" (confusing, ik) and `weather` object "weather".
 
 Creates a modified `wardrbe` object populated with randomly selected objects with respect to their type and season type. 
 
-# Clothing Algorithm Design
-
+# How Information is Stored
+Wardrbe objects are saved using function `SaveWardrbe()`, this function should ONLY be used when saving a new, unique wardrbe (which is for a new user). 
+## function `SaveWardrbe(wardrobe)`
+saves entire wardrbe object into `./data/outfits.json`, and a minified version into `./data/outfitsMin.json`
 
 # Read Before Installing
 
