@@ -122,7 +122,7 @@ export function GenerateOutfit(wardrobe, weather) { // this could be a function 
     for (let i = 0; i < wardrobe.footwear.length; i++) {
         const item = wardrobe.footwear[i];
         if (item.season === weather.season) {
-          footwear.push(item);
+            footwear.push(item);
         }
     }
     let footwearItem = getRandomElement(footwear);
@@ -185,10 +185,11 @@ export function SaveNewWardrbe(wardrobe){
     const jsonObject = JSON.parse(jsonFileContents);
     jsonObject.push(wardrobe);
     const jsonString = JSON.stringify(jsonObject, null, 2); // pretty format
-    const jsonMinString = JSON.stringify(jsonObject, null, 0); // min format
+    // const jsonMinString = JSON.stringify(jsonObject, null, 0); // min format
 
     fs.writeFileSync(OUTFITPATH, jsonString, 'utf8');
     // fs.writeFileSync(OUTFITMINPATH, jsonMinString, 'utf8');
+    return true;
 }
 export function UpdateWardrbe(item, userId) { // add switch function to add 'remove' and 'edit'
     const outfitsJson = JSON.parse(fs.readFileSync(OUTFITPATH, 'utf8'));
@@ -220,9 +221,11 @@ export function UpdateWardrbe(item, userId) { // add switch function to add 'rem
             break;
         default:
             console.error('Invalid Item Type!', item.type);
+            return false;
     }
     console.log('Item added:', item.name);
     fs.writeFileSync(OUTFITPATH, JSON.stringify(outfitsJson, null, 2), 'utf8');
+    return true;
 }
 
 
@@ -242,6 +245,6 @@ export function UpdateWardrbe(item, userId) { // add switch function to add 'rem
 // wardrobe.add(new Item('Floral Sundress', 'Pink', 'S', 'tops', 'spring-fall'));
 // const currentWeather = new Weather('11735'); // Example weather conditions
 // SaveNewWardrbe(wardrobe);
-let wardrobe = (new Item('Timbs', 'Brown', '7', 'hats', 'spring-fall'));
-UpdateWardrbe(wardrobe, 40994);
+// let wardrobe = (new Item('Timbs', 'Brown', '7', 'hats', 'spring-fall'));
+// UpdateWardrbe(wardrobe, 40994);
 // console.log(GenerateOutfit(wardrobe, currentWeather));
