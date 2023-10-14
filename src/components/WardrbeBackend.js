@@ -1,7 +1,7 @@
 import { FetchWeather } from './WeatherBackend.js';
 import fs from 'fs';
-let OUTFITPATH = 'outfits.json';
-let OUTFITMINPATH = 'outfitsMin.json';
+let OUTFITPATH = './data/outfits.json';
+let OUTFITMINPATH = './data/outfitsMin.json';
 
 export class Item{
     constructor(name, color, size, type, season, gender="all", photo){
