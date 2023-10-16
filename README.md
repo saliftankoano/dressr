@@ -4,19 +4,19 @@
 
 - Using import `BrowserRouter, Route, Routes from 'react-router-dom'`
 - Pages are imported using their address
-    - ex: `import Wardrbe from "./components/Wardrbe";`
+    - ex: `import Wardrbe from "./components/Wardrbe.js";`
 - Within the function `App()`, routes to different pages are set up using the `<Route>` attribute 
     - ex: `<Route path= '/wardrbe' element={<Wardrbe/>}/>`
 
 ## How functions are Imported
-In order for functions to be imported from other pages, we have to enable `"type": "module"` in `package.json`. This creates a bit of an annoyance because now *every single* import needs to include extensions. Sorry about that. 
+In order for functions to be imported from other pages, we have to enable `"type": "module"` in `package.json`. This creates a bit of an annoyance because now *every single* import needs to include extensions. *Sorry about that*. 
 
 But this allows us to import functions and classes from other files using the following syntax:
 ```
 import { className, functionName } from './file.js';
 ```
 
-## How the Wardrbe is Processed
+## How the `Wardrbe` is Processed
 The application processes information using file `WardrbeBackend.js`. 
 ## class `item`
 The `item` class contains instances of each item that is created by the user and assigned to the wardrbe.
@@ -46,6 +46,8 @@ Creates a modified `wardrbe` object populated with randomly selected objects wit
 Wardrbe objects are saved using function `SaveWardrbe()`, this function should ONLY be used when saving a new, unique wardrbe (which is for a new user). 
 ## function `SaveWardrbe(wardrobe)`
 saves entire wardrbe object into `./data/outfits.json`, and a minified version into `./data/outfitsMin.json`
+
+Saving _minnified_ json files is commented out for now. No longer need it. 
 
 # Read Before Installing
 
