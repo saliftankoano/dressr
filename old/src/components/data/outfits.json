@@ -1,0 +1,502 @@
+[
+  {
+    "userId": 40994,
+    "hats": [
+      {
+        "name": "Leather Jacket",
+        "color": "Brown",
+        "size": "M",
+        "type": "hats",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "Timbs",
+        "color": "Brown",
+        "size": "7",
+        "type": "hats",
+        "season": "spring-fall",
+        "gender": "all"
+      },
+      {
+        "name": "Timbs",
+        "color": "Brown",
+        "size": "7",
+        "type": "hats",
+        "season": "spring-fall",
+        "gender": "all"
+      }
+    ],
+    "tops": [
+      {
+        "name": "Cashmere Sweater",
+        "color": "Gray",
+        "size": "S",
+        "type": "tops",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "Silk Blouse",
+        "color": "Ivory",
+        "size": "XS",
+        "type": "tops",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "Floral Sundress",
+        "color": "Pink",
+        "size": "S",
+        "type": "tops",
+        "season": "summer",
+        "gender": "all"
+      }
+    ],
+    "bottoms": [
+      {
+        "name": "Slim Fit Jeans",
+        "color": "Blue",
+        "size": "32",
+        "type": "bottoms",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "Pleated Skirt",
+        "color": "Burgundy",
+        "size": "M",
+        "type": "bottoms",
+        "season": "summer",
+        "gender": "all"
+      }
+    ],
+    "layers": [
+      {
+        "name": "Winter Jacket",
+        "color": "Blue",
+        "size": "XL",
+        "type": "layers",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "Trench Coat",
+        "color": "Beige",
+        "size": "L",
+        "type": "layers",
+        "season": "summer",
+        "gender": "all"
+      }
+    ],
+    "footwear": [
+      {
+        "name": "Winter Boots",
+        "color": "Black",
+        "size": "L",
+        "type": "footwear",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "Sneakers",
+        "color": "White",
+        "size": "M",
+        "type": "footwear",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "Ankle Boots",
+        "color": "Taupe",
+        "size": "7",
+        "type": "footwear",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "High-Top Sneakers",
+        "color": "White",
+        "size": "9",
+        "type": "footwear",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "Timbs",
+        "color": "Brown",
+        "size": "7",
+        "type": "footwear",
+        "season": "spring-fall",
+        "gender": "all"
+      }
+    ],
+    "accessories": [
+      {
+        "name": "Knit Beanie",
+        "color": "Navy",
+        "size": "One Size",
+        "type": "accessories",
+        "season": "summer",
+        "gender": "all"
+      }
+    ]
+  },
+  {
+    "userId": 9723,
+    "hats": [
+      {
+        "name": "Leather Jacket",
+        "color": "Brown",
+        "size": "M",
+        "type": "hats",
+        "season": "summer",
+        "gender": "all"
+      }
+    ],
+    "tops": [
+      {
+        "name": "Cashmere Sweater",
+        "color": "Gray",
+        "size": "S",
+        "type": "tops",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "Silk Blouse",
+        "color": "Ivory",
+        "size": "XS",
+        "type": "tops",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "Floral Sundress",
+        "color": "Pink",
+        "size": "S",
+        "type": "tops",
+        "season": "summer",
+        "gender": "all"
+      }
+    ],
+    "bottoms": [
+      {
+        "name": "Slim Fit Jeans",
+        "color": "Blue",
+        "size": "32",
+        "type": "bottoms",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "Pleated Skirt",
+        "color": "Burgundy",
+        "size": "M",
+        "type": "bottoms",
+        "season": "summer",
+        "gender": "all"
+      }
+    ],
+    "layers": [
+      {
+        "name": "Winter Jacket",
+        "color": "Blue",
+        "size": "XL",
+        "type": "layers",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "Trench Coat",
+        "color": "Beige",
+        "size": "L",
+        "type": "layers",
+        "season": "summer",
+        "gender": "all"
+      }
+    ],
+    "footwear": [
+      {
+        "name": "Winter Boots",
+        "color": "Black",
+        "size": "L",
+        "type": "footwear",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "Sneakers",
+        "color": "White",
+        "size": "M",
+        "type": "footwear",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "Ankle Boots",
+        "color": "Taupe",
+        "size": "7",
+        "type": "footwear",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "High-Top Sneakers",
+        "color": "White",
+        "size": "9",
+        "type": "footwear",
+        "season": "summer",
+        "gender": "all"
+      }
+    ],
+    "accessories": [
+      {
+        "name": "Knit Beanie",
+        "color": "Navy",
+        "size": "One Size",
+        "type": "accessories",
+        "season": "summer",
+        "gender": "all"
+      }
+    ]
+  },
+  {
+    "userId": 82953,
+    "hats": [
+      {
+        "name": "Leather Jacket",
+        "color": "Brown",
+        "size": "M",
+        "type": "hats",
+        "season": "summer",
+        "gender": "all"
+      }
+    ],
+    "tops": [
+      {
+        "name": "Cashmere Sweater",
+        "color": "Gray",
+        "size": "S",
+        "type": "tops",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "Silk Blouse",
+        "color": "Ivory",
+        "size": "XS",
+        "type": "tops",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "Floral Sundress",
+        "color": "Pink",
+        "size": "S",
+        "type": "tops",
+        "season": "summer",
+        "gender": "all"
+      }
+    ],
+    "bottoms": [
+      {
+        "name": "Slim Fit Jeans",
+        "color": "Blue",
+        "size": "32",
+        "type": "bottoms",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "Pleated Skirt",
+        "color": "Burgundy",
+        "size": "M",
+        "type": "bottoms",
+        "season": "summer",
+        "gender": "all"
+      }
+    ],
+    "layers": [
+      {
+        "name": "Winter Jacket",
+        "color": "Blue",
+        "size": "XL",
+        "type": "layers",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "Trench Coat",
+        "color": "Beige",
+        "size": "L",
+        "type": "layers",
+        "season": "summer",
+        "gender": "all"
+      }
+    ],
+    "footwear": [
+      {
+        "name": "Winter Boots",
+        "color": "Black",
+        "size": "L",
+        "type": "footwear",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "Sneakers",
+        "color": "White",
+        "size": "M",
+        "type": "footwear",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "Ankle Boots",
+        "color": "Taupe",
+        "size": "7",
+        "type": "footwear",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "High-Top Sneakers",
+        "color": "White",
+        "size": "9",
+        "type": "footwear",
+        "season": "summer",
+        "gender": "all"
+      }
+    ],
+    "accessories": [
+      {
+        "name": "Knit Beanie",
+        "color": "Navy",
+        "size": "One Size",
+        "type": "accessories",
+        "season": "summer",
+        "gender": "all"
+      }
+    ]
+  },
+  {
+    "userId": 77304,
+    "hats": [
+      {
+        "name": "Leather Jacket",
+        "color": "Brown",
+        "size": "M",
+        "type": "hats",
+        "season": "summer",
+        "gender": "all"
+      }
+    ],
+    "tops": [
+      {
+        "name": "Cashmere Sweater",
+        "color": "Gray",
+        "size": "S",
+        "type": "tops",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "Silk Blouse",
+        "color": "Ivory",
+        "size": "XS",
+        "type": "tops",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "Floral Sundress",
+        "color": "Pink",
+        "size": "S",
+        "type": "tops",
+        "season": "summer",
+        "gender": "all"
+      }
+    ],
+    "bottoms": [
+      {
+        "name": "Slim Fit Jeans",
+        "color": "Blue",
+        "size": "32",
+        "type": "bottoms",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "Pleated Skirt",
+        "color": "Burgundy",
+        "size": "M",
+        "type": "bottoms",
+        "season": "summer",
+        "gender": "all"
+      }
+    ],
+    "layers": [
+      {
+        "name": "Winter Jacket",
+        "color": "Blue",
+        "size": "XL",
+        "type": "layers",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "Trench Coat",
+        "color": "Beige",
+        "size": "L",
+        "type": "layers",
+        "season": "summer",
+        "gender": "all"
+      }
+    ],
+    "footwear": [
+      {
+        "name": "Winter Boots",
+        "color": "Black",
+        "size": "L",
+        "type": "footwear",
+        "season": "fall",
+        "gender": "all"
+      },
+      {
+        "name": "Sneakers",
+        "color": "White",
+        "size": "M",
+        "type": "footwear",
+        "season": "spring",
+        "gender": "all"
+      },
+      {
+        "name": "Ankle Boots",
+        "color": "Taupe",
+        "size": "7",
+        "type": "footwear",
+        "season": "summer",
+        "gender": "all"
+      },
+      {
+        "name": "High-Top Sneakers",
+        "color": "White",
+        "size": "9",
+        "type": "footwear",
+        "season": "summer",
+        "gender": "all"
+      }
+    ],
+    "accessories": [
+      {
+        "name": "Knit Beanie",
+        "color": "Navy",
+        "size": "One Size",
+        "type": "accessories",
+        "season": "summer",
+        "gender": "all"
+      }
+    ]
+  }
+]

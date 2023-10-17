@@ -1,5 +1,5 @@
 import { FetchWeather } from './WeatherBackend.js';
-import {fs} from 'fs';
+import fs from 'fs';
 let OUTFITPATH = './data/outfits.json';
 // let OUTFITMINPATH = './data/outfitsMin.json';
 
@@ -245,6 +245,6 @@ export function UpdateWardrbe(item, userId) { // add switch function to add 'rem
 // wardrobe.add(new Item('Floral Sundress', 'Pink', 'S', 'tops', 'spring-fall'));
 // const currentWeather = new Weather('11735'); // Example weather conditions
 // SaveNewWardrbe(wardrobe);
-// let wardrobe = (new Item('Timbs', 'Brown', '7', 'hats', 'spring-fall'));
+// let wardrobe = (new Item('Sandals', 'Brown', '7', 'footwear', 'spring-fall'));
 // UpdateWardrbe(wardrobe, 40994);
 // console.log(GenerateOutfit(wardrobe, currentWeather));
