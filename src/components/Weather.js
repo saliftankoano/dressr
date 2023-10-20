@@ -52,6 +52,7 @@ function Weather() {
                 <div>
                     <p>Temperature: {weatherData.temp_f}&deg;F</p>
                     <p>Wind Speed: {weatherData.wind_mph} mph</p>
+                    <p>Feels Like:{weatherData.feelslike_f}&deg;F</p>
                 </div>
             )}
         </div>
