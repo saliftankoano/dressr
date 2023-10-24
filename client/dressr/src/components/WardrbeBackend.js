@@ -1,5 +1,5 @@
 import { FetchWeather } from './WeatherBackend.js';
-const fs = require('fs');
+import fs from 'fs';
 let OUTFITPATH = './data/outfits.json';
 // let OUTFITMINPATH = './data/outfitsMin.json';
 

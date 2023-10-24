@@ -8,7 +8,7 @@ import Wardrbe from "./components/wardrbe.jsx";
 import Weather from "./components/Weather.jsx";
 import Dressr from "./components/Dressr.jsx";
 
-function App(){
+const App = () => {
     return (
         <div>
             {/** BrowserRouter and Routes allow us to move between pages witout rendering the entire page again */}
