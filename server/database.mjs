@@ -116,21 +116,20 @@ export class Weather{
     };
 }
 
-// Returns JSON Object
+// returns JSON Object
 async function read(userId){
     try{
         const data = await redis.get(userId);
-        console.log(JSON.parse(data));
+
         return JSON.parse(data);
     }catch(err){
         console.error("Couldn't read user data\n", err);
         return false;
     }
 }
-// create new wardrbe
-async function CreateNewWardrbe(wardrobe, userId){
+export async function CreateNewWardrbe(wardrobe, userId){
     const wardrobeObject = JSON.stringify(wardrobe, null, 2);
-    console.log(userId, wardrobe);
+
     try{
         await redis.set(userId, wardrobeObject);
         return true;
@@ -139,7 +138,7 @@ async function CreateNewWardrbe(wardrobe, userId){
         return false;
     }
 }
-async function UpdateWardrbe(item, userId){
+export async function UpdateWardrbe(item, userId){
     try{
         const wardrbeObject = await read(userId);
 
@@ -175,15 +174,16 @@ async function UpdateWardrbe(item, userId){
             return false;
         }
 }
-async function GenerateOutfit(weather, userId){
+export async function GenerateOutfit(weather, userId){
     function getRandomElement(arr) {
         const randomIndex = Math.floor(Math.random() * arr.length); //random index
         return arr[randomIndex];
     }
     try{
         let wardrobe = await read(userId);
-        
+
         const modifiedWardrobe = new UserWardrbe();
+        await modifiedWardrobe.initialized;
         const hats = [];
         const tops = [];
         const bottoms = [];
@@ -255,11 +255,21 @@ async function GenerateOutfit(weather, userId){
 }
 
 //example code on how to update and create wardrobes
-(async () => {
-    const instance = new UserWardrbe();
-    await instance.initialized;
-    console.log(instance);
+// (async () => {
+    // const instance = new UserWardrbe();
+    // await instance.initialized;
+    // console.log(instance);
 
-    await CreateNewWardrbe(instance, instance.userId);
-    await UpdateWardrbe(new Item('Winter Boots', 'Black', 'L', 'footwear', 'spring-fall'),instance.userId);
-})();
+    // await CreateNewWardrbe(instance, instance.userId);
+    // await UpdateWardrbe(new Item('Winter Boots', 'Black', 'L', 'accessories', 'spring-fall'),27496);
+    
+    // const weather = { season: 'spring-fall' };
+    // const userId = 27496;
+    // GenerateOutfit(weather, userId).then((outfit) => {
+    //     if (outfit) {
+    //     console.log("Generated Outfit:", outfit);
+    //     } else {
+    //     console.log("Failed to generate outfit.");
+    //     }
+    // });
+// })();

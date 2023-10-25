@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { UserWardrbe, Item } from './WardrbeBackend.js';
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Container, Row, Col} from 'react-bootstrap';
 import './styles.css'

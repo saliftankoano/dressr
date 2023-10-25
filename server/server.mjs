@@ -3,6 +3,7 @@ import express from 'express';
 import Redis from 'ioredis'; // Import the Redis client
 import { createRequire } from 'module';
 import fs from 'fs';
+import {CreateNewWardrbe, UpdateWardrbe, GenerateOutfit} from './database.mjs';
 
 const app = express();
 const port = 4000;
@@ -38,32 +39,55 @@ function connectRedis(){
   });
 }
 
-// server!
-// THIS IS STARTER CODE
-app.get('/api', async (req, res) => {
+// database api endpoints!
+// create new wardrobe
+app.post('/api/wardrobe/create', async (req, res) => {
   try {
-    // Check if the data is in Redis cache
-    const cachedData = await redis.get('cachedData');
-
-    if (cachedData) {
-      // If data is in cache, return it
-      res.json(JSON.parse(cachedData));
+    const { wardrobe, userId } = req.body;
+    const result = await CreateNewWardrobe(wardrobe, userId);
+    if (result) {
+      res.json({ success: true });
     } else {
-      // If data is not in cache, fetch it (e.g., from a database)
-      const data = {
-        "users": ["user1", "user2", "user3"]
-      };
-
-      // Store the data in Redis cache for future use
-      await redis.set('cachedData', JSON.stringify(data));
-
-      res.json(data);
+      res.status(500).json({ error: "Failed to create a new wardrobe" });
     }
   } catch (error) {
-    console.error('Error fetching data:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error("Error creating a new wardrobe:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+// update wardrobe
+app.post('/api/wardrobe/update', async (req, res) => {
+  try {
+    const { item, userId } = req.body;
+    const result = await UpdateWardrobe(item, userId);
+    if (result) {
+      res.json({ success: true });
+    } else {
+      res.status(500).json({ error: "Failed to update the wardrobe" });
+    }
+  } catch (error) {
+    console.error("Error updating the wardrobe:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// generate an outfit
+app.post('/api/wardrobe/generate-outfit', async (req, res) => {
+  try {
+    const { weather, userId } = req.body;
+    const outfit = await GenerateOutfit(weather, userId);
+    if (outfit) {
+      res.json({ outfit });
+    } else {
+      res.status(500).json({ error: "Failed to generate an outfit" });
+    }
+  } catch (error) {
+    console.error("Error generating an outfit:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
