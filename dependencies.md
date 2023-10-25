@@ -1,2 +1,3 @@
 # Libraries Used:
 `ioredis`
+`nodemon`
