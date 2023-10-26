@@ -2,7 +2,7 @@
 import express from 'express';
 import Redis from 'ioredis'; // Import the Redis client
 import { createRequire } from 'module';
-import fs from 'fs';
+import fs, { read } from 'fs';
 import {CreateNewWardrbe, UpdateWardrbe, GenerateOutfit} from './database.mjs';
 
 const app = express();
@@ -84,6 +84,22 @@ app.post('/api/wardrobe/generate-outfit', async (req, res) => {
     }
   } catch (error) {
     console.error("Error generating an outfit:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+app.get('/api/fetchWardrbe', async (req, res) => {
+  try {
+    const userId = req.query.userId; // Use req.query to get query parameters
+    const wardrobe = await read(userId);
+    
+    if (wardrobe) {
+      res.json({ wardrobe });
+      console.log('Wardrobe Fetched');
+    } else {
+      res.status(500).json({ error: "Failed to fetch wardrobe" });
+    }
+  } catch (error) {
+    console.error("Error fetching wardrobe:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });

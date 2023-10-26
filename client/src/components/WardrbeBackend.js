@@ -35,7 +35,6 @@ export class UserWardrbe{
     accessories = [];
 
     constructor(){
-        this.userId = this.GetUniqueId();
         console.log('wardrbe made, id:', this.userId);
     }
 

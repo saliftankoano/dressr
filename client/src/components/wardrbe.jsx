@@ -4,40 +4,96 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Container, Row, Col} from 'react-bootstrap';
 import './styles.css'
-const wardrbe = new UserWardrbe(); // blank wardrbe - should be populated with user's wardrbe
 
-function updateWardrbe(itemName, itemColor, itemSize, itemType, itemSeason, itemGender, itemPhoto){ // handles invalid item submissions
+
+async function fetchWardrbe(userId) {
+	try {
+		const response = await axios.get('/api/fetchWardrbe', {
+		params: { userId }, // Use the "params" property for query parameters
+		});
+
+		if (response.status === 200) {
+		if (response.data.wardrobe) {
+			// Wardrobe data fetched successfully
+			console.log('Wardrobe fetched successfully');
+			return response.data.wardrobe;
+		} else {
+			console.error('Failed to fetch the wardrobe');
+		}
+		} else {
+		console.error('Request failed with status:', response.status);
+		}
+	} catch (error) {
+		console.error('Error fetching the wardrobe:', error);
+	}
+	return null; // Return an appropriate value when the fetch fails
+}
+
+
+function updateWardrbe(itemName, itemColor, itemSize, itemType, itemSeason, itemGender, itemPhoto, userId){ // handles invalid item submissions
 	console.log('updateWardrbe called');
 	let newItem = new Item(itemName, itemColor, itemSize, itemType, itemSeason, itemGender, itemPhoto);
 	console.log(newItem);
 
-	wardrbe.add(newItem);
-	return null;
+	(async() =>{
+		try {
+			const response = await fetch('/api/wardrobe/update', {
+				method: 'POST',
+				headers: {
+				'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ newItem, userId }),
+			});
+
+			if (response.ok) {
+				const data = await response.json();
+				if (data.success) {
+				// Update was successful
+				console.log('Wardrobe updated successfully');
+				} else {
+				console.error('Failed to update the wardrobe');
+				}
+			} else {
+				console.error('Request failed with status:', response.status);
+			}
+		} catch (error) {
+		console.error('Error updating the wardrobe:', error);
+		}
+
+		localWardrbe.add(newItem);
+		return true;
+	});
 }
 
-function DisplayWardrbe(){
-	return (
-    <div>
-      <h2>Wardrobe</h2>
-      {Object.keys(wardrbe).map((category) => ( //
-        <div key={category}>
-          <h2>{category}</h2>
-          <ul>
-            {wardrbe[category].map((item, index) => (
-              <li key={index}>
-                {item.name}: {item.color}, {item.season}, {item.size}, {item.type}, {item.season}, {item.gender}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </div>
-  );
-};
+// function DisplayWardrbe(){
+// 	if (!localWardrbe) { //error handing
+// 		return <div>Loading...</div>;
+// 	}
+// 	console.log(localWardrbe['footwear']);
+
+// 	return (
+//     <div>
+// 		<h2>Wardrobe</h2>
+// 		{Object.keys(localWardrbe).map((category) => (
+// 			<div key={category}>
+// 			<h2>{category}</h2>
+// 			<ul>
+// 				{localWardrbe[category].map((item, index) => (
+// 				<li key={index}>
+// 					{item.name}: {item.color}, {item.season}, {item.size}, {item.type}, {item.season}, {item.gender}
+// 				</li>
+// 				))}
+// 			</ul>
+// 			</div>
+// 		))}
+// 		</div>
+// 	);
+
+// }
 
 // Function to handle form submission
 
-const Wardrbe = () => {
+const Wardrbe = async () => {
 	// create new default wardrbe for user
 	// const wardrbe = new UserWardrbe();
 	// function for fetching a user's wardrbe should populare wardrbe object
@@ -50,7 +106,17 @@ const Wardrbe = () => {
 	const [itemSeason, setItemSeason] = useState('');
 	const [itemGender, setItemGender] = useState('');
 	const [itemPhoto, setItemPhoto] = useState(null);
-  
+	// let localWardrbe = new UserWardrbe(); // blank wardrbe - should be populated with user's wardrbe
+
+	const wardrobeData = await fetchWardrbe(27496);
+
+	if (wardrobeData !== null) {
+		console.log(wardrobeData);
+	} else {
+		console.error("Wardrbe Data Null!!");
+	}
+
+
 	return (
 	<> 
 	<Container>
@@ -326,13 +392,12 @@ const Wardrbe = () => {
 		{/* only allow "save" button when theres >=1 item saved */}
 	</Col>
 	{/* saved items */}
-	<Col xs='6'>
+	{/* <Col xs='6'>
 	<div>
 		<h1>Saved Items</h1>
 		<DisplayWardrbe></DisplayWardrbe>
-		{/* <img src="https://media.gq.com/photos/6153752c430fd1b65067ee50/16:9/w_1280,c_limit/GettyImages-1195887867.jpeg"></img> */}
 	</div>
-	</Col>
+	</Col> */}
 	</Row>
 	</Container>
 
