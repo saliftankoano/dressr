@@ -89,11 +89,11 @@ app.post('/api/wardrobe/generate-outfit', async (req, res) => {
 });
 app.get('/api/fetchWardrbe', async (req, res) => {
   try {
-    const userId = req.query.userId; // Use req.query to get query parameters
-    const wardrobe = await read(userId);
+    const userId = parseInt(req.query.userId); // Use req.query to get query parameters
+    const wardrbe = await read(userId);
     
-    if (wardrobe) {
-      res.json({ wardrobe });
+    if (wardrbe) {
+      res.json({ wardrbe });
       console.log('Wardrobe Fetched');
     } else {
       res.status(500).json({ error: "Failed to fetch wardrobe" });
