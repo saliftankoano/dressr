@@ -9,4 +9,4 @@ export async function FetchWeather(zipcode) {
     } catch (err) {
         console.log("Weather API Error: ", err)
     }
-};
+}
