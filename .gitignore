@@ -2,3 +2,4 @@ server/redisUri.json
 server/node_modules
 
 old
+node_modules
