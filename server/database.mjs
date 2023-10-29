@@ -115,9 +115,8 @@ export class Weather{
         this.windspeed = weather.wind_mph;
     };
 }
-
-// returns JSON Object
-async function read(userId){
+// returns JSON Object of user's wardrbe
+export async function Read(userId){
     try{
         const data = await redis.get(userId);
 
@@ -254,7 +253,7 @@ export async function GenerateOutfit(weather, userId){
     }
 }
 
-//example code on how to update and create wardrobes
+'example code on how to update and create wardrobes'
 // (async () => {
     // const instance = new UserWardrbe();
     // await instance.initialized;

@@ -2,8 +2,8 @@
 import express from 'express';
 import Redis from 'ioredis'; // Import the Redis client
 import { createRequire } from 'module';
-import fs, { read } from 'fs';
-import {CreateNewWardrbe, UpdateWardrbe, GenerateOutfit} from './database.mjs';
+import fs from 'fs';
+import {Read, CreateNewWardrbe, UpdateWardrbe, GenerateOutfit} from './database.mjs';
 
 const app = express();
 const port = 4000;
@@ -71,7 +71,6 @@ app.post('/api/wardrobe/update', async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
 // generate an outfit
 app.post('/api/wardrobe/generate-outfit', async (req, res) => {
   try {
@@ -87,14 +86,15 @@ app.post('/api/wardrobe/generate-outfit', async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+// fetch wardrbe
 app.get('/api/fetchWardrbe', async (req, res) => {
   try {
-    const userId = parseInt(req.query.userId); // Use req.query to get query parameters
-    const wardrbe = await read(userId);
+    const userId = parseInt(req.query.userId);
+    const wardrbe = await Read(userId);
     
     if (wardrbe) {
       res.json({ wardrbe });
-      console.log('Wardrobe Fetched');
+      console.log('Wardrobe Fetched!');
     } else {
       res.status(500).json({ error: "Failed to fetch wardrobe" });
     }
