@@ -139,7 +139,7 @@ export async function CreateNewWardrbe(wardrobe, userId){
 }
 export async function UpdateWardrbe(item, userId){
     try{
-        const wardrbeObject = await read(userId);
+        const wardrbeObject = await Read(userId.userId);
 
         switch(item.type){
             case 'hats':
@@ -165,7 +165,7 @@ export async function UpdateWardrbe(item, userId){
                 return false;
         }
 
-        await redis.set(userId, JSON.stringify(wardrbeObject, null, 2));
+        await redis.set(userId.userId, JSON.stringify(wardrbeObject, null, 2));
             console.log("Item Added!", item);
             return true;
         }catch(err){

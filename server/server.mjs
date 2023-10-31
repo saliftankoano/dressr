@@ -6,6 +6,7 @@ import fs from 'fs';
 import {Read, CreateNewWardrbe, UpdateWardrbe, GenerateOutfit} from './database.mjs';
 
 const app = express();
+app.use(express.json());
 const port = 4000;
 const require = createRequire(import.meta.url); //not entirely sure what this does
 const filePath = 'redisUri.json';
@@ -59,8 +60,10 @@ app.post('/api/wardrobe/create', async (req, res) => {
 // update wardrobe
 app.post('/api/wardrobe/update', async (req, res) => {
   try {
-    const { item, userId } = req.body;
-    const result = await UpdateWardrobe(item, userId);
+    const { newItem, userId } = req.body;
+    console.log('got the request');
+    const result = await UpdateWardrbe(newItem, userId);
+    console.log('updated wardrobe');
     if (result) {
       res.json({ success: true });
     } else {

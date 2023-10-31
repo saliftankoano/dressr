@@ -3,9 +3,19 @@ img {/* Ensures the aspect ratio is maintained */
   height: auto; 
 }
 .left{
-    text-align: left;
+  text-align: left;
 }
 h2{
-    text-align: left;
-    padding: 0px;
+  text-align: left;
+  padding: 0px;
+}
+.full {
+  width: 100vw;
+  max-width: 100vw;
+}
+.left{
+  /* background-color: red; */
+}
+.right{
+  /* background-color: blue; */
 }
