@@ -56,7 +56,6 @@ app.post('/api/wardrobe/create', async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
 // update wardrobe
 app.post('/api/wardrobe/update', async (req, res) => {
   try {
@@ -106,6 +105,7 @@ app.get('/api/fetchWardrbe', async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+// delete item from wardrbe
 
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);

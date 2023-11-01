@@ -179,7 +179,7 @@ export async function GenerateOutfit(weather, userId){
         return arr[randomIndex];
     }
     try{
-        let wardrobe = await read(userId);
+        let wardrobe = await read(userId.userId);
 
         const modifiedWardrobe = new UserWardrbe();
         await modifiedWardrobe.initialized;
