@@ -8,7 +8,6 @@ import Dashboard from "./components/Dashboard.jsx"
 import Login from "./components/Login.jsx";
 import Wardrbe from "./components/wardrbe.jsx";
 import Weather from "./components/Weather.jsx";
-import Dressr from "./components/Dressr.jsx";
 
 const App = () => {
     return (
@@ -19,7 +18,6 @@ const App = () => {
                 <Route path='/login' element={<Login />} />
                 <Route path='/wardrbe' element={<Wardrbe />} />
                 <Route path='/weather' element={<Weather/>} /> 
-                <Route path='/dressr' element={<Dressr/>} /> 
             </Routes>
         </BrowserRouter>
     );
