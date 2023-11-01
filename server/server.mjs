@@ -2,10 +2,11 @@
 import express from 'express';
 import Redis from 'ioredis'; // Import the Redis client
 import { createRequire } from 'module';
-import fs, { read } from 'fs';
-import {CreateNewWardrbe, UpdateWardrbe, GenerateOutfit} from './database.mjs';
+import fs from 'fs';
+import {Read, CreateNewWardrbe, UpdateWardrbe, GenerateOutfit} from './database.mjs';
 
 const app = express();
+app.use(express.json());
 const port = 4000;
 const require = createRequire(import.meta.url); //not entirely sure what this does
 const filePath = 'redisUri.json';
@@ -55,12 +56,13 @@ app.post('/api/wardrobe/create', async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
 // update wardrobe
 app.post('/api/wardrobe/update', async (req, res) => {
   try {
-    const { item, userId } = req.body;
-    const result = await UpdateWardrobe(item, userId);
+    const { newItem, userId } = req.body;
+    console.log('got the request');
+    const result = await UpdateWardrbe(newItem, userId);
+    console.log('updated wardrobe');
     if (result) {
       res.json({ success: true });
     } else {
@@ -71,7 +73,6 @@ app.post('/api/wardrobe/update', async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
 // generate an outfit
 app.post('/api/wardrobe/generate-outfit', async (req, res) => {
   try {
@@ -87,14 +88,15 @@ app.post('/api/wardrobe/generate-outfit', async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+// fetch wardrbe
 app.get('/api/fetchWardrbe', async (req, res) => {
   try {
-    const userId = parseInt(req.query.userId); // Use req.query to get query parameters
-    const wardrbe = await read(userId);
+    const userId = parseInt(req.query.userId);
+    const wardrbe = await Read(userId);
     
     if (wardrbe) {
       res.json({ wardrbe });
-      console.log('Wardrobe Fetched');
+      console.log('Wardrobe Fetched!');
     } else {
       res.status(500).json({ error: "Failed to fetch wardrobe" });
     }
@@ -103,6 +105,7 @@ app.get('/api/fetchWardrbe', async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+// delete item from wardrbe
 
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);

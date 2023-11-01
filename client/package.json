@@ -19,6 +19,7 @@
     "react-router-dom": "^6.17.0",
     "use-local-storage": "^3.0.0"
   },
+  "proxy":"http//localhost:4000",
   "devDependencies": {
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",

@@ -115,9 +115,8 @@ export class Weather{
         this.windspeed = weather.wind_mph;
     };
 }
-
-// returns JSON Object
-async function read(userId){
+// returns JSON Object of user's wardrbe
+export async function Read(userId){
     try{
         const data = await redis.get(userId);
 
@@ -140,7 +139,7 @@ export async function CreateNewWardrbe(wardrobe, userId){
 }
 export async function UpdateWardrbe(item, userId){
     try{
-        const wardrbeObject = await read(userId);
+        const wardrbeObject = await Read(userId.userId);
 
         switch(item.type){
             case 'hats':
@@ -166,7 +165,7 @@ export async function UpdateWardrbe(item, userId){
                 return false;
         }
 
-        await redis.set(userId, JSON.stringify(wardrbeObject, null, 2));
+        await redis.set(userId.userId, JSON.stringify(wardrbeObject, null, 2));
             console.log("Item Added!", item);
             return true;
         }catch(err){
@@ -180,7 +179,7 @@ export async function GenerateOutfit(weather, userId){
         return arr[randomIndex];
     }
     try{
-        let wardrobe = await read(userId);
+        let wardrobe = await read(userId.userId);
 
         const modifiedWardrobe = new UserWardrbe();
         await modifiedWardrobe.initialized;
@@ -254,7 +253,7 @@ export async function GenerateOutfit(weather, userId){
     }
 }
 
-//example code on how to update and create wardrobes
+'example code on how to update and create wardrobes'
 // (async () => {
     // const instance = new UserWardrbe();
     // await instance.initialized;

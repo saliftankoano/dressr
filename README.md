@@ -1,15 +1,26 @@
 # How It's Done
+The application has been migrated to `vite`, I have no idea what it is but it doesn't have those depricated errors.
+
+The app is also seperated into `client` and `server` - meaning that we have to go into folder `client` and run `npm run dev` in order to run the website. To run the backend, go into `server` and run `nodemon server.mjs`. You may need to install additional dependencies listed below.
+
+## The Server
+The server allows us to connect to our redis database. Make sure to install the following dependencies:
+- `redis`
+- `express`
+- `nodemon` (allows for constant refreshing of the app)
+dm me (fahad) for the redis uri json file
+
 ## How Pages are Routed
 `App.js` allows for us to route the user from page to page
 
 - Using import `BrowserRouter, Route, Routes from 'react-router-dom'`
 - Pages are imported using their address
     - ex: `import Wardrbe from "./components/Wardrbe.js";`
-- Within the function `App()`, routes to different pages are set up using the `<Route>` attribute 
+- Within the function `App()`, routes to different pages are set up using the `<Route>` attribute
     - ex: `<Route path= '/wardrbe' element={<Wardrbe/>}/>`
 
 ## How functions are Imported
-In order for functions to be imported from other pages, we have to enable `"type": "module"` in `package.json`. This creates a bit of an annoyance because now *every single* import needs to include extensions. *Sorry about that*. 
+In order for functions to be imported from other pages, we have to enable `"type": "module"` in `package.json`. This creates a bit of an annoyance because now *every single* import needs to include extensions. *Sorry about that*.
 
 But this allows us to import functions and classes from other files using the following syntax:
 ```
@@ -17,15 +28,15 @@ import { className, functionName } from './file.js';
 ```
 
 ## How the `Wardrbe` is Processed
-The application processes information using file `WardrbeBackend.js`. 
+The application processes information using file `WardrbeBackend.js`.
 ## class `item`
 The `item` class contains instances of each item that is created by the user and assigned to the wardrbe.
-The constructor allows for adding only name, color, size, type, season, and gender of the item added. Unfornately, JS only allows for one constructor per class, which is kinda wack. So this will do for now, functions can be created to edit certain features later. 
+The constructor allows for adding only name, color, size, type, season, and gender of the item added. Unfornately, JS only allows for one constructor per class, which is kinda wack. So this will do for now, functions can be created to edit certain features later.
 
 The class also contains a copy function to copy over items from another item to the existing item. This has no use as of now.
 
 ## class `wardrbe`
-The `wardrbe` class contains lists that hold the items for hats, tops, bottoms, layers, footwear, and accessories. The `add()` function adds `item` objects to their respective list. 
+The `wardrbe` class contains lists that hold the items for hats, tops, bottoms, layers, footwear, and accessories. The `add()` function adds `item` objects to their respective list.
 
 ex: "Red Soxs Hat" gets added to `hats` list.
 
@@ -40,14 +51,14 @@ The weather information is just used to calculate a phony "season" attribute to 
 ## function `GenerateOutfit(wardrobe, weather)`
 Takes in a generic `wardrbe` object "wardrobe" (confusing, ik) and `weather` object "weather".
 
-Creates a modified `wardrbe` object populated with randomly selected objects with respect to their type and season type. 
+Creates a modified `wardrbe` object populated with randomly selected objects with respect to their type and season type.
 
 # How Information is Stored
-Wardrbe objects are saved using function `SaveWardrbe()`, this function should ONLY be used when saving a new, unique wardrbe (which is for a new user). 
+Wardrbe objects are saved using function `SaveWardrbe()`, this function should ONLY be used when saving a new, unique wardrbe (which is for a new user).
 ## function `SaveWardrbe(wardrobe)`
 saves entire wardrbe object into `./data/outfits.json`, and a minified version into `./data/outfitsMin.json`
 
-Saving _minnified_ json files is commented out for now. No longer need it. 
+Saving _minnified_ json files is commented out for now. No longer need it.
 
 # Read Before Installing
 
