@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
+import './RafidTempStyle.css'
 
 function Weather() {
     const [weatherData, setWeatherData] = useState(null);
