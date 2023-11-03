@@ -178,17 +178,22 @@ export async function GenerateOutfit(weather, userId){
         const randomIndex = Math.floor(Math.random() * arr.length); //random index
         return arr[randomIndex];
     }
+    console.log(userId);
+    
     try{
-        let wardrobe = await read(userId.userId);
+        let wardrobe = await Read(userId.userId);
 
         const modifiedWardrobe = new UserWardrbe();
         await modifiedWardrobe.initialized;
+
         const hats = [];
         const tops = [];
         const bottoms = [];
         const layers = []; // jackets, sweaters, etc.
         const footwear = [];
         const accessories = [];
+
+        console.log('Wardrobe', wardrobe);
 
         for (let i = 0; i < wardrobe.footwear.length; i++) {
             const item = wardrobe.footwear[i];
