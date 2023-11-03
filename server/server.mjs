@@ -75,24 +75,13 @@ app.post('/api/wardrobe/update', async (req, res) => {
 // generate an outfit
 app.get('/api/wardrobe/generate-outfit', async (req, res) => {
   try {
-    // console.dir(req.query)
     const weather = JSON.parse(req.query.weather);
-    const userId = JSON.parse(req.query.userId);    // console.log('Body:',req.query,
-    // 'Weather:',weather.season,
-    // 'userId', userId.userId);
-//     console.dir(weather, { depth: null });
-// console.dir(userId, { depth: null });
-
+    const userId = JSON.parse(req.query.userId);
     let outfit = 0;
 
     if(weather != undefined & userId != undefined){
       outfit = await GenerateOutfit(weather, userId);
-    }
-    else{
-      console.error('wa');
-      return;
-    }
-    
+    }    
     if (outfit) {
       res.json({ outfit });
     } else {
