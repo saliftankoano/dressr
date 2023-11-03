@@ -3,7 +3,6 @@ import './RafidTempStyle.css'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Weather,createId } from './WardrbeBackend';
-import { useNavigate } from 'react-router-dom';
 
 async function GenerateOutfit(weather, userId) {    
 	try {
@@ -93,19 +92,12 @@ function Outfit(){
     function handleClick(){
         setShowWardrobe(!showWardrobe);
     }
-    
-    let navigate = useNavigate();
-    function home() {
-        navigate('/');
-    }
 
 
     return(
     <>
     {/* Back Button */}
-    <button onClick={home} className="btn btn-primary">
-        Home
-    </button>    
+    <a href='./'><button id='outfit'>Home</button></a>
 
     <div align="center">
         <h2>Outfits</h2>
