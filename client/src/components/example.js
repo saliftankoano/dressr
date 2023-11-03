@@ -1,7 +1,8 @@
 import axios from "axios";
+import 'server/redisUri.json';
 import {Weather, createId} from "./WardrbeBackend.js";
 
-async function GenerateOutfit(weather, userId) {    
+export async function GenerateOutfit(weather, userId) {    
 	try {
 		const response = await axios.get('http://localhost:4000/api/wardrobe/generate-outfit', {
             params: {
@@ -29,8 +30,6 @@ async function GenerateOutfit(weather, userId) {
     }
     return null;
 }
-
-
 
 const thisWeather = await new Weather(11735);
 const userId = await new createId(27496);

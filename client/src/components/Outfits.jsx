@@ -1,17 +1,17 @@
 import ModalBody from 'react-bootstrap/esm/ModalBody';
 import './RafidTempStyle.css'
-import Modal from 'react-bootstrap/Modal';
 import { useState } from 'react';
 import axios from 'axios';
+import { Weather,createId } from './WardrbeBackend';
+import { GenerateOutfit } from './example';
 
 function OutfitPage(){
+    const [outfit,setOufit] = useState(null);
+
+    const localWeather = new Weather(11369);
+    const userId = new createId(27496);
     async function handleClick(){
-        const outfit = await axios.post('http://localhost:4000/api/wardrobe/generate-outfit')
-        return(
-            <div>
-                {outfit}
-            </div>
-        )
+        console.log(localWeather);
     }
 
     return(
