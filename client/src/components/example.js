@@ -1,5 +1,4 @@
 import axios from "axios";
-import 'server/redisUri.json';
 import {Weather, createId} from "./WardrbeBackend.js";
 
 export async function GenerateOutfit(weather, userId) {    
