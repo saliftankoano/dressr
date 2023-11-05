@@ -103,6 +103,10 @@ function Outfit(){
         <h2>Outfits</h2>
         <button onClick={handleClick}>Generate Outfit!</button>
     </div>
+    <div>
+        <h3>Your Current Season:</h3>
+        <p>spring-fall</p>
+    </div>
     {showWardrobe && 
         <div>
             <DisplayWardrbe></DisplayWardrbe>
