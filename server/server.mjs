@@ -110,8 +110,39 @@ app.get('/api/fetchWardrbe', async (req, res) => {
   }
 });
 // delete item from wardrbe
-
+app.post('/api/wardrobe/delete-item', async (req, res) => {
+  try {
+    const { item, userId } = req.body;
+    console.log('Deleting item'+ item);
+    const result = await UpdateWardrbe(item, userId);
+    console.log('Deleted item!');
+    if (result) {
+      res.json({ success: true });
+    } else {
+      res.status(500).json({ error: "Failed to delete item" });
+    }
+  } catch (error) {
+    console.error("Error deleting item:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 // delete wardrbe
+app.post('/api/wardrobe/delete-wardrbe', async (req, res) => {
+  try {
+    const { userId } = req.body;
+    console.log('Deleting wardrbe'+ userId);
+    const result = await UpdateWardrbe(userId.userId);
+    console.log('Deleted wardrbe!');
+    if (result) {
+      res.json({ success: true });
+    } else {
+      res.status(500).json({ error: "Failed to delete wardrbe" });
+    }
+  } catch (error) {
+    console.error("Error deleting wardrbe:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
