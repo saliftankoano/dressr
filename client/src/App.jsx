@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import LandingPage from "./components/LandingPage.jsx";
 import Dashboard from "./components/Dashboard.jsx"
-import Login from "./components/Login.jsx";
+import Login from "./components/auth/Login.jsx";
 import Wardrbe from "./components/wardrbe.jsx";
 import Weather from "./components/Weather.jsx";
 import Outfit from "./components/Outfits.jsx";

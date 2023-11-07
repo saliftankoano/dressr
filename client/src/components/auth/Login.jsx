@@ -1,7 +1,7 @@
 import './Login.css';
+import auth from '../../firebase.jsx';
 import localStorage from "use-local-storage";
 import { useState } from 'react';
-import auth from "../../firebase"
 import { signInWithEmailAndPassword, sendPasswordResetEmail} from 'firebase/auth';
 
 function Login(){

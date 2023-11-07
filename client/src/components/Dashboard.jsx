@@ -22,11 +22,14 @@ getDocs(colRef)
 function Dashboard(){
     // getData();
     const[fullName, setFullName]= useState('Alexa');
+    const[userID, setUserId]= useState('');
     auth.onAuthStateChanged(  function(user) {
         if (user) {
           // User is signed in.
           setFullName(user.displayName);
-          console.log(fullName);
+          setUserId(user.uid);
+          console.log(userID);
+        //   console.log(fullName);
         }
       });
     return (
