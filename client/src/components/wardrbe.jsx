@@ -136,6 +136,7 @@ function Wardrbe() {
 
 	return (
 	<> 
+	<a href='./'><button id='outfit'>Home</button></a>
 	<Container className='full'>
 		<Row>
 			<Col xs='6'>

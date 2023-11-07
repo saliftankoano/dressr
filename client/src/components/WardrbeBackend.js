@@ -83,3 +83,8 @@ export class Weather{
         this.windspeed = weather.wind_mph;
     }
 }
+export class createId {
+	constructor(id){
+		this.userId = id;
+	}
+}

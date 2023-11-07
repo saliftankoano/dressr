@@ -10,7 +10,8 @@ function LandingPage() {
       </div>
       <div className="button">
         <a href='./login'><button id="start-btn">Get started</button></a>
-        <a href='./wardrbe'><button id='wardrbe'>wardrbe</button></a>
+        <a href='./wardrbe'><button id='wardrbe'>wardrbe!</button></a>
+        <a href='./outfit'><button id='outfit'>outfits!</button></a>
       </div>
     </section>
   );

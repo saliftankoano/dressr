@@ -21,7 +21,13 @@ redis.ping((err, result) =>{
     console.log("Connected to redis");
   }
 });
-
+function connectRedis(){
+  redis.connect(getUri()).then(() => {
+    console.log('New Redis Connection Setup!');
+  }).catch(err => {
+    console.error('Error connecting to Redis:', err);
+  });
+}
 function getUri() {
   try {
     const jsonContent = fs.readFileSync(filePath, 'utf8');
@@ -31,13 +37,6 @@ function getUri() {
     console.error('Error reading or parsing the JSON file for Redis Uri\n', err);
     return null;
   }
-}
-function connectRedis(){
-  redis.connect(getUri()).then(() => {
-    console.log('New Redis Connection Setup!');
-  }).catch(err => {
-    console.error('Error connecting to Redis:', err);
-  });
 }
 
 // database api endpoints!
@@ -74,10 +73,15 @@ app.post('/api/wardrobe/update', async (req, res) => {
   }
 });
 // generate an outfit
-app.post('/api/wardrobe/generate-outfit', async (req, res) => {
+app.get('/api/wardrobe/generate-outfit', async (req, res) => {
   try {
-    const { weather, userId } = req.body;
-    const outfit = await GenerateOutfit(weather, userId);
+    const weather = JSON.parse(req.query.weather);
+    const userId = JSON.parse(req.query.userId);
+    let outfit = 0;
+
+    if(weather != undefined & userId != undefined){
+      outfit = await GenerateOutfit(weather, userId);
+    }    
     if (outfit) {
       res.json({ outfit });
     } else {
@@ -106,6 +110,8 @@ app.get('/api/fetchWardrbe', async (req, res) => {
   }
 });
 // delete item from wardrbe
+
+// delete wardrbe
 
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
