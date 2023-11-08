@@ -1,8 +1,10 @@
 import ModalBody from 'react-bootstrap/esm/ModalBody';
-import './RafidTempStyle.css'
+import './RafidTempStyle.css';
+import './styles.css'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Weather,createId } from './WardrbeBackend';
+import { Container, Row, Col } from 'react-bootstrap';
 
 async function GenerateOutfit(weather, userId) {    
 	try {
@@ -99,19 +101,23 @@ function Outfit(){
     {/* Back Button */}
     <a href='./'><button id='outfit'>Home</button></a>
 
-    <div align="center">
-        <h2>Outfits</h2>
-        <button onClick={handleClick}>Generate Outfit!</button>
-    </div>
-    <div>
-        <h3>Your Current Season:</h3>
-        <p>spring-fall</p>
-    </div>
-    {showWardrobe && 
-        <div>
-            <DisplayWardrbe></DisplayWardrbe>
-        </div>
-    }
+	<Container className='full'>
+		<Row>
+			<Col>
+				<div align="center">
+					<h2>Outfits</h2>
+					<button onClick={handleClick}>Generate Outfit!</button>
+				</div>
+			</Col>
+			<Col>
+				{showWardrobe && 
+					<div>
+						<DisplayWardrbe></DisplayWardrbe>
+					</div>
+				}
+			</Col>
+		</Row>
+	</Container>
     </>
     )
 }
