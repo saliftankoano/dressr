@@ -4,9 +4,11 @@ import Redis from 'ioredis'; // Import the Redis client
 import { createRequire } from 'module';
 import fs from 'fs';
 import {Read, CreateNewWardrbe, UpdateWardrbe, GenerateOutfit} from './database.mjs';
+import cors from 'cors';
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 const port = 4000;
 const require = createRequire(import.meta.url); //not entirely sure what this does
 const filePath = 'redisUri.json';
@@ -99,7 +101,7 @@ app.get('/api/fetchWardrbe', async (req, res) => {
     const wardrbe = await Read(userId);
     
     if (wardrbe) {
-      res.json({ wardrbe });
+      res.status(200).json({ wardrbe });
       console.log('Wardrobe Fetched!');
     } else {
       res.status(500).json({ error: "Failed to fetch wardrobe" });

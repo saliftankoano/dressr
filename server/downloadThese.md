@@ -3,6 +3,7 @@
 - `redis-cli`
 - `nodemon`
 - `express`
+- 'cors'
 
 # [How to Install Redis on Windows!](https://developer.redis.com/create/windows/)
 ## Step 1: Turn on Windows Subsystem for Linux

@@ -42,14 +42,13 @@ function DisplayWardrbe() {
 
 	useEffect(() => {
 		const userId = new createId(27496); //hardcoded user
-		fetchWardrbe(userId)
-		.then(data => {
+		fetchWardrbe(userId).then(data => {
 			if (data) {
-			console.log('Wardrobe fetched successfully', data);
-			setWardrobeData(data);
+				console.log('Wardrobe fetched successfully', data);
+				setWardrobeData(data);
 			} else {
-			console.error('Wardrobe Data Null!!');
-			setError('Error Fetching Wardrobe!');
+				console.error('Wardrobe Data Null!!');
+				setError('Error Fetching Wardrobe!');
 			}
 		})
 		.catch(err => {
