@@ -26,12 +26,12 @@ function Dashboard(){
     auth.onAuthStateChanged(  function(user) {
         if (user) {
           // User is signed in.
-          setFullName(user.displayName);
-          setUserId(user.uid);
-          console.log(userID);
-        //   console.log(fullName);
-        }
-      });
+            setFullName(user.displayName);
+            setUserId(user.uid);
+            console.log(userID);
+            //   console.log(fullName);
+            }
+        });
     return (
         <div className="dashboard">
             <div className='firstLine'>
@@ -42,12 +42,8 @@ function Dashboard(){
                 Hello,<br/>{fullName}
             </div>
             <div className="buttons">
-                <div className="weatherBtn">
-                    Weather
-                </div>
-                <div className="wardrobeBtn">
-                    Wardrobe
-                </div>
+                <a href='./wardrbe'><button id='wardrbe'>Wardrbe</button></a>
+                <a href='./outfit'><button id='outfit'>Outfits</button></a>
             </div>
             
         </div>
