@@ -7,6 +7,7 @@ import Login from "./components/auth/Login.jsx";
 import Wardrbe from "./components/wardrbe.jsx";
 import Weather from "./components/Weather.jsx";
 import Outfit from "./components/Outfits.jsx";
+import Signup from "./components/auth/Signup.jsx"
 
 function App(){
     return (
@@ -18,6 +19,7 @@ function App(){
                 <Route path='/wardrbe' element={<Wardrbe />} />
                 <Route path='/weather' element={<Weather/>} /> 
                 <Route path='/outfit' element={<Outfit/>} /> 
+                <Route path='/signup' element={<Signup/>} /> 
             </Routes>
         </BrowserRouter>
     );

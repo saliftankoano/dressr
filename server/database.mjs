@@ -2,7 +2,7 @@ import Redis from 'ioredis';
 const redis = new Redis();
 // data objects
 export class Item{
-    constructor(name, color, size, type, season, gender="all", photo){
+    constructor(name, color, size, type, season, gender="all", photo, itemId){
         this.name = name;
         this.color = color;
         this.size = size;
@@ -10,6 +10,7 @@ export class Item{
         this.season = season;
         this.gender = gender;
         this.photo = photo;
+        this.itemId = itemId;
     }
     copyFrom(otherItem) {
         return new Item(
@@ -22,6 +23,25 @@ export class Item{
         otherItem.photo
         );
     }
+    async GetUniqueId() { // can add switch here to get uniqueId for different parameters
+        let cursor = 0;
+        const existingUserIds = new Set();
+
+        do{
+            const [newCursor, keys] = await redis.scan(cursor, 'MATCH', '*');
+            keys.forEach((key)=> existingUserIds.add(key));
+            cursor = newCursor;
+        }while(cursor !== '0');
+
+        // Generate a random integer until we find a unique one.
+        let uniqueId;
+        do {
+            uniqueId = Math.floor(Math.random() * 100000);
+        } while (existingUserIds.has(uniqueId));
+
+        return uniqueId;
+    }
+    // add to "ExistingKeys" hashmap
 }
 export class UserWardrbe{
     // implement a tree that stores clothes in relation to one another
@@ -168,10 +188,10 @@ export async function UpdateWardrbe(item, userId){
         await redis.set(userId.userId, JSON.stringify(wardrbeObject, null, 2));
             console.log("Item Added!", item);
             return true;
-        }catch(err){
-            console.error("Couldn't save new item\n", err);
-            return false;
-        }
+    } catch(err){
+        console.error("Couldn't save new item\n", err);
+        return false;
+    }
 }
 export async function GenerateOutfit(weather, userId){
     function getRandomElement(arr) {
@@ -257,8 +277,62 @@ export async function GenerateOutfit(weather, userId){
         return false;
     }
 }
+// temp solution: checks if exact item is in field, then deletes it
+export async function DeleteItem(userId, item){
+    try{
+        const wardrbeObject = await Read(userId.userId);
 
-'example code on how to update and create wardrobes'
+        switch(item.type){
+            case 'hats':
+                wardrobeObject['hats'] = wardrobeObject['hats'].filter((hatItem) => {
+                // Compare each hatItem to the criteria to decide if it should be filtered out
+                return !Object.entries(criteria).every(([key, value]) => 
+                    hatItem[key] === value
+                );
+                });                
+                break;
+            case 'tops':
+                wardrbeObject.tops.push(item);
+                break;
+            case 'bottoms':
+                wardrbeObject.bottoms.push(item);
+                break;
+            case 'layers':
+                wardrbeObject.layers.push(item);
+                break;
+            case 'accessories':
+                wardrbeObject.accessories.push(item);
+                break;
+            case 'footwear':
+                wardrbeObject.footwear.push(item);
+                break;
+            default:
+                console.error('Invalid Item Type!', item.type);
+                return false;
+        }
+
+        await redis.set(userId.userId, JSON.stringify(wardrbeObject, null, 2));
+            console.log("Item Added!", item);
+            return true;
+        }catch(err){
+            console.error("Couldn't save new item\n", err);
+            return false;
+        }
+}
+export async function DeleteWardrbe(userId){
+    try{
+        const result = await redis.del(userId);
+        if (result == 0) {
+        console.log(`userId '${userId}' deleted successfully.`);
+        } else {
+        console.log(`userId '${userId}' does not exist.`);
+        }
+    } catch (error) {
+        console.error('Error deleting userId:', error);
+    }
+
+}
+// 'example code on how to update and create wardrobes'
 // (async () => {
     // const instance = new UserWardrbe();
     // await instance.initialized;
@@ -276,4 +350,5 @@ export async function GenerateOutfit(weather, userId){
     //     console.log("Failed to generate outfit.");
     //     }
     // });
+    // await DeleteWardrbe(96268);
 // })();
