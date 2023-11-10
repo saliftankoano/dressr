@@ -27,9 +27,9 @@ function Dashboard(){
         if (user) {
           // User is signed in.
           setFullName(user.displayName);
+          // This user ID can be used for integration with the second database with the wardrobe
           setUserId(user.uid);
-          console.log(userID);
-        //   console.log(fullName);
+          // console.log(fullName);
         }
       });
     return (
