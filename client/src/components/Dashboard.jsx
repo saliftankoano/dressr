@@ -20,7 +20,7 @@ getDocs(colRef)
     })
 
 function Dashboard(){
-    // getData();
+    
     const[fullName, setFullName]= useState('Alexa');
     const[userID, setUserId]= useState('');
     auth.onAuthStateChanged(  function(user) {
