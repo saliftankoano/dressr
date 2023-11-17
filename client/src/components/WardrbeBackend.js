@@ -34,7 +34,8 @@ export class UserWardrbe{
     footwear = [];
     accessories = [];
 
-    constructor(){
+    constructor(userId){
+        this.userId = userId;
         console.log('wardrbe made, id:', this.userId);
     }
 

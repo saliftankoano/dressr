@@ -5,7 +5,35 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import auth from "../../firebase"
 import { app } from '../../firebase';
 import { getFirestore, collection, addDoc} from "firebase/firestore";
+import axios from 'axios';
+import {UserWardrbe} from '../WardrbeBackend.js';
 const db = getFirestore(app);
+
+async function CreateWardrbe(userId){
+    const wardrbe = new UserWardrbe(userId);
+    try {
+        // Make a POST request to the create endpoint
+        const response = await axios.post('http://localhost:4000/api/wardrobe/create', {
+            wardrbe,
+            userId
+        });
+
+        // Check if the request was successful
+        if (response.data.success) {
+            console.log('Wardrobe created successfully');
+            return response.data;
+        }
+    } catch (error) {
+        if (error.response) {
+            console.error('Failed to create wardrobe:', error.response.data.error);
+        } else if (error.request) {
+            console.error('No response received:', error.request);
+        } else {
+            console.error('Error:', error.message);
+        }
+        throw error;
+    }
+}
 
 function Signup(){
     const[theme, setTheme]= localStorage('theme' ? 'dark' : 'light');
@@ -30,17 +58,18 @@ function Signup(){
         .then((userCredential) => {
             // console.log(userCredential);
             // Signed up 
-            
             const user = userCredential.user;
+            CreateWardrbe(user.uid);
+
             updateProfile(auth.currentUser, {
                 displayName: firstName +" "+lastName, photoURL: "https://example.com/jane-q-user/profile.jpg"
-              }).then(() => {
-                // Profile updated!
-                console.log("Name: "+user.displayName)
-              }).catch((error) => {
-                // An error occurred
-                console.log(error)
-              }
+                }).then(() => {
+                    // Profile updated!
+                    console.log("Name: "+user.displayName)
+                }).catch((error) => {
+                    // An error occurred
+                    console.log(error)
+                }
             );
 
             try {
@@ -59,10 +88,10 @@ function Signup(){
             
         })
         .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode +"  "+ errorMessage);
-        // ..
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorCode +"  "+ errorMessage);
+            // ..
         });
     }
 

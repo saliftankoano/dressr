@@ -99,7 +99,7 @@ function Outfit(){
     return(
     <>
     {/* Back Button */}
-    <a href='./'><button id='outfit'>Home</button></a>
+    <a href='./dashboard'><button id='outfit'>Home</button></a>
 
 	<Container className='full'>
 		<Row>

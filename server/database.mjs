@@ -48,45 +48,15 @@ export class UserWardrbe{
     // this would make sorting through them and finding the optimal clothing item
     // more efficent and reduce time complexity
 
-    constructor() {
-        this.initialized = this.initialize();
-    }
+    constructor(userId) {
+        this.userId = userId;
+        this.hats = [];
+        this.tops = [];
+        this.bottoms = [];
+        this.layers = [];
+        this.footwear = [];
+        this.accessories = [];
 
-    async initialize() {
-        this.userId = 0;
-
-        await (async () => {
-            console.log("Generating New UserId");
-            this.userId = await this.GetUniqueId();
-            console.log('Wardrobe Made! New ID:', this.userId);
-        })().then(()=>{
-            this.hats = [];
-            this.tops = [];
-            this.bottoms = [];
-            this.layers = [];
-            this.footwear = [];
-            this.accessories = [];
-        })
-
-    }
-
-    async GetUniqueId() { // can add switch here to get uniqueId for different parameters
-        let cursor = 0;
-        const existingUserIds = new Set();
-
-        do{
-            const [newCursor, keys] = await redis.scan(cursor, 'MATCH', '*');
-            keys.forEach((key)=> existingUserIds.add(key));
-            cursor = newCursor;
-        }while(cursor !== '0');
-
-        // Generate a random integer until we find a unique one.
-        let uniqueId;
-        do {
-            uniqueId = Math.floor(Math.random() * 100000);
-        } while (existingUserIds.has(uniqueId));
-
-        return uniqueId;
     }
 
     add(item){
@@ -213,7 +183,7 @@ export async function GenerateOutfit(weather, userId){
         const footwear = [];
         const accessories = [];
 
-        console.log('Wardrobe', wardrobe);
+        // console.log('Wardrobe', wardrobe);
 
         for (let i = 0; i < wardrobe.footwear.length; i++) {
             const item = wardrobe.footwear[i];
@@ -334,11 +304,11 @@ export async function DeleteWardrbe(userId){
 }
 // 'example code on how to update and create wardrobes'
 // (async () => {
-    // const instance = new UserWardrbe();
-    // await instance.initialized;
-    // console.log(instance);
+//     const instance = new UserWardrbe('klNGDRQB3IOD733IQDcUJJkOCVD3');
+//     await instance.initialized;
+//     console.log(instance);
 
-    // await CreateNewWardrbe(instance, instance.userId);
+//     await CreateNewWardrbe(instance, 'klNGDRQB3IOD733IQDcUJJkOCVD3');
     // await UpdateWardrbe(new Item('Winter Boots', 'Black', 'L', 'accessories', 'spring-fall'),27496);
     
     // const weather = { season: 'spring-fall' };

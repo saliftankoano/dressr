@@ -1,17 +1,32 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react';
+import { React, useState, useEffect } from 'react';
 import { UserWardrbe, Item } from './WardrbeBackend.js';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Container, Row, Col} from 'react-bootstrap';
 import './styles.css';
+import auth from "../firebase";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { app } from '../firebase';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
+// gets userID
+const db = getFirestore(app);
+const colRef = collection(db, "users");    
+getDocs(colRef).then((snapshot)=>{
+        let users = [];
+        snapshot.docs.forEach((doc)=>{
+            users.push( {...doc.data().firstName, id: doc.id,})
+        })
+    }).catch(error=>{
+        console.log(error.message)
+    })
 
 class createId {
 	constructor(id){
 		this.userId = id;
 	}
 }
-
 async function fetchWardrbe(userId) {
 	try {
 		const response = await axios.get('http://localhost:4000/api/fetchWardrbe', {
@@ -20,6 +35,7 @@ async function fetchWardrbe(userId) {
 			},
 			params: userId,
 			});
+		console.log(response);
 
 		if (response.status === 200) {
 			if (response.data.wardrbe) {
@@ -36,12 +52,12 @@ async function fetchWardrbe(userId) {
 	}
 	return null;
 }
-function DisplayWardrbe() {
+function DisplayWardrbe(userID) {
 	const [wardrobeData, setWardrobeData] = useState(null);
 	const [error, setError] = useState(null);
 
 	useEffect(() => {
-		const userId = new createId(27496); //hardcoded user
+		const userId = new createId(userID);
 		fetchWardrbe(userId).then(data => {
 			if (data) {
 				console.log('Wardrobe fetched successfully', data);
@@ -113,16 +129,7 @@ async function updateWardrbe(newItem, userId) {
 		console.error('Error updating the wardrobe:', error);
 	}
 }
-
-
-// Function to handle form submission
-
 function Wardrbe() {
-	// create new default wardrbe for user
-	// const wardrbe = new UserWardrbe();
-	// function for fetching a user's wardrbe should populare wardrbe object
-
-	// Define state variables to store user inputs
 	const [itemName, setItemName] = useState('');
 	const [itemColor, setItemColor] = useState('');
 	const [itemSize, setItemSize] = useState('');
@@ -130,9 +137,31 @@ function Wardrbe() {
 	const [itemSeason, setItemSeason] = useState('');
 	const [itemGender, setItemGender] = useState('');
 	const [itemPhoto, setItemPhoto] = useState(null);
+    const[userID, setUserId]= useState("");
 
+	useEffect(() => {
+	const checkAuthState = () => {
+		return new Promise((resolve, reject) => {
+			const unsubscribe = onAuthStateChanged(auth, (user) => {
+				unsubscribe(); // Unsubscribe immediately after receiving the user data
+				if (user) {
+					resolve(user.uid); // Resolve the promise with user ID
+				} else {
+					reject('No user found'); // Reject the promise
+				}
+			});
+		});
+	};
+	checkAuthState()
+		.then(uid => {
+			setUserId(uid); // Set the user ID when the user is found
+		})
+		.catch(error => {
+			console.error(error);
+		});
+	}, []);
 
-
+	console.log('UserID:',userID);
 	return (
 	<> 
 	<a href='./dashboard'><button id='outfit'>Home</button></a>
@@ -142,7 +171,7 @@ function Wardrbe() {
 				<h1>Enter Item Data</h1>
 				<form onSubmit={(e) => {
 					e.preventDefault(); // Prevent the default form submission behavior
-					updateWardrbe(new Item(itemName, itemColor, itemSize, itemType, itemSeason, itemGender, itemPhoto), new createId(27496));
+					updateWardrbe(new Item(itemName, itemColor, itemSize, itemType, itemSeason, itemGender, itemPhoto), new createId(userID));
 				}}>
 
 				{/* Name */}
@@ -408,8 +437,9 @@ function Wardrbe() {
 				</form>
 				{/* only allow "save" button when theres >=1 item saved */}
 			</Col>
-			<Col xl='6'> {/* Display Wardrbe */}
-				<DisplayWardrbe></DisplayWardrbe>
+			<Col xs='6'> {/* Display Wardrbe */}
+			{userID ? <DisplayWardrbe userID={userID}></DisplayWardrbe> : <h1>Loading</h1>}
+				
 			</Col>
 		</Row>
 	</Container>

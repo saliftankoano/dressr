@@ -97,12 +97,13 @@ app.get('/api/wardrobe/generate-outfit', async (req, res) => {
 // fetch wardrbe
 app.get('/api/fetchWardrbe', async (req, res) => {
   try {
-    const userId = parseInt(req.query.userId);
+    console.log(req.query.userId);
+    const userId = req.query.userId;
     const wardrbe = await Read(userId);
     
     if (wardrbe) {
       res.status(200).json({ wardrbe });
-      console.log('Wardrobe Fetched!');
+      console.log('Wardrobe Fetched!', wardrbe);
     } else {
       res.status(500).json({ error: "Failed to fetch wardrobe" });
     }
