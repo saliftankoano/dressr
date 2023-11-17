@@ -20,7 +20,7 @@ getDocs(colRef)
     })
 
 function Dashboard(){
-    // getData();
+    
     const[fullName, setFullName]= useState('Alexa');
     const[userID, setUserId]= useState("");
 
@@ -45,6 +45,8 @@ function Dashboard(){
             <div className="buttons">
                 <a href='./wardrbe'><button id='wardrbe'>Wardrbe</button></a>
                 <a href='./outfit'><button id='outfit'>Outfits</button></a>
+                <a href="./weather"><button id="weather">Weather</button>
+                </a>
             </div>
             
         </div>

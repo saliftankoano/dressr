@@ -1,5 +1,4 @@
 import ModalBody from 'react-bootstrap/esm/ModalBody';
-import './RafidTempStyle.css';
 import './styles.css'
 import { useState, useEffect } from 'react';
 import axios from 'axios';

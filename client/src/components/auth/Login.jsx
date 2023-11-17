@@ -61,7 +61,7 @@ function Login(){
                             <input type='checkbox' checked='checked'/>
                             <p>Remember Me</p>
                         </div>
-                        <button type='submit'>Log In</button>
+                        <button className="login-btn" type='submit'>Log In</button>
                     </form>
                     <div className='bottom'>
                         <div id="forgot" onClick={resetPassword}>Forgot password?</div>

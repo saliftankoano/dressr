@@ -19,7 +19,8 @@ function App(){
                 <Route path='/wardrbe' element={<Wardrbe />} />
                 <Route path='/weather' element={<Weather/>} /> 
                 <Route path='/outfit' element={<Outfit/>} /> 
-                <Route path='/signup' element={<Signup/>} /> 
+                <Route path='/signup' element={<Signup/>} />
+                <Route path='/weather' element={<Weather/>} />
             </Routes>
         </BrowserRouter>
     );

@@ -12,6 +12,7 @@ function LandingPage() {
         <a href='./login'><button id="start-btn">Get started</button></a>
         <a href='./wardrbe'><button id='wardrbe'>wardrbe!</button></a>
         <a href='./outfit'><button id='outfit'>outfits!</button></a>
+        <a href="./weather"><button id="weather">weather!</button></a>
       </div>
     </section>
   );
