@@ -4,6 +4,7 @@ import axios from 'axios';
 function Weather() {
     const [weatherData, setWeatherData] = useState(null);
     const [forecastData, setForecastData] = useState(null);
+    const [location, setLocation] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [zipcode, setZipcode] = useState("");
@@ -34,6 +35,7 @@ function Weather() {
             const response = await axios.get(`http://api.weatherapi.com/v1/forecast.json?key=${key}&q=${zipcode}&days=1&aqi=no&alerts=no`);
             setWeatherData(response.data.current);
             setForecastData(response.data.forecast.forecastday[0].day);
+            setLocation(response.data.location);
             setLoading(false);
         } catch (err) {
             setError(err);
@@ -51,8 +53,13 @@ function Weather() {
     };
 
     return (
-        <div align="center">
-            <h1>Weather Information for Zipcode: {zipcode}</h1>
+        <div>
+            <div>
+                <h1 class="logo">DRESSER</h1>
+            </div>
+            <br></br>
+            <div align="center" class="container">
+            <h2>Weather Information for Zipcode: {zipcode}</h2>
             <br/>
             <form onSubmit={handleSubmit}>
                 <label>
@@ -65,6 +72,7 @@ function Weather() {
             {error && <p>Error: {error.message}</p>}
             {weatherData && (
                 <div>
+                    <p>{location.name}, {location.region}</p>
                     <p>Temperature: {weatherData.temp_f}&deg;F</p>
                     <p>Wind Speed: {weatherData.wind_mph} mph</p>
                     <p>Feels Like: {weatherData.feelslike_f}&deg;F</p>
@@ -72,6 +80,7 @@ function Weather() {
                     <p>Humidity: {weatherData.humidity}%. {measureHumidity(weatherData.humidity)}</p>
                 </div>
             )}
+            </div>
         </div>
     );
 }
