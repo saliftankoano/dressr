@@ -60,6 +60,8 @@ export class UserWardrbe{
     }
 
     add(item){
+        console.log(item);
+
         switch(item.type){
             case item.type ="footwear":
                 this.footwear.push(item);
@@ -168,10 +170,11 @@ export async function GenerateOutfit(weather, userId){
         const randomIndex = Math.floor(Math.random() * arr.length); //random index
         return arr[randomIndex];
     }
-    console.log(userId);
+    // console.log(userId, weather);
     
     try{
-        let wardrobe = await Read(userId.userId);
+        let wardrobe = await Read(userId);
+        console.log(userId)
 
         const modifiedWardrobe = new UserWardrbe();
         await modifiedWardrobe.initialized;
@@ -183,7 +186,7 @@ export async function GenerateOutfit(weather, userId){
         const footwear = [];
         const accessories = [];
 
-        // console.log('Wardrobe', wardrobe);
+        console.log('Wardrobe', wardrobe);
 
         for (let i = 0; i < wardrobe.footwear.length; i++) {
             const item = wardrobe.footwear[i];
@@ -192,7 +195,6 @@ export async function GenerateOutfit(weather, userId){
             }
         }
         let footwearItem = getRandomElement(footwear);
-
 
         for (let i = 0; i < wardrobe.layers.length; i++) {
             const item = wardrobe.layers[i];
@@ -233,7 +235,7 @@ export async function GenerateOutfit(weather, userId){
             }
         }
         let accessoriesItem = (getRandomElement(accessories));
-        
+
         modifiedWardrobe.add(footwearItem);
         modifiedWardrobe.add(layersItem);
         modifiedWardrobe.add(topsItem);

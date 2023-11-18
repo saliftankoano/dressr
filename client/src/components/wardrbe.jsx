@@ -57,7 +57,7 @@ function DisplayWardrbe(userID) {
 	const [error, setError] = useState(null);
 
 	useEffect(() => {
-		const userId = new createId(userID);
+		const userId = new createId(userID.userID);
 		fetchWardrbe(userId).then(data => {
 			if (data) {
 				console.log('Wardrobe fetched successfully', data);

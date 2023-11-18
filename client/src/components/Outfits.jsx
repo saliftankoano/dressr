@@ -4,6 +4,22 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Weather,createId } from './WardrbeBackend';
 import { Container, Row, Col } from 'react-bootstrap';
+import auth from "../firebase";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { app } from '../firebase';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
+// gets userID
+const db = getFirestore(app);
+const colRef = collection(db, "users");    
+getDocs(colRef).then((snapshot)=>{
+        let users = [];
+        snapshot.docs.forEach((doc)=>{
+            users.push( {...doc.data().firstName, id: doc.id,})
+        })
+    }).catch(error=>{
+        console.log(error.message)
+    })
 
 async function GenerateOutfit(weather, userId) {    
 	try {
@@ -33,36 +49,27 @@ async function GenerateOutfit(weather, userId) {
     }
     return null;
 }
-function DisplayWardrbe() { // modify this to take input!
-	const [wardrobeData, setWardrobeData] = useState(null);
-	const [error, setError] = useState(null);
+function DisplayWardrbe(userID) { // modify this to take input!
+	const [wardrobeData, setWardrobeData] = useState(null);	
 
 	useEffect(() => {
-        const weather = new Weather(11369);
-		const userId = new createId(27496); //hardcoded user
-		GenerateOutfit(weather, userId)
+        const weather = new Weather(11375);
+		// console.log(weather)
+		// console.log(weather, userID)
+		// const userId = new createId(27496); //hardcoded user
+		GenerateOutfit(weather, userID)
 		.then(data => {
 			if (data) {
 			console.log('Wardrobe fetched successfully', data);
 			setWardrobeData(data);
 			} else {
 			console.error('Wardrobe Data Null!!');
-			setError('Error Fetching Wardrobe!');
 			}
 		})
 		.catch(err => {
 			console.error(err);
-			setError('Error Fetching Wardrobe!');
 		});
 	}, []); // Empty dependency array means this effect runs once after the initial render
-
-	if (error) {
-		return <div>{error}</div>;
-	}
-
-	if (!wardrobeData) {
-		return <div>Loading...</div>;
-	}
 
 	return (
 		<div>
@@ -89,11 +96,31 @@ function DisplayWardrbe() { // modify this to take input!
 }
 
 function Outfit(){
-    const [showWardrobe, setShowWardrobe] = useState(false);
-    function handleClick(){
-        setShowWardrobe(!showWardrobe);
-    }
+	const[userID, setUserId]= useState("");
+	
+	useEffect(() => {
+	const checkAuthState = () => {
+		return new Promise((resolve, reject) => {
+			const unsubscribe = onAuthStateChanged(auth, (user) => {
+				unsubscribe(); // Unsubscribe immediately after receiving the user data
+				if (user) {
+					resolve(user.uid); // Resolve the promise with user ID
+				} else {
+					reject('No user found'); // Reject the promise
+				}
+			});
+		});
+	};
+	checkAuthState()
+		.then(uid => {
+			setUserId(uid); // Set the user ID when the user is found
+		})
+		.catch(error => {
+			console.error(error);
+		});
+	}, []);
 
+	console.log('UserID:',userID);
 
     return(
     <>
@@ -102,18 +129,14 @@ function Outfit(){
 
 	<Container className='full'>
 		<Row>
-			<Col>
+			{/* <Col>
 				<div align="center">
 					<h2>Outfits</h2>
 					<button onClick={handleClick}>Generate Outfit!</button>
 				</div>
-			</Col>
+			</Col> */}
 			<Col>
-				{showWardrobe && 
-					<div>
-						<DisplayWardrbe></DisplayWardrbe>
-					</div>
-				}
+				{userID ? <DisplayWardrbe userID={userID}></DisplayWardrbe> : <h1>Loading</h1>}
 			</Col>
 		</Row>
 	</Container>

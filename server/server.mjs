@@ -77,9 +77,11 @@ app.post('/api/wardrobe/update', async (req, res) => {
 // generate an outfit
 app.get('/api/wardrobe/generate-outfit', async (req, res) => {
   try {
-    const weather = JSON.parse(req.query.weather);
-    const userId = JSON.parse(req.query.userId);
+    const weather = JSON.stringify(req.query.weather);
+    const userId = JSON.stringify(req.query.userId);
+    // console.log(req.query.weather, req.query.userId);
     let outfit = 0;
+    console.log('typeof',typeof weather)
 
     if(weather != undefined & userId != undefined){
       outfit = await GenerateOutfit(weather, userId);
@@ -91,7 +93,7 @@ app.get('/api/wardrobe/generate-outfit', async (req, res) => {
     }
   } catch (error) {
     console.error("Error generating an outfit:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Internal Server Error", error2: String(error) });
   }
 });
 // fetch wardrbe
