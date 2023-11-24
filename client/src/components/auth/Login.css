@@ -29,7 +29,8 @@ a{
 }
 
 .login-toggle{
-    background-color: var(--background);
+    background: #DCDDFA;
+    background: radial-gradient(circle,#fddcff 0%,#DCDDFA 100%);
     color: var(--text-primary);
     height: 100vh;
     display: flex;
@@ -135,16 +136,25 @@ input[type=checkbox]:checked{
 .remember p{
     padding-left: 8px;
 }
-
+/* Button styles*/
+  
 .login-btn{
-    background-color: var(--accent);
+    width: 10vw;
+    background-color: black;
+    color: #B89BF7;
+    border-radius: 14px;
+    transition: all(.9s);
     border: 1px solid var(--accent);
-    color: #fff;
-    margin: 16px 0;
+    margin: 1% 22%;
     padding: 10px 10px;
     border-radius: 10px;
     font-weight: 600;
     cursor: pointer;
+}
+
+.login-btn:hover{
+    background-color: rgb(67, 66, 66);
+    transform: scale(1.1);
 }
 
 .bottom{

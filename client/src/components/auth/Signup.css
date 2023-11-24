@@ -23,6 +23,10 @@
     margin: 0;
     box-sizing: border-box;
 }
+body{
+    background: #DCDDFA;
+  background: radial-gradient(circle,#fddcff 0%,#DCDDFA 100%);
+}
 
 a{
     color: var(--text-secondary);
@@ -116,28 +120,17 @@ input{
     color: var(--text-primary);
 }
 
-.remember{
-    display: flex;
-    align-items: center;
-    width: 100%;
-}
 i{
     transition: all .2s ease-in-out;
 }
-input[type=checkbox]:checked{
-    margin: 0;
-    padding: 0;
-}
-
-.remember p{
-    padding-left: 8px;
-}
-
-button{
-    background-color: var(--accent);
+#signup-btn{
+    
+    background-color: black;
+    color: #B89BF7;
+    border-radius: 14px;
+    transition: all(.9s);
     border: 1px solid var(--accent);
-    color: #fff;
-    margin: 16px 0;
+    margin: 3% 0%;
     padding: 10px 10px;
     border-radius: 10px;
     font-weight: 600;

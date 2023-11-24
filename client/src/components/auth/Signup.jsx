@@ -62,7 +62,7 @@ function Signup(){
             CreateWardrbe(user.uid);
 
             updateProfile(auth.currentUser, {
-                displayName: firstName +" "+lastName, photoURL: "https://example.com/jane-q-user/profile.jpg"
+                displayName: firstName, photoURL: "https://example.com/jane-q-user/profile.jpg"
                 }).then(() => {
                     // Profile updated!
                     console.log("Name: "+user.displayName)
@@ -119,7 +119,7 @@ function Signup(){
                         <input type='email' placeholder='Enter your email' value={email} onChange={(e)=> setEmail(e.target.value)}/>
                         <label>Password</label>
                         <input type='password' placeholder='Enter your password' value={password} onChange={(e)=> setPassword(e.target.value)}/>
-                        <button type='submit'>Sign Up</button>
+                        <button id='signup-btn' type='submit'>Sign Up</button>
                     </form>
                 </div>
                 <div className='theme-toggle'>
