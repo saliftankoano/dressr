@@ -55,13 +55,6 @@ async function GenerateOutfit(userId) {// hardcoded weater
     }
     return DisplayWardrbe(wardrobeData);
 }
-/*
-ISSUE:
-the api seems to be recieving thing as a string, which is an issue!
-it's unable to get userid.userid to read the wardrbe
-
-things need to be standardized
-*/
 function DisplayWardrbe(wardrobeData) {
 	return (
 		<div>

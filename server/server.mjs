@@ -1,13 +1,14 @@
 // Import necessary packages
 import mongoose from 'mongoose';
 import express from 'express';
-import Redis from 'ioredis'; // Import the Redis client
 import { createRequire } from 'module';
 import fs from 'fs';
 import {ReadWardrobe, ReadAllItemsFromWardrobe, ReadItem, SaveNewItem, UpdateItem, CreateNewWardrobe, UpdateWardrobe, GenerateOutfit, DeleteItem, DeleteWardrobe} from './database.mjs';
 import cors from 'cors';
 import dotenv from 'dotenv/config'; // even tho its gray its needed
+import axios from 'axios';
 const MONGOURI = process.env.MONOGODB;
+const WEATHER = process.env.WEATHER_API_KEY;
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -169,6 +170,17 @@ app.post('/api/wardrobe/delete-wardrobe', async (req, res) => {
   } catch (error) {
     console.error("Error deleting wardrobe:", error);
     res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Weather API
+app.get('/api/weather', async (req, res) => {
+  const zipcode = req.query.zipcode;
+  try {
+    const response = await axios.get(`http://api.weatherapi.com/v1/current.json?key=${WEATHER}&q=${zipcode}&aqi=no`);
+    res.json({success:response.data.current});
+  } catch (err) {
+      console.log("Weather API Error: ", err)
   }
 });
 
