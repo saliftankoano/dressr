@@ -1,5 +1,5 @@
 import { MongoClient, ObjectId } from 'mongodb';
-const WARDRBE = 'wardrbe';
+const WARDROBE = 'wardrbe';
 const ITEMS = 'items';
 const DBNAME = 'dressr';
 import dotenv from 'dotenv/config'; // even tho its gray its needed
@@ -108,7 +108,7 @@ export class Weather{
 
 
 /**
- * Reads user data from a MongoDB collection based on the provided userId.
+ * Returns references of items contained within the wardrobe.
  * 
  * @param {string} userId The unique identifier of the user.
  * @returns {Object|boolean} Returns the user data object if successful, or false if an error occurs.
@@ -118,7 +118,7 @@ export async function ReadWardrobe(userId){
         const client = new MongoClient(MONGOURI);
         await client.connect();
         const DB = client.db(DBNAME);
-        const wardrbeDB = DB.collection(WARDRBE);
+        const wardrbeDB = DB.collection(WARDROBE);
 
         const query = { userId: userId };
         const data = await wardrbeDB.findOne(query);
@@ -132,32 +132,55 @@ export async function ReadWardrobe(userId){
     }
 }
 /**
- * does not work as intended
- * @param {*} userId 
- * @returns 
+ * returns a wardrobe object with all of the items (not referenced!)
+ * @param {string} userId 
+ * @returns {object} populatedWardrobe
  */
-export async function ReadAllItemsFromWardrobe(userId){
-    try{
+export async function ReadAllItemsFromWardrobe(userId) {
+    try {
         const client = new MongoClient(MONGOURI);
         await client.connect();
         const DB = client.db(DBNAME);
-        const wardrbeDB = DB.collection(WARDRBE);
+        const wardrobeDB = DB.collection(WARDROBE);
 
         const query = { userId: userId };
-        const data = await wardrbeDB.findOne(query);
-
+        let wardrobe = await wardrobeDB.findOne(query);
         client.close();
 
-        return data;
-    }catch(err){
+        if (!wardrobe) {
+            console.error('Wardrobe not found!');
+            return false;
+        }
+
+        const categories = ['hats', 'tops', 'bottoms', 'layers', 'accessories', 'footwear'];
+        // Create a copy of the wardrobe object to avoid mutating the original while iterating
+        let populatedWardrobe = JSON.parse(JSON.stringify(wardrobe));
+
+        for (const category of categories) {
+            if (populatedWardrobe.wardrobe[category]) {
+                // Replace each reference with the actual item object
+                for (let i = 0; i < populatedWardrobe.wardrobe[category].length; i++) {
+                    const itemRef = populatedWardrobe.wardrobe[category][i];
+                    const actualItem = await ReadItem(itemRef);
+                    if (actualItem) {
+                        populatedWardrobe.wardrobe[category][i] = actualItem;
+                    } else {
+                        console.error(`Item not found for reference: ${itemRef}`);
+                    }
+                }
+            }
+        }
+
+        return populatedWardrobe;
+    } catch (err) {
         console.error("Couldn't read user data\n", err);
         return false;
     }
 }
 /**
  * 
- * @param {itemId} itemId 
- * @returns `item` object
+ * @param {string} itemId 
+ * @returns {object} `item`
  */
 export async function ReadItem(itemId){
     try{
@@ -173,7 +196,7 @@ export async function ReadItem(itemId){
 
         return data;
     }catch(err){
-        console.error("Couldn't read user data\n", err);
+        console.error("Couldn't read item data\n", itemId, err);
         // client.close();
         return false;
     }
@@ -239,7 +262,7 @@ export async function UpdateItem(item){
 /**
  * Creates a new wardrobe entry or updates an existing one in a MongoDB collection.
  * 
- * @param {Object} wardrobe - The wardrobe data to be stored.
+ * @param {object} wardrobe - The wardrobe data to be stored.
  * @param {string} userId - The unique identifier of the user.
  * @returns {boolean} - Returns true if the operation is successful, or false if an error occurs.
  */
@@ -248,7 +271,7 @@ export async function CreateNewWardrobe(wardrobe, userId){
         const client = new MongoClient(MONGOURI);
         await client.connect();
         const DB = client.db(DBNAME);
-        const wardrbeDB = DB.collection(WARDRBE);
+        const wardrbeDB = DB.collection(WARDROBE);
 
         // Insert or update the wardrobe object
         const query = { userId: userId };
@@ -277,7 +300,7 @@ export async function UpdateWardrobe(item, itemtype, userId){
         const client = new MongoClient(MONGOURI);
         await client.connect();
         const DB = client.db(DBNAME);
-        const wardrobes = DB.collection(WARDRBE); 
+        const wardrobes = DB.collection(WARDROBE); 
 
         const wardrbeObject = await wardrobes.findOne({ userId: userId });
         if (!wardrbeObject) {
@@ -329,10 +352,10 @@ export async function UpdateWardrobe(item, itemtype, userId){
     }
 }
 /**
- * Outdated - does not call properly
- * @param {*} weather 
- * @param {*} userId 
- * @returns 
+ * Fetches weather data & randomly gets an item from the user's wardrobe based on the weather.
+ * @param {object} weather 
+ * @param {string} userId 
+ * @returns {object} modifiedWardrobe
  */
 export async function GenerateOutfit(weather, userId){
     function getRandomElement(arr) {
@@ -342,7 +365,7 @@ export async function GenerateOutfit(weather, userId){
     // console.log(userId, weather);
     
     try{
-        let wardrobe = await ReadWardrobe(userId);
+        let wardrobe = await ReadAllItemsFromWardrobe(userId);
         // console.log(userId)
 
         const modifiedWardrobe = new UserWardrobe();
@@ -354,10 +377,8 @@ export async function GenerateOutfit(weather, userId){
         const layers = []; // jackets, sweaters, etc.
         const footwear = [];
         const accessories = [];
-
-        // console.log('Wardrobe', wardrobe);
-        if(wardrobe){
-            console.log("wardrobe is here")
+        if(!wardrobe){
+            console.error('Wardrobe not found!');
         }
 
         for (let i = 0; i < wardrobe.footwear.length; i++) {
@@ -424,84 +445,83 @@ export async function GenerateOutfit(weather, userId){
 /**
  * Deletes item from {items} collection (not the reference in the user's wardrobe)
  * please add that
- * @param {*} userId 
- * @param {*} item 
- * @returns 
+ * @param {string} itemId
+ * @returns {boolean} bool - Returns true if the operation is successful, or false if an error occurs.
  */
-export async function DeleteItem(userId, item){
+export async function DeleteItem(itemId){
     try{
-        const wardrbeObject = await ReadWardrobe(userId.userId);
+        const client = new MongoClient(MONGOURI);
+        await client.connect();
+        const DB = client.db(DBNAME);
+        const items = DB.collection(ITEMS);
 
-        switch(item.type){
-            case 'hats':
-                wardrobeObject['hats'] = wardrobeObject['hats'].filter((hatItem) => {
-                // Compare each hatItem to the criteria to decide if it should be filtered out
-                return !Object.entries(criteria).every(([key, value]) => 
-                    hatItem[key] === value
-                );
-                });                
-                break;
-            case 'tops':
-                wardrbeObject.tops.push(item);
-                break;
-            case 'bottoms':
-                wardrbeObject.bottoms.push(item);
-                break;
-            case 'layers':
-                wardrbeObject.layers.push(item);
-                break;
-            case 'accessories':
-                wardrbeObject.accessories.push(item);
-                break;
-            case 'footwear':
-                wardrbeObject.footwear.push(item);
-                break;
-            default:
-                console.error('Invalid Item Type!', item.type);
-                return false;
-        }
+        const result = await items.deleteOne({ _id: new ObjectId(itemId) });
+        client.close();
 
-        await redis.set(userId.userId, JSON.stringify(wardrbeObject, null, 2));
-            console.log("Item Added!", item);
+        if (result.deletedCount === 1) {
+            console.log("Item deleted successfully.");
             return true;
-        }catch(err){
-            console.error("Couldn't save new item\n", err);
+        } else {
+            console.log("Item not found.");
             return false;
         }
+    } catch (err) {
+        console.error('Error deleting item:', err);
+        return false;
+    }
 }
+/**
+ * Deletes based on the `usedId` attribute of wardrobe - not `_id`
+ * @param {string} userId 
+ * @returns {boolean} bool - Returns true if the operation is successful, or false if an error occurs.
+ */
 export async function DeleteWardrobe(userId){
     try{
-        const result = await redis.del(userId);
-        if (result == 0) {
-        console.log(`userId '${userId}' deleted successfully.`);
-        } else {
-        console.log(`userId '${userId}' does not exist.`);
-        }
-    } catch (error) {
-        console.error('Error deleting userId:', error);
-    }
+        const client = new MongoClient(MONGOURI);
+        await client.connect();
+        const DB = client.db(DBNAME);
+        const wardrobes = DB.collection(WARDROBE);
 
+        const result = await wardrobes.deleteOne({ userId: userId });
+        client.close();
+
+        if (result.deletedCount === 1) {
+            console.log("Wardrobe deleted successfully.");
+            return true;
+        } else {
+            console.log("Wardrobe not found.");
+            return false;
+        }
+    } catch (err) {
+        console.error('Error deleting wardrobe:', err);
+        return false;
+    }
 }
 // 'example code on how to update and create wardrobes'
 (async () => {
+    // await DeleteItem(('656102843b84df9bdac6ae2e'))
     // console.log(await Read())
     // await instance.initialized;
     // console.log(instance);
 
-    const example = new Item('broken shirt', 'black', 'L', 'tops', 'spring-fall', 'all', 'https://i.imgur.com/1q2QX9o.jpg');
+    // const example = new Item('broken shirt', 'black', 'L', 'tops', 'spring-fall', 'all', 'https://i.imgur.com/1q2QX9o.jpg');
     // const read = await ReadItem("656102843b84df9bdac6ae2e");
+    // console.log(read);
     // read.color = 'orange';
     // await UpdateItem(read);
     // console.log(read);
 
-    // const instance = new UserWardrbe();
+    // const instance = new UserWardrobe();
     // instance.add('656102843b84df9bdac6ae2e', 'tops');
-    await SaveNewItem(example, 'aZ6VfRixlwUlO0JWoBIKN7EE6if1');
+    // await SaveNewItem(example, 'aZ6VfRixlwUlO0JWoBIKN7EE6if1');
 
+    // await CreateNewWardrobe(new UserWardrobe('adsas'), 'asdasd');
+    // await DeleteWardrobe('asdasd');
 
-
-    // await CreateNewWardrbe(instance, 'aZ6VfRixlwUlO0JWoBIKN7EE6if1');
-    // await UpdateWardrbe();
+    // await ReadAllItemsFromWardrobe('klNGDRQB3IOD733IQDcUJJkOCVD3');
+    // const result = await ReadAllItemsFromWardrobe('aZ6VfRixlwUlO0JWoBIKN7EE6if1');
+    // console.log(result.wardrobe.tops);
+    // await UpdateWardrobe();
     
     // const weather = { season: 'spring-fall' };
     // const userId = 27496;

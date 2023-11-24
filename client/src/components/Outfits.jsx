@@ -2,7 +2,7 @@ import ModalBody from 'react-bootstrap/esm/ModalBody';
 import './styles.css'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Weather,createId } from './WardrbeBackend';
+import { Weather } from './WardrobeBackend';
 import { Container, Row, Col } from 'react-bootstrap';
 import auth from "../firebase";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
@@ -27,7 +27,6 @@ async function GenerateOutfit(userId) {// hardcoded weater
         const weather = new Weather(11375);
 		// console.log(weather)
 		// console.log(weather, userID)
-		userId = new createId(userId); //hardcoded user
 
 	try {
 		const response = await axios.get('http://localhost:4000/api/wardrobe/generate-outfit', {
