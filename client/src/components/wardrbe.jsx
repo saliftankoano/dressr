@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { React, useState, useEffect } from 'react';
-import { UserWardrbe, Item } from './WardrbeBackend.js';
+import { UserWardrobe, Item } from './WardrobeBackend.js';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Container, Row, Col} from 'react-bootstrap';
@@ -10,7 +10,7 @@ import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { app } from '../firebase';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-// gets userID
+// gets userId
 const db = getFirestore(app);
 const colRef = collection(db, "users");    
 getDocs(colRef).then((snapshot)=>{
@@ -22,25 +22,21 @@ getDocs(colRef).then((snapshot)=>{
         console.log(error.message)
     })
 
-class createId {
-	constructor(id){
-		this.userId = id;
-	}
-}
-async function fetchWardrbe(userId) {
+async function fetchWardrobe(userId) {
 	try {
-		const response = await axios.get('http://localhost:4000/api/fetchWardrbe', {
+		console.log('fetchwardrobe: ',userId);
+		const response = await axios.get('http://localhost:4000/api/fetchWardrobe', {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			params: userId,
+			params: {userId},
 			});
 		console.log(response);
 
 		if (response.status === 200) {
-			if (response.data.wardrbe) {
+			if (response.data.wardrobe) {
 				console.log('Wardrobe fetched successfully');
-				return response.data.wardrbe;
+				return response.data.wardrobe;
 			} else {
 				console.error('Failed to fetch the wardrobe');
 			}
@@ -52,16 +48,16 @@ async function fetchWardrbe(userId) {
 	}
 	return null;
 }
-function DisplayWardrbe(userID) {
+function Displaywardrobe(userId) {
+	console.log(`display wardrobe caled with userId ${userId.userId}`)
 	const [wardrobeData, setWardrobeData] = useState(null);
 	const [error, setError] = useState(null);
 
 	useEffect(() => {
-		const userId = new createId(userID.userID);
-		fetchWardrbe(userId).then(data => {
+		fetchWardrobe(userId.userId).then(data => {
 			if (data) {
 				console.log('Wardrobe fetched successfully', data);
-				setWardrobeData(data);
+				setWardrobeData(data.wardrobe);
 			} else {
 				console.error('Wardrobe Data Null!!');
 				setError('Error Fetching Wardrobe!');
@@ -98,13 +94,13 @@ function DisplayWardrbe(userID) {
 				</ul>
 				</div>
 			);
-			}
-			return null;
+		}
+		return null;
 		})}
 		</div>
 	);
 }
-async function updateWardrbe(newItem, userId) {
+async function updatewardrobe(newItem, userId) {
 	try {
 		const response = await axios.post('http://localhost:4000/api/wardrobe/update', {
 			newItem,
@@ -129,7 +125,7 @@ async function updateWardrbe(newItem, userId) {
 		console.error('Error updating the wardrobe:', error);
 	}
 }
-function Wardrbe() {
+function Wardrobe() {
 	const [itemName, setItemName] = useState('');
 	const [itemColor, setItemColor] = useState('');
 	const [itemSize, setItemSize] = useState('');
@@ -137,7 +133,7 @@ function Wardrbe() {
 	const [itemSeason, setItemSeason] = useState('');
 	const [itemGender, setItemGender] = useState('');
 	const [itemPhoto, setItemPhoto] = useState(null);
-    const[userID, setUserId]= useState("");
+    const[userId, setuserId]= useState("");
 
 	useEffect(() => {
 	const checkAuthState = () => {
@@ -154,24 +150,24 @@ function Wardrbe() {
 	};
 	checkAuthState()
 		.then(uid => {
-			setUserId(uid); // Set the user ID when the user is found
+			setuserId(uid); // Set the user ID when the user is found
 		})
 		.catch(error => {
 			console.error(error);
 		});
 	}, []);
 
-	console.log('UserID:',userID);
+	console.log('userId:', userId);
 	return (
 	<> 
 	<a href='./dashboard'><button id='outfit'>Home</button></a>
 	<Container className='full'>
 		<Row>
-			<Col xs='6'>
+			<Col xs='6'> {/* Form Input */}
 				<h1>Enter Item Data</h1>
 				<form onSubmit={(e) => {
 					e.preventDefault(); // Prevent the default form submission behavior
-					updateWardrbe(new Item(itemName, itemColor, itemSize, itemType, itemSeason, itemGender, itemPhoto), new createId(userID));
+					updatewardrobe(new Item(itemName, itemColor, itemSize, itemType, itemSeason, itemGender, itemPhoto), userId);
 				}}>
 
 				{/* Name */}
@@ -437,8 +433,8 @@ function Wardrbe() {
 				</form>
 				{/* only allow "save" button when theres >=1 item saved */}
 			</Col>
-			<Col xs='6'> {/* Display Wardrbe */}
-			{userID ? <DisplayWardrbe userID={userID}></DisplayWardrbe> : <h1>Loading</h1>}
+			<Col xs='6'> {/* Display wardrobe */}
+			{userId ? <Displaywardrobe userId={userId}></Displaywardrobe> : <h1>Loading</h1>}
 				
 			</Col>
 		</Row>
@@ -448,4 +444,4 @@ function Wardrbe() {
 	);
 }
 
-export default Wardrbe;
+export default Wardrobe;

@@ -6,15 +6,15 @@ import auth from "../../firebase"
 import { app } from '../../firebase';
 import { getFirestore, collection, addDoc} from "firebase/firestore";
 import axios from 'axios';
-import {UserWardrbe} from '../WardrbeBackend.js';
+import {UserWardrobe} from '../WardrobeBackend.js';
 const db = getFirestore(app);
 
-async function CreateWardrbe(userId){
-    const wardrbe = new UserWardrbe(userId);
+async function Createwardrobe(userId){
+    const wardrobe = new UserWardrobe(userId);
     try {
         // Make a POST request to the create endpoint
         const response = await axios.post('http://localhost:4000/api/wardrobe/create', {
-            wardrbe,
+            wardrobe,
             userId
         });
 
@@ -59,7 +59,7 @@ function Signup(){
             // console.log(userCredential);
             // Signed up 
             const user = userCredential.user;
-            CreateWardrbe(user.uid);
+            Createwardrobe(user.uid);
 
             updateProfile(auth.currentUser, {
                 displayName: firstName, photoURL: "https://example.com/jane-q-user/profile.jpg"

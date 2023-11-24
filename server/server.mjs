@@ -1,48 +1,40 @@
 // Import necessary packages
+import mongoose from 'mongoose';
 import express from 'express';
 import Redis from 'ioredis'; // Import the Redis client
 import { createRequire } from 'module';
 import fs from 'fs';
-import {Read, CreateNewWardrbe, UpdateWardrbe, GenerateOutfit} from './database.mjs';
+import {ReadWardrobe, ReadAllItemsFromWardrobe, ReadItem, SaveNewItem, UpdateItem, CreateNewWardrobe, UpdateWardrobe, GenerateOutfit, DeleteItem, DeleteWardrobe} from './database.mjs';
 import cors from 'cors';
-
+import dotenv from 'dotenv/config'; // even tho its gray its needed
+const MONGOURI = process.env.MONOGODB;
 const app = express();
 app.use(express.json());
 app.use(cors());
 const port = 4000;
 const require = createRequire(import.meta.url); //not entirely sure what this does
-const filePath = 'redisUri.json';
 
-// redis! (database!)
-const redis = new Redis();
-redis.ping((err, result) =>{
-  if(err){
-    console.error("Error! No connection to redis!\n", err);
-    connectRedis();
-  }else{
-    console.log("Connected to redis");
+// mongoDB! (database)
+async function connectDB(){
+  try{
+    // console.log(MONGOURI)
+    await mongoose.connect(MONGOURI);
+    console.log("MongoDb Connected!");
   }
-});
-function connectRedis(){
-  redis.connect(getUri()).then(() => {
-    console.log('New Redis Connection Setup!');
-  }).catch(err => {
-    console.error('Error connecting to Redis:', err);
-  });
-}
-function getUri() {
-  try {
-    const jsonContent = fs.readFileSync(filePath, 'utf8');
-    const config = JSON.parse(jsonContent);
-    return config.uri;
-  } catch (err) {
-    console.error('Error reading or parsing the JSON file for Redis Uri\n', err);
-    return null;
+  catch(err){
+    console.log("Unable to connect to MongoDb");
+    // process.exit();
+    console.error(err);
   }
-}
+};
+connectDB();
 
 // database api endpoints!
-// create new wardrobe
+/**
+ * create new wardrobe
+ * @param {object} wardrobe
+ * @param {string} userId
+ */
 app.post('/api/wardrobe/create', async (req, res) => {
   try {
     const { wardrobe, userId } = req.body;
@@ -57,35 +49,48 @@ app.post('/api/wardrobe/create', async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-// update wardrobe
+/**
+ * updates wardrobe reference and saves new item
+ * @param {object} newItem
+ * @param {string} userId
+ */
 app.post('/api/wardrobe/update', async (req, res) => {
   try {
     const { newItem, userId } = req.body;
-    console.log('got the request');
-    const result = await UpdateWardrbe(newItem, userId);
-    console.log('updated wardrobe');
+    const result = await SaveNewItem(newItem, userId);
+    
     if (result) {
       res.json({ success: true });
     } else {
       res.status(500).json({ error: "Failed to update the wardrobe" });
+      console.log("Failed to update the wardrobe");
     }
   } catch (error) {
     console.error("Error updating the wardrobe:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-// generate an outfit
+/**
+ * generates outfit based on weather
+ * @param {object} weather
+ * @param {string} userId 
+ */
 app.get('/api/wardrobe/generate-outfit', async (req, res) => {
   try {
     const weather = JSON.stringify(req.query.weather);
     const userId = JSON.stringify(req.query.userId);
     // console.log(req.query.weather, req.query.userId);
     let outfit = 0;
-    console.log('typeof',typeof weather)
+    // console.log('typeof',typeof weather)
 
+    // checks and gets outfit
     if(weather != undefined & userId != undefined){
       outfit = await GenerateOutfit(weather, userId);
-    }    
+    } else{
+      console.log('weather or userId is undefined');
+      res.status(500).json({ error: "Bad Request: userId or weather undefined" });
+    }
+
     if (outfit) {
       res.json({ outfit });
     } else {
@@ -96,16 +101,24 @@ app.get('/api/wardrobe/generate-outfit', async (req, res) => {
     res.status(500).json({ error: "Internal Server Error", error2: String(error) });
   }
 });
-// fetch wardrbe
-app.get('/api/fetchWardrbe', async (req, res) => {
+/**
+ * gets all items from wardrobe
+ * @param {string} userId 
+ * @returns {object} wardrobe
+ */
+app.get('/api/fetchWardrobe', async (req, res) => {
   try {
-    console.log(req.query.userId);
+    // console.log(req.query.userId);
     const userId = req.query.userId;
-    const wardrbe = await Read(userId);
-    
-    if (wardrbe) {
-      res.status(200).json({ wardrbe });
-      console.log('Wardrobe Fetched!', wardrbe);
+    if(!userId){
+      console.log('userId is undefined');
+      res.status(500).json({ error: "Bad Request: userId undefined" });
+    }
+
+    const wardrobe = await ReadAllItemsFromWardrobe(userId);
+    if (wardrobe) {
+      res.status(200).json({ wardrobe });
+      console.log('Wardrobe Fetched!', wardrobe);
     } else {
       res.status(500).json({ error: "Failed to fetch wardrobe" });
     }
@@ -114,14 +127,19 @@ app.get('/api/fetchWardrbe', async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-// delete item from wardrbe
+/**
+ * deletes item from items collection (but not wardrobe)
+ * @param {string} itemId 
+ * @returns {boolean} success
+ */
 app.post('/api/wardrobe/delete-item', async (req, res) => {
   try {
-    const { item, userId } = req.body;
-    console.log('Deleting item'+ item);
-    const result = await UpdateWardrbe(item, userId);
-    console.log('Deleted item!');
+    const { itemId, userId } = req.body;
+    console.log('Deleting item'+ itemId);
+
+    const result = await DeleteItem(itemId);
     if (result) {
+      console.log('Deleted item!');
       res.json({ success: true });
     } else {
       res.status(500).json({ error: "Failed to delete item" });
@@ -131,20 +149,25 @@ app.post('/api/wardrobe/delete-item', async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-// delete wardrbe
-app.post('/api/wardrobe/delete-wardrbe', async (req, res) => {
+/**
+ * deletes wardrobe
+ * @param {string} userId
+ * @returns {boolean} success
+ */
+app.post('/api/wardrobe/delete-wardrobe', async (req, res) => {
   try {
     const { userId } = req.body;
-    console.log('Deleting wardrbe'+ userId);
-    const result = await UpdateWardrbe(userId.userId);
-    console.log('Deleted wardrbe!');
+    console.log('Deleting wardrobe'+ userId);
+
+    const result = await DeleteWardrobe(userId.userId);
     if (result) {
+      console.log('Deleted wardrobe!');
       res.json({ success: true });
     } else {
-      res.status(500).json({ error: "Failed to delete wardrbe" });
+      res.status(500).json({ error: "Failed to delete wardrobe" });
     }
   } catch (error) {
-    console.error("Error deleting wardrbe:", error);
+    console.error("Error deleting wardrobe:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });

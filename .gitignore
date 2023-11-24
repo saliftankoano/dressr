@@ -1,5 +1,7 @@
 server/redisUri.json
 server/node_modules
+server/.env
+*.env
 
 old
 node_modules

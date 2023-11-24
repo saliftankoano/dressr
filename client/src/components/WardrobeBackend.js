@@ -1,5 +1,7 @@
-import { FetchWeather } from './WeatherBackend.js';
-
+/**
+ * Item object that contains all the information about a clothing item.
+ * @constructor(name, color, size, type, season, gender, photo) of clothing item
+ */
 export class Item{
     constructor(name, color, size, type, season, gender="all", photo){
         this.name = name;
@@ -22,41 +24,42 @@ export class Item{
         );
     }
 }
-export class UserWardrbe{
-    // implement a tree that stores clothes in relation to one another
-    // this would make sorting through them and finding the optimal clothing item
-    // more efficent and reduce time complexity
-    userId = 0;
-    hats = [];
-    tops = [];
-    bottoms = [];
-    layers = []; // jackets, sweaters, etc.
-    footwear = [];
-    accessories = [];
+/**
+ * User object that contains all the information about a user's wardrobe.
+ * @constructor(userId) of user
+ * @add(item) adds item to wardrobe
+ */
+export class UserWardrobe{
+    constructor(userId) {
+        this.hats = [];
+        this.tops = [];
+        this.bottoms = [];
+        this.layers = [];
+        this.footwear = [];
+        this.accessories = [];
 
-    constructor(userId){
-        this.userId = userId;
-        console.log('wardrbe made, id:', this.userId);
     }
 
-    add(item){
-        switch(item.type){
-            case item.type ="footwear":
+    add(item, itemtype){
+        console.log(item);
+
+        switch(itemtype){
+            case itemtype ="footwear":
                 this.footwear.push(item);
                 break;
-            case item.type ='layers':
+            case itemtype ='layers':
                 this.layers.push(item);
                 break;
-            case item.type ='bottoms':
+            case itemtype ='bottoms':
                 this.bottoms.push(item);
                 break;
-            case item.type ='tops':
+            case itemtype ='tops':
                 this.tops.push(item);
                 break;
-            case item.type ='hats':
+            case itemtype ='hats':
                 this.hats.push(item);
                 break;
-            case item.type ='accessories':
+            case itemtype ='accessories':
                 this.accessories.push(item);
                 break;
             default:
@@ -65,7 +68,13 @@ export class UserWardrbe{
         }
         return null;
     }
+    
 }
+/**
+ * Fetches weather data from the Weather API.
+ * @constructor (zipcode) of user
+ * @returns {Object} Returns the weather data object if successful, or false if an error occurs.
+ */
 export class Weather{
     constructor(zipcode){ // presumably fetched from person object
         const weather = FetchWeather(zipcode);
@@ -82,10 +91,5 @@ export class Weather{
 
         this.temp = weather.feelslike_f;
         this.windspeed = weather.wind_mph;
-    }
-}
-export class createId {
-	constructor(id){
-		this.userId = id;
-	}
+    };
 }

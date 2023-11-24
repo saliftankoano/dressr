@@ -2,7 +2,7 @@ import ModalBody from 'react-bootstrap/esm/ModalBody';
 import './styles.css'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Weather,createId } from './WardrbeBackend';
+import { Weather } from './WardrobeBackend';
 import { Container, Row, Col } from 'react-bootstrap';
 import auth from "../firebase";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
@@ -21,7 +21,13 @@ getDocs(colRef).then((snapshot)=>{
         console.log(error.message)
     })
 
-async function GenerateOutfit(weather, userId) {    
+async function GenerateOutfit(userId) {// hardcoded weater
+	const [wardrobeData, setWardrobeData] = useState(null);	
+
+        const weather = new Weather(11375);
+		// console.log(weather)
+		// console.log(weather, userID)
+
 	try {
 		const response = await axios.get('http://localhost:4000/api/wardrobe/generate-outfit', {
             params: {
@@ -32,7 +38,7 @@ async function GenerateOutfit(weather, userId) {
         if (response.status === 200) {
             if (response.data.outfit) {
                 console.log('Outfit generated successfully');
-                return response.data.outfit;
+                setWardrobeData(response.data.outfit);
             } else {
                 console.error('Failed to generate outfit', response.data);
             }
@@ -47,33 +53,19 @@ async function GenerateOutfit(weather, userId) {
             console.error('Error response status:', error.response.status);
         }
     }
-    return null;
+    return DisplayWardrbe(wardrobeData);
 }
-function DisplayWardrbe(userID) { // modify this to take input!
-	const [wardrobeData, setWardrobeData] = useState(null);	
+/*
+ISSUE:
+the api seems to be recieving thing as a string, which is an issue!
+it's unable to get userid.userid to read the wardrbe
 
-	useEffect(() => {
-        const weather = new Weather(11375);
-		// console.log(weather)
-		// console.log(weather, userID)
-		// const userId = new createId(27496); //hardcoded user
-		GenerateOutfit(weather, userID)
-		.then(data => {
-			if (data) {
-			console.log('Wardrobe fetched successfully', data);
-			setWardrobeData(data);
-			} else {
-			console.error('Wardrobe Data Null!!');
-			}
-		})
-		.catch(err => {
-			console.error(err);
-		});
-	}, []); // Empty dependency array means this effect runs once after the initial render
-
+things need to be standardized
+*/
+function DisplayWardrbe(wardrobeData) {
 	return (
 		<div>
-		<h2>Wardrobe</h2>
+		<h2>Your Outfit!</h2>
 		{Object.keys(wardrobeData).map(category => {
 			if (Array.isArray(wardrobeData[category])) {
 			return (
@@ -136,7 +128,7 @@ function Outfit(){
 				</div>
 			</Col> */}
 			<Col>
-				{userID ? <DisplayWardrbe userID={userID}></DisplayWardrbe> : <h1>Loading</h1>}
+				{userID ? <GenerateOutfit userID={userID}></GenerateOutfit> : <h1>Loading</h1>}
 			</Col>
 		</Row>
 	</Container>
