@@ -27,13 +27,14 @@ class createId {
 		this.userId = id;
 	}
 }
-async function fetchWardrbe(userId) {
+async function fetchWardrbe(userID) {
 	try {
+		// console.log(userID);
 		const response = await axios.get('http://localhost:4000/api/fetchWardrbe', {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			params: userId,
+			params: userID,
 			});
 		console.log(response);
 
@@ -53,12 +54,13 @@ async function fetchWardrbe(userId) {
 	return null;
 }
 function DisplayWardrbe(userID) {
+	// console.log(`display wardrbe caled with userid ${userID.userID}`)
 	const [wardrobeData, setWardrobeData] = useState(null);
 	const [error, setError] = useState(null);
 
 	useEffect(() => {
-		const userId = new createId(userID.userID);
-		fetchWardrbe(userId).then(data => {
+		// const userId = new createId(userID.userID);
+		fetchWardrbe(userID.userID).then(data => {
 			if (data) {
 				console.log('Wardrobe fetched successfully', data);
 				setWardrobeData(data);

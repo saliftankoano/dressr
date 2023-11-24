@@ -1,45 +1,33 @@
 // Import necessary packages
+import mongoose from 'mongoose';
 import express from 'express';
 import Redis from 'ioredis'; // Import the Redis client
 import { createRequire } from 'module';
 import fs from 'fs';
 import {Read, CreateNewWardrbe, UpdateWardrbe, GenerateOutfit} from './database.mjs';
 import cors from 'cors';
-
+import dotenv from 'dotenv/config'; // even tho its gray its needed
+const MONGOURI = process.env.MONOGODB;
 const app = express();
 app.use(express.json());
 app.use(cors());
 const port = 4000;
 const require = createRequire(import.meta.url); //not entirely sure what this does
-const filePath = 'redisUri.json';
 
-// redis! (database!)
-const redis = new Redis();
-redis.ping((err, result) =>{
-  if(err){
-    console.error("Error! No connection to redis!\n", err);
-    connectRedis();
-  }else{
-    console.log("Connected to redis");
+// mongoDB! (database)
+async function connectDB(){
+  try{
+    // console.log(MONGOURI)
+    await mongoose.connect(MONGOURI);
+    console.log("MongoDb Connected!");
   }
-});
-function connectRedis(){
-  redis.connect(getUri()).then(() => {
-    console.log('New Redis Connection Setup!');
-  }).catch(err => {
-    console.error('Error connecting to Redis:', err);
-  });
-}
-function getUri() {
-  try {
-    const jsonContent = fs.readFileSync(filePath, 'utf8');
-    const config = JSON.parse(jsonContent);
-    return config.uri;
-  } catch (err) {
-    console.error('Error reading or parsing the JSON file for Redis Uri\n', err);
-    return null;
+  catch(err){
+    console.log("Unable to connect to MongoDb");
+    // process.exit();
+    console.error(err);
   }
-}
+};
+connectDB();
 
 // database api endpoints!
 // create new wardrobe
@@ -79,9 +67,9 @@ app.get('/api/wardrobe/generate-outfit', async (req, res) => {
   try {
     const weather = JSON.stringify(req.query.weather);
     const userId = JSON.stringify(req.query.userId);
-    // console.log(req.query.weather, req.query.userId);
+    console.log("API Has been Called:",req.query.weather, req.query.userId);
     let outfit = 0;
-    console.log('typeof',typeof weather)
+    // console.log('typeof',typeof weather)
 
     if(weather != undefined & userId != undefined){
       outfit = await GenerateOutfit(weather, userId);
@@ -99,9 +87,9 @@ app.get('/api/wardrobe/generate-outfit', async (req, res) => {
 // fetch wardrbe
 app.get('/api/fetchWardrbe', async (req, res) => {
   try {
-    console.log(req.query.userId);
-    const userId = req.query.userId;
-    const wardrbe = await Read(userId);
+    console.log(req.query.userID);
+    const userID = req.query.userID;
+    const wardrbe = await Read(userID);
     
     if (wardrbe) {
       res.status(200).json({ wardrbe });

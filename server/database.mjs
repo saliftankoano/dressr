@@ -1,5 +1,10 @@
-import Redis from 'ioredis';
-const redis = new Redis();
+import Mongoclient from 'mongodb';
+const WARDRBE = 'wardrbe';
+const ITEMS = 'item';
+const DBNAME = 'dressr';
+import dotenv from 'dotenv/config'; // even tho its gray its needed
+const MONGOURI = process.env.MONOGODB;
+
 // data objects
 export class Item{
     constructor(name, color, size, type, season, gender="all", photo, itemId){
@@ -10,7 +15,6 @@ export class Item{
         this.season = season;
         this.gender = gender;
         this.photo = photo;
-        this.itemId = itemId;
     }
     copyFrom(otherItem) {
         return new Item(
@@ -23,25 +27,6 @@ export class Item{
         otherItem.photo
         );
     }
-    async GetUniqueId() { // can add switch here to get uniqueId for different parameters
-        let cursor = 0;
-        const existingUserIds = new Set();
-
-        do{
-            const [newCursor, keys] = await redis.scan(cursor, 'MATCH', '*');
-            keys.forEach((key)=> existingUserIds.add(key));
-            cursor = newCursor;
-        }while(cursor !== '0');
-
-        // Generate a random integer until we find a unique one.
-        let uniqueId;
-        do {
-            uniqueId = Math.floor(Math.random() * 100000);
-        } while (existingUserIds.has(uniqueId));
-
-        return uniqueId;
-    }
-    // add to "ExistingKeys" hashmap
 }
 export class UserWardrbe{
     // implement a tree that stores clothes in relation to one another
@@ -107,25 +92,58 @@ export class Weather{
         this.windspeed = weather.wind_mph;
     };
 }
-// returns JSON Object of user's wardrbe
+
+/**
+ * Reads user data from a MongoDB collection based on the provided userId.
+ * 
+ * @param {string} userId The unique identifier of the user.
+ * @returns {Object|boolean} Returns the user data object if successful, or false if an error occurs.
+ */
 export async function Read(userId){
     try{
-        const data = await redis.get(userId);
+        const client = new Mongoclient(MONGOURI);
+        await client.connect();
+        const DB = client.db(DBNAME);
+        const wardrbeDB = DB.collection(WARDRBE);
 
-        return JSON.parse(data);
+        const query = { userId: userId };
+        const data = await wardrbeDB.findOne(query);
+
+        client.close();
+
+        return data;
     }catch(err){
         console.error("Couldn't read user data\n", err);
         return false;
     }
 }
+/**
+ * Creates a new wardrobe entry or updates an existing one in a MongoDB collection.
+ * 
+ * @param {Object} wardrobe - The wardrobe data to be stored.
+ * @param {string} userId - The unique identifier of the user.
+ * @returns {boolean} - Returns true if the operation is successful, or false if an error occurs.
+ */
 export async function CreateNewWardrbe(wardrobe, userId){
-    const wardrobeObject = JSON.stringify(wardrobe, null, 2);
-
     try{
-        await redis.set(userId, wardrobeObject);
+        const client = new Mongoclient(MONGOURI);
+        await client.connect();
+        const DB = client.db(DBNAME);
+        const wardrbeDB = DB.collection(WARDRBE);
+
+        // Insert or update the wardrobe object
+        const query = { userId: userId };
+        const update = { $set: { wardrobe: wardrobe }};
+        const options = { upsert: true }; // Creates a new document if no document matches the query
+
+        await wardrbeDB.updateOne(query, update, options);
+
+        client.close();
+        console.log('success!')
+
         return true;
     }catch(err){
-        console.error("Couldn't create new user\n", err);
+        console.error("Couldn't create new wardrobe\n", err);
         return false;
     }
 }
@@ -174,7 +192,7 @@ export async function GenerateOutfit(weather, userId){
     
     try{
         let wardrobe = await Read(userId);
-        console.log(userId)
+        // console.log(userId)
 
         const modifiedWardrobe = new UserWardrbe();
         await modifiedWardrobe.initialized;
@@ -186,7 +204,10 @@ export async function GenerateOutfit(weather, userId){
         const footwear = [];
         const accessories = [];
 
-        console.log('Wardrobe', wardrobe);
+        // console.log('Wardrobe', wardrobe);
+        if(wardrobe){
+            console.log("wardrobe is here")
+        }
 
         for (let i = 0; i < wardrobe.footwear.length; i++) {
             const item = wardrobe.footwear[i];
@@ -249,7 +270,31 @@ export async function GenerateOutfit(weather, userId){
         return false;
     }
 }
-// temp solution: checks if exact item is in field, then deletes it
+export async function UploadItem(item){
+    try {
+        let client = new MongoClient(MONGOURI, { useNewUrlParser: true, useUnifiedTopology: true });
+        await client.connect();
+
+        const db = client.db(DBNAME);
+        const items = db.collection(ITEMS);
+
+        // check for duplicates
+        const existingItem = await items.findOne({ itemId: item.itemId });
+        if (existingItem) {
+            throw new Error('Item already exists');
+        }
+
+        await items.insertOne(item);
+        return true; // Successful upload
+    } catch(err) {
+        console.error("Error uploading item:", err);
+        return false; // Indicate failure
+    } finally {
+        if (client) {
+            await client.close(); // Ensure the client connection is closed
+        }
+    }
+}
 export async function DeleteItem(userId, item){
     try{
         const wardrbeObject = await Read(userId.userId);
@@ -305,12 +350,15 @@ export async function DeleteWardrbe(userId){
 
 }
 // 'example code on how to update and create wardrobes'
-// (async () => {
-//     const instance = new UserWardrbe('klNGDRQB3IOD733IQDcUJJkOCVD3');
-//     await instance.initialized;
-//     console.log(instance);
+(async () => {
+    // console.log(await Read())
+    // const instance = new UserWardrbe();
+    // await instance.initialized;
+    // console.log(instance);
 
-//     await CreateNewWardrbe(instance, 'klNGDRQB3IOD733IQDcUJJkOCVD3');
+    const example = new Item();
+
+    // await CreateNewWardrbe(instance, 'klNGDRQB3IOD733IQDcUJJkOCVD3');
     // await UpdateWardrbe(new Item('Winter Boots', 'Black', 'L', 'accessories', 'spring-fall'),27496);
     
     // const weather = { season: 'spring-fall' };
@@ -323,4 +371,4 @@ export async function DeleteWardrbe(userId){
     //     }
     // });
     // await DeleteWardrbe(96268);
-// })();
+})();
