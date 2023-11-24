@@ -92,7 +92,7 @@ export class Weather{
 
         this.temp = weather.feelslike_f;
         this.windspeed = weather.wind_mph;
-    };
+    }
 }
 /**
  * 
@@ -102,7 +102,7 @@ export class Weather{
 export async function FetchWeather(zipcode) {
     try {
         const response = await axios.get(`http://localhost:4000/api/weather?zipcode=${zipcode}`);
-        return response.data.current;
+        return response.data;
     } catch (err) {
         console.log("Weather API Error: ", err)
     }

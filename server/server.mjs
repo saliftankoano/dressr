@@ -177,8 +177,8 @@ app.post('/api/wardrobe/delete-wardrobe', async (req, res) => {
 app.get('/api/weather', async (req, res) => {
   const zipcode = req.query.zipcode;
   try {
-    const response = await axios.get(`http://api.weatherapi.com/v1/current.json?key=${WEATHER}&q=${zipcode}&aqi=no`);
-    res.json({success:response.data.current});
+    const response = await axios.get(`http://api.weatherapi.com/v1/forecast.json?key=${WEATHER}&q=${zipcode}&days=5&aqi=no`);
+    res.json(response.data);
   } catch (err) {
       console.log("Weather API Error: ", err)
   }
