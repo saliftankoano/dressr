@@ -234,8 +234,8 @@ export async function SaveNewItem(item, userId){
 
 }
 /**
- * 
- * @param {item} item 
+ * `item` must include `_id` attribute
+ * @param {object} item 
  * @returns true if successful, false if not
  */
 export async function UpdateItem(item){
@@ -438,8 +438,9 @@ export async function GenerateOutfit(weather, userId){
         modifiedWardrobe.add(bottomsItem, 'bottoms');
         modifiedWardrobe.add(hatsItem, 'hats');
         modifiedWardrobe.add(accessoriesItem, 'accessories');
+        console.log(modifiedWardrobe);
 
-        return modifiedWardrobe;
+        return data.wardrobe;
     }catch(err){
         console.error("Couldn't generate outfit!\n", err);
         return false;
