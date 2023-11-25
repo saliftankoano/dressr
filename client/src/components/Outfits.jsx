@@ -1,5 +1,6 @@
 import ModalBody from 'react-bootstrap/esm/ModalBody';
-import './styles.css'
+import './styles.css';
+import './outfits.css';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Weather } from './WardrobeBackend';
@@ -113,6 +114,7 @@ function DisplayWardrobe(userId) {
 function Outfit(){
     const[userId, setuserId]= useState("");
 	
+	// Get the currently signed-in user
 	useEffect(() => {
 		const checkAuthState = () => {
 			return new Promise((resolve, reject) => {
@@ -134,23 +136,32 @@ function Outfit(){
 				console.error(error);
 			});
 		}, []);
-	console.log('userId:',userId)
 
     return(
     <>
-    {/* Back Button */}
-    <a href='./dashboard'><button id='outfit'>Home</button></a>
-
-	<Container className='full'>
+	<Container className='full'> {/* Complete Webpage */}
+		<Row className='logoRow'> {/* Logo */}
+		<div className='logo'>
+			<a href='/dashboard'>
+				<img src='src/assets/logo.png' alt='logo'/>
+			</a>
+		</div>
+		</Row>
 		<Row>
-			{/* <Col>
-				<div align="center">
-					<h2>Outfits</h2>
-					<button onClick={handleClick}>Generate Outfit!</button>
-				</div>
-			</Col> */}
-			<Col> {/* Generate User Outfit! */}
-				{userId ? <DisplayWardrobe userId={userId}></DisplayWardrobe> :  <img src={loading} alt="loading" />}
+			<Col xl={10} className='col outfit'>
+				generated outfit
+				{/* {userId ? <DisplayWardrobe userId={userId}></DisplayWardrobe> :  <img src={loading} alt="loading" />} */}
+			</Col>
+			<Col xl={2} className='col settings'>
+				<Row className='row colors'>
+					colors
+				</Row>
+				<Row className='row fabric'>
+					fabric
+				</Row>
+				<Row className='row style'>
+					style
+				</Row>
 			</Col>
 		</Row>
 	</Container>

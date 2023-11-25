@@ -120,7 +120,7 @@ app.get('/api/fetchWardrobe', async (req, res) => {
     const wardrobe = await ReadAllItemsFromWardrobe(userId);
     if (wardrobe) {
       res.status(200).json({ wardrobe });
-      console.log('Wardrobe Fetched!', wardrobe);
+      console.log('Wardrobe Fetched!');
     } else {
       res.status(500).json({ error: "Failed to fetch wardrobe" });
     }
