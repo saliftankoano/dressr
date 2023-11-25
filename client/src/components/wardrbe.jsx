@@ -5,9 +5,9 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Container, Row, Col} from 'react-bootstrap';
 import './styles.css';
-import auth from "../firebase";
+import auth from "../firebase.jsx";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
-import { app } from '../firebase';
+import { app } from '../firebase.jsx';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import loading from '../assets/loading.gif';
