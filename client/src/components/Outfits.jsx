@@ -9,6 +9,8 @@ import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { app } from '../firebase';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
+import loading from '../assets/loading.gif';
+
 // gets userId
 const db = getFirestore(app);
 const colRef = collection(db, "users");    
@@ -81,7 +83,7 @@ function DisplayWardrobe(userId) {
 	}
 
 	if (!wardrobeData) {
-		return <div>Loading...</div>;
+		return  <img src={loading} alt="loading" />;
 	}
 
 	return (
@@ -148,7 +150,7 @@ function Outfit(){
 				</div>
 			</Col> */}
 			<Col> {/* Generate User Outfit! */}
-				{userId ? <DisplayWardrobe userId={userId}></DisplayWardrobe> : <h1>Loading</h1>}
+				{userId ? <DisplayWardrobe userId={userId}></DisplayWardrobe> :  <img src={loading} alt="loading" />}
 			</Col>
 		</Row>
 	</Container>
