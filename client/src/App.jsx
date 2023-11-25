@@ -6,7 +6,7 @@ import About from "./components/About.jsx";
 import Contact from "./components/Contact.jsx";
 import Dashboard from "./components/Dashboard.jsx"
 import Login from "./components/auth/Login.jsx";
-import Wardrbe from "./components/wardrbe.jsx";
+import Wardrbe from "./components/Wardrbe.jsx";
 import Weather from "./components/Weather.jsx";
 import Outfit from "./components/Outfits.jsx";
 import Signup from "./components/auth/Signup.jsx"

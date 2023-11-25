@@ -29,14 +29,16 @@ function Weather() {
 
     const fetchData = async () => {
         try {
-            const key = '3a9ff8978a1b48868a224538232909'
             setLoading(true);
             setError(null);
+            
+            const response = await axios.get(`http://localhost:4000/api/weather`, { params: { zipcode } });
+            console.log(response.data);
 
-            const response = await axios.get(`http://api.weatherapi.com/v1/forecast.json?key=${key}&q=${zipcode}&days=1&aqi=no&alerts=no`);
             setWeatherData(response.data.current);
             setForecastData(response.data.forecast.forecastday[0].day);
             setLocation(response.data.location);
+    
             setLoading(false);
         } catch (err) {
             setError(err);
@@ -56,10 +58,10 @@ function Weather() {
     return (
         <div>
             <div>
-                <h1 class="logo">DRESSER</h1>
+                <h1 className="logo">DRESSER</h1>
             </div>
             <br></br>
-            <div align="center" class="container">
+            <div align="center" className="container">
             <h2>Weather Information for Zipcode: {zipcode}</h2>
             <br/>
             <form onSubmit={handleSubmit}>

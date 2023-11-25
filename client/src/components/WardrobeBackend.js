@@ -1,3 +1,4 @@
+import axios from 'axios';
 /**
  * Item object that contains all the information about a clothing item.
  * @constructor(name, color, size, type, season, gender, photo) of clothing item
@@ -26,11 +27,11 @@ export class Item{
 }
 /**
  * User object that contains all the information about a user's wardrobe.
- * @constructor(userId) of user
+ * @constructor initalizes empty arrays of wardrobe items
  * @add(item) adds item to wardrobe
  */
 export class UserWardrobe{
-    constructor(userId) {
+    constructor() {
         this.hats = [];
         this.tops = [];
         this.bottoms = [];
@@ -91,5 +92,18 @@ export class Weather{
 
         this.temp = weather.feelslike_f;
         this.windspeed = weather.wind_mph;
-    };
+    }
+}
+/**
+ * 
+ * @param {int} zipcode 
+ * @returns {object} weather data
+ */
+export async function FetchWeather(zipcode) {
+    try {
+        const response = await axios.get(`http://localhost:4000/api/weather?zipcode=${zipcode}`);
+        return response.data;
+    } catch (err) {
+        console.log("Weather API Error: ", err)
+    }
 }

@@ -9,7 +9,7 @@ import axios from 'axios';
 import {UserWardrobe} from '../WardrobeBackend.js';
 const db = getFirestore(app);
 
-async function Createwardrobe(userId){
+async function CreateWardrobe(userId){
     const wardrobe = new UserWardrobe(userId);
     try {
         // Make a POST request to the create endpoint
@@ -20,7 +20,7 @@ async function Createwardrobe(userId){
 
         // Check if the request was successful
         if (response.data.success) {
-            console.log('Wardrobe created successfully');
+            console.log("New User's Wardrobe created successfully");
             return response.data;
         }
     } catch (error) {
@@ -59,7 +59,7 @@ function Signup(){
             // console.log(userCredential);
             // Signed up 
             const user = userCredential.user;
-            Createwardrobe(user.uid);
+            CreateWardrobe(user.uid);
 
             updateProfile(auth.currentUser, {
                 displayName: firstName, photoURL: "https://example.com/jane-q-user/profile.jpg"
