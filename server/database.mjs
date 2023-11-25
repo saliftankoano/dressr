@@ -3,6 +3,7 @@ const WARDROBE = 'wardrbe';
 const ITEMS = 'items';
 const DBNAME = 'dressr';
 import dotenv from 'dotenv/config'; // even tho its gray its needed
+import { json } from 'express';
 const MONGOURI = process.env.MONOGODB;
 
 // implement a tree that stores clothes in relation to one another
@@ -39,7 +40,7 @@ export class Item{
 /**
  * User object that contains all the information about a user's wardrobe.
  * @constructor(userId) of user
- * @add(item) adds item to wardrobe
+ * @add(item, itemtype) adds item to wardrobe
  */
 export class UserWardrobe{
     constructor(userId) {
@@ -53,7 +54,7 @@ export class UserWardrobe{
     }
 
     add(item, itemtype){
-        console.log(item);
+        // console.log(item);
 
         switch(itemtype){
             case itemtype ="footwear":
@@ -291,8 +292,8 @@ export async function CreateNewWardrobe(wardrobe, userId){
 }
 /**
  * Stores itemID into the user's wardrobe
- * @param {*} item 
- * @param {*} userId 
+ * @param {object} item 
+ * @param {string} userId 
  * @returns 
  */
 export async function UpdateWardrobe(item, itemtype, userId){
@@ -363,10 +364,11 @@ export async function GenerateOutfit(weather, userId){
         return arr[randomIndex];
     }
     // console.log(userId, weather);
+    weather = JSON.parse(weather);
     
     try{
-        let wardrobe = await ReadAllItemsFromWardrobe(userId);
-        // console.log(userId)
+        let data = await ReadAllItemsFromWardrobe(userId);
+        // console.log(data.wardrobe)
 
         const modifiedWardrobe = new UserWardrobe();
         await modifiedWardrobe.initialized;
@@ -377,64 +379,65 @@ export async function GenerateOutfit(weather, userId){
         const layers = []; // jackets, sweaters, etc.
         const footwear = [];
         const accessories = [];
-        if(!wardrobe){
+        if(!data.wardrobe){
             console.error('Wardrobe not found!');
         }
 
-        for (let i = 0; i < wardrobe.footwear.length; i++) {
-            const item = wardrobe.footwear[i];
+
+        for (let i = 0; i < data.wardrobe.footwear.length; i++) {
+            const item = data.wardrobe.footwear[i];
             if (item.season === weather.season) {
                 footwear.push(item);
             }
         }
         let footwearItem = getRandomElement(footwear);
 
-        for (let i = 0; i < wardrobe.layers.length; i++) {
-            const item = wardrobe.layers[i];
+        for (let i = 0; i < data.wardrobe.layers.length; i++) {
+            const item = data.wardrobe.layers[i];
             if (item.season === weather.season) {
                 layers.push(item);
             }
         }
         let layersItem = (getRandomElement(layers));
 
-        for (let i = 0; i < wardrobe.tops.length; i++) {
-            const item = wardrobe.tops[i];
+        for (let i = 0; i < data.wardrobe.tops.length; i++) {
+            const item = data.wardrobe.tops[i];
             if (item.season === weather.season) {
                 tops.push(item);
             }
         }
         let topsItem = (getRandomElement(tops));
 
-        for (let i = 0; i < wardrobe.bottoms.length; i++) {
-            const item = wardrobe.bottoms[i];
+        for (let i = 0; i < data.wardrobe.bottoms.length; i++) {
+            const item = data.wardrobe.bottoms[i];
             if (item.season === weather.season) {
                 bottoms.push(item);
             }
         }
         let bottomsItem =(getRandomElement(bottoms));
 
-        for (let i = 0; i < wardrobe.hats.length; i++) {
-            const item = wardrobe.hats[i];
+        for (let i = 0; i < data.wardrobe.hats.length; i++) {
+            const item = data.wardrobe.hats[i];
             if (item.season === weather.season) {
                 hats.push(item);
             }
         }
         let hatsItem = (getRandomElement(hats));
 
-        for (let i = 0; i < wardrobe.accessories.length; i++) {
-            const item = wardrobe.accessories[i];
+        for (let i = 0; i < data.wardrobe.accessories.length; i++) {
+            const item = data.wardrobe.accessories[i];
             if (item.season === weather.season) {
                 accessories.push(item);
             }
         }
         let accessoriesItem = (getRandomElement(accessories));
 
-        modifiedWardrobe.add(footwearItem);
-        modifiedWardrobe.add(layersItem);
-        modifiedWardrobe.add(topsItem);
-        modifiedWardrobe.add(bottomsItem);
-        modifiedWardrobe.add(hatsItem);
-        modifiedWardrobe.add(accessoriesItem);
+        modifiedWardrobe.add(footwearItem, 'footwear');
+        modifiedWardrobe.add(layersItem, 'layers');
+        modifiedWardrobe.add(topsItem, 'tops');
+        modifiedWardrobe.add(bottomsItem, 'bottoms');
+        modifiedWardrobe.add(hatsItem, 'hats');
+        modifiedWardrobe.add(accessoriesItem, 'accessories');
 
         return modifiedWardrobe;
     }catch(err){

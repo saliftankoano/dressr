@@ -78,9 +78,10 @@ app.post('/api/wardrobe/update', async (req, res) => {
  */
 app.get('/api/wardrobe/generate-outfit', async (req, res) => {
   try {
-    const weather = JSON.stringify(req.query.weather);
-    const userId = JSON.stringify(req.query.userId);
-    // console.log(req.query.weather, req.query.userId);
+    // console.log(req.query);
+    const weather = (req.query.weather);
+    const userId = (req.query.userId);
+    // console.log(weather, userId);
     let outfit = 0;
     // console.log('typeof',typeof weather)
 

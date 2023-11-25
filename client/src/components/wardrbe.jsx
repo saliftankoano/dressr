@@ -48,7 +48,7 @@ async function fetchWardrobe(userId) {
 	}
 	return null;
 }
-function Displaywardrobe(userId) {
+function DisplayWardrobe(userId) {
 	console.log(`display wardrobe caled with userId ${userId.userId}`)
 	const [wardrobeData, setWardrobeData] = useState(null);
 	const [error, setError] = useState(null);
@@ -100,7 +100,7 @@ function Displaywardrobe(userId) {
 		</div>
 	);
 }
-async function updatewardrobe(newItem, userId) {
+async function updateWardrobe(newItem, userId) {
 	try {
 		const response = await axios.post('http://localhost:4000/api/wardrobe/update', {
 			newItem,
@@ -167,7 +167,7 @@ function Wardrobe() {
 				<h1>Enter Item Data</h1>
 				<form onSubmit={(e) => {
 					e.preventDefault(); // Prevent the default form submission behavior
-					updatewardrobe(new Item(itemName, itemColor, itemSize, itemType, itemSeason, itemGender, itemPhoto), userId);
+					updateWardrobe(new Item(itemName, itemColor, itemSize, itemType, itemSeason, itemGender, itemPhoto), userId);
 				}}>
 
 				{/* Name */}
@@ -434,7 +434,7 @@ function Wardrobe() {
 				{/* only allow "save" button when theres >=1 item saved */}
 			</Col>
 			<Col xs='6'> {/* Display wardrobe */}
-			{userId ? <Displaywardrobe userId={userId}></Displaywardrobe> : <h1>Loading</h1>}
+			{userId ? <DisplayWardrobe userId={userId}></DisplayWardrobe> : <h1>Loading</h1>}
 				
 			</Col>
 		</Row>
