@@ -58,7 +58,7 @@ function Weather() {
     return (
         <div>
             <div>
-                <h1 className="logo">DRESSER</h1>
+                <h1 className="logo">DRESSR</h1>
             </div>
             <br></br>
             <div align="center" className="container">

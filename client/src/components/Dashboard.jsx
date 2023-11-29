@@ -2,45 +2,40 @@ import './Dashboard.css';
 import React, { useState } from "react";
 import { getFirestore } from "firebase/firestore";
 import { app } from '../firebase';
-import { collection, getDocs } from "firebase/firestore"; 
-import auth from "../firebase"
+import { getAuth } from 'firebase/auth';
+import { setPersistence, browserSessionPersistence } from 'firebase/auth';
+import alexa from '../assets/alexa.png'
+import Avatar from '@mui/material/Avatar'
 
-const db = getFirestore(app);
-const colRef = collection(db, "users");    
-getDocs(colRef)
-    .then((snapshot)=>{
-        let users = [];
-        snapshot.docs.forEach((doc)=>{
-            users.push( {...doc.data().firstName, id: doc.id,})
-        })
-        console.log(users)
-    })
-    .catch(error=>{
-        console.log(error.message)
-    })
+const auth = getAuth();
 
 function Dashboard(){
     
-    const[fullName, setFullName]= useState('Alexa');
-    const[userID, setUserId]= useState("");
-
-    auth.onAuthStateChanged(  function(user) {
-        if (user) {
-          // User is signed in.
-            setFullName(user.displayName);
-            setUserId(user.uid);
-            console.log(userID);
-            //   console.log(fullName);
+    const[userName, setuserName]= useState('');
+    const[userImageUrl, setUserImageUrl]= useState('https://cdn.vectorstock.com/i/1000x1000/71/90/blank-avatar-photo-icon-design-vector-30257190.webp')
+    window.onload = function(){
+        auth.onAuthStateChanged(  function() {
+            if (auth.currentUser) {
+                setPersistence(auth, browserSessionPersistence);
+                // console.log("User signed in: "+auth.currentUser);
+                setuserName(auth.currentUser.displayName);
+                // console.log(auth.currentUser.displayName);
+                setUserImageUrl(auth.currentUser.photoURL)
+            }
+            else{
+                console.log("No user detected!");
             }
         });
+    }
+    
     return (
         <div className="dashboard">
             <div className='firstLine'>
-                <div className="profilePic"></div>
+                <Avatar alt='user pic' src={userImageUrl} sx={{ width: 150, height: 150 }}/>
                 <div className="logo">DRESSR</div>
             </div>
             <div className="userName">
-                Hello,<br/>{fullName}
+                Hello,<br/>{userName}
             </div>
             <div className="buttons">
                 <a href='./wardrbe'><button id='wardrbe' className='dash-btns'>Wardrbe</button></a>

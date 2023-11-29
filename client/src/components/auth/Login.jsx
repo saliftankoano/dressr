@@ -1,9 +1,10 @@
 import './Login.css';
-import auth from '../../firebase.jsx';
+import { getAuth } from 'firebase/auth';
 import localStorage from "use-local-storage";
 import { useState } from 'react';
-import { signInWithEmailAndPassword, sendPasswordResetEmail} from 'firebase/auth';
+import { signInWithEmailAndPassword, sendPasswordResetEmail, setPersistence, browserSessionPersistence, browserLocalPersistence, onAuthStateChanged} from 'firebase/auth';
 
+const auth = getAuth();
 function Login(){
     const[theme, setTheme]= localStorage('theme' ? 'dark' : 'light');
     const [toggleIcon, setToggleIcon]= useState('fa fa-toggle-off');
@@ -17,20 +18,27 @@ function Login(){
 
     const[email, setEmail]= useState('');
     const[password, setPassword]= useState('');
-    const handleSignIn= (e)=>{
+    const handleSignIn= async(e)=>{
         e.preventDefault();
-        
-        signInWithEmailAndPassword(auth, email, password)
+        await signInWithEmailAndPassword(auth, email, password)
         .then( (userCredentials)=>{      
-            //console.log(userCredentials)      
-            window.location.href = "./dashboard";
-        }).catch( ()=>{
+            //console.log(userCredentials)
+            auth.onAuthStateChanged( function(user){
+                console.log(user.displayName)
+                setPersistence(auth, browserLocalPersistence)
+                .then(function(){
+                    window.location.href = "./dashboard";
+                })
+            })
+        })
+        .catch( ()=>{
             console.error();
         });
+
     }
-    const resetPassword= (e)=>{
+    const resetPassword= async (e)=>{
         e.preventDefault();
-        sendPasswordResetEmail(auth, email)
+        await sendPasswordResetEmail(auth, email)
         .then(() => {
             // Password reset email sent!
             // ..
@@ -57,7 +65,6 @@ function Login(){
                         <input type='email' placeholder='Enter your email' value={email} onChange={(e)=> setEmail(e.target.value)}/>
                         <label>Password</label>
                         <input type='password' placeholder='Enter your password' value={password} onChange={(e)=> setPassword(e.target.value)}/>
-                        
                         <button className="login-btn" type='submit'>Log In</button>
                     </form>
                     <div className='bottom'>
@@ -73,5 +80,4 @@ function Login(){
         </div>
     );
 }
-export {auth};
 export default Login;

@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth,setPersistence, browserSessionPersistence, onAuthStateChanged } from "firebase/auth";
 
 const firebaseConfig = {
   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
@@ -9,7 +9,7 @@ const firebaseConfig = {
   storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: import.meta.env.VITE_FIREBASE_SENDER_ID,
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
