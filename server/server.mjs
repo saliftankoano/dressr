@@ -136,7 +136,7 @@ app.get('/api/fetchWardrobe', async (req, res) => {
  */
 app.post('/api/wardrobe/delete-item', async (req, res) => {
   try {
-    const { itemId, userId } = req.body;
+    const { itemId } = req.body;
     console.log('Deleting item'+ itemId);
 
     const result = await DeleteItem(itemId);

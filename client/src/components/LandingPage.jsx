@@ -25,8 +25,10 @@ function LandingPage() {
       <div className='content'>
         <div className='descriptions'>
           <div id='slogan'>Effortless Style<br/>At Your Fingertips</div>
-          <p id='explain'>Say goodbye to fashion guesswork and hello to dressing better, faster, and with confidence. Your wardrobe just got a smart upgrade!</p>
-          <a href='./login'><button id="start-btn">Get started</button></a>
+          <p id='explain'>Say goodbye to fashion guesswork and hello to dressing better, faster, and with confidence.<br/>Your wardrobe just got a smart upgrade!</p>
+          <a href='./login'><button id="start-btn">Get Started</button></a> &nbsp;
+          <a href='./wardrbe'><button id="start-btn">View Your Wardrbe</button></a> &nbsp;
+          <a href='./outfit'><button id="start-btn">Get an Outfit</button></a>
         </div>
         <div className='clothing'>
           <Swiper 

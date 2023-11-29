@@ -150,7 +150,7 @@ function Outfit(){
 		<Row>
 			<Col xl={10} className='col outfit'>
 				generated outfit
-				{/* {userId ? <DisplayWardrobe userId={userId}></DisplayWardrobe> :  <img src={loading} alt="loading" />} */}
+				{userId ? <DisplayWardrobe userId={userId}></DisplayWardrobe> :  <img src={loading} alt="loading" />}
 			</Col>
 			<Col xl={2} className='col settings'>
 				<Row className='row colors'>
