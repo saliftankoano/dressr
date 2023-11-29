@@ -1,5 +1,5 @@
 import ModalBody from 'react-bootstrap/esm/ModalBody';
-import './styles.css';
+// import './styles.css';
 import './outfits.css';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -139,27 +139,26 @@ function Outfit(){
 
     return(
     <>
-	<Container className='full'> {/* Complete Webpage */}
-		<Row className='logoRow'> {/* Logo */}
+	<Container fluid> {/* Complete Webpage */}
+		<Row className='logoRow ignore-row-css'> {/* Logo & Bar */}
 		<div className='logo'>
 			<a href='/dashboard'>
 				<img src='src/assets/logo.png' alt='logo'/>
 			</a>
 		</div>
 		</Row>
-		<Row>
-			<Col xl={10} className='col outfit'>
-				generated outfit
-				{userId ? <DisplayWardrobe userId={userId}></DisplayWardrobe> :  <img src={loading} alt="loading" />}
+		<Row className='ignore-row-css'> {/* Outfits & "Filters" */}
+			<Col xs={10} className='col outfit p-4 m-0'> {/* Outfit */}
+				{/* {userId ? <DisplayWardrobe userId={userId}></DisplayWardrobe> :  <img src={loading} alt="loading" />} */}
 			</Col>
-			<Col xl={2} className='col settings'>
-				<Row className='row colors'>
+			<Col xs={2} className='col settings p-4 pl-0 m-0'> {/* "Filter" */}
+				<Row className='row colors p-2 m-2'>
 					colors
 				</Row>
-				<Row className='row fabric'>
+				<Row className='row fabric p-2 m-2'>
 					fabric
 				</Row>
-				<Row className='row style'>
+				<Row className='row style p-2 m-2'>
 					style
 				</Row>
 			</Col>
