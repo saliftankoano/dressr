@@ -9,7 +9,7 @@ import auth from "../firebase";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { app } from '../firebase';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-
+import whiteshirt from '../assets/white-shirt.png';
 import loading from '../assets/loading.gif';
 
 // gets userId
@@ -79,12 +79,15 @@ function DisplayWardrobe(userId) {
 		});
 	}, []); // Empty dependency array means this effect runs once after the initial render
 
+	// catch errors
 	if (error) {
 		return <div>{error}</div>;
 	}
-
 	if (!wardrobeData) {
 		return  <img src={loading} alt="loading" />;
+	}
+	if(wardrobeData['accessories'] == null|| wardrobeData['bottoms']== null || wardrobeData['footwear']== null || wardrobeData['tops']== null || wardrobeData['layers']== null || wardrobeData['hats']== null){
+		return <div>Add more items to the wardrobe!!!</div>
 	}
 
 	return (
@@ -98,7 +101,7 @@ function DisplayWardrobe(userId) {
 				<ul>
 					{wardrobeData[category].map((item, index) => (
 					<li key={index}>
-						{item.name}: {item.color}, {item.season}, {item.size}, {item.type}, {item.season}, {item.gender}
+						{item.name}: {item.color}, {item.size}
 					</li>
 					))}
 				</ul>
