@@ -21,7 +21,7 @@ function Login(){
     const handleSignIn= async(e)=>{
         e.preventDefault();
         await signInWithEmailAndPassword(auth, email, password)
-        .then( (userCredentials)=>{      
+        .then( ()=>{      
             //console.log(userCredentials)
             auth.onAuthStateChanged( function(user){
                 console.log(user.displayName)

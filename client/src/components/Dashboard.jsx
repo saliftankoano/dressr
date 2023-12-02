@@ -1,13 +1,10 @@
 import './Dashboard.css';
 import React, { useState } from "react";
-import { getFirestore } from "firebase/firestore";
-import { app } from '../firebase';
-import { getAuth } from 'firebase/auth';
+import {auth} from '../firebase';
 import { setPersistence, browserSessionPersistence } from 'firebase/auth';
-import alexa from '../assets/alexa.png'
 import Avatar from '@mui/material/Avatar'
 
-const auth = getAuth();
+// const auth = getAuth();
 
 function Dashboard(){
     

@@ -1,17 +1,15 @@
 import './Signup.css';
 import localStorage from "use-local-storage";
 import { useState } from 'react';
-import { createUserWithEmailAndPassword, updateProfile,signInWithEmailAndPassword, setPersistence, browserSessionPersistence } from "firebase/auth";
-import { getAuth } from 'firebase/auth';
-import { app } from '../../firebase';
-import { getFirestore, collection, addDoc, setDoc, doc} from "firebase/firestore";
+import { createUserWithEmailAndPassword, updateProfile, setPersistence, browserSessionPersistence } from "firebase/auth";
+import { app,auth } from '../../firebase';
+import { getFirestore, setDoc, doc} from "firebase/firestore";
 import {getStorage, ref, uploadBytes, getDownloadURL} from 'firebase/storage'
 import axios from 'axios';
 import {UserWardrobe} from '../WardrobeBackend.js';
 
 
 // FIREBASE AUTH
-const auth = getAuth();
 const db = getFirestore(app);
 async function CreateWardrobe(userId){
     const wardrobe = new UserWardrobe(userId);
