@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import express from 'express';
 import { createRequire } from 'module';
 import fs from 'fs';
-import {ReadWardrobe, ReadAllItemsFromWardrobe, ReadItem, SaveNewItem, UpdateItem, CreateNewWardrobe, UpdateWardrobe, GenerateOutfit, DeleteItem, DeleteWardrobe} from './database.mjs';
+import {ReadWardrobe, ReadAllItemsFromWardrobe, ReadItem, SaveNewItem, UpdateItem, CreateNewWardrobe, UpdateWardrobe, GenerateOutfit, DeleteItem, DeleteWardrobe, ReadType} from './database.mjs';
 import cors from 'cors';
 import dotenv from 'dotenv/config'; // even tho its gray its needed
 import axios from 'axios';
@@ -126,6 +126,38 @@ app.get('/api/fetchWardrobe', async (req, res) => {
     }
   } catch (error) {
     console.error("Error fetching wardrobe:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+/**
+ * gets all items from wardrobe
+ * @param {string} userId 
+ * @param {string} itemType 
+ * @returns {object} wardrobe
+ */
+app.get('/api/fetchByType', async (req, res) => {
+  try {
+    // console.log(req.query.userId);
+    const userId = req.query.userId;
+    const itemType = req.query.itemType;
+    if(!userId){
+      console.log('userId is undefined');
+      res.status(500).json({ error: "Bad Request: userId undefined" });
+    }
+    if(!itemType){
+      console.log('itemType is undefined');
+      res.status(500).json({ error: "Bad Request: itemType undefined" });
+    }
+
+    const items = await ReadType(userId, itemType);
+    if (items) {
+      res.status(200).json({ items });
+      console.log('Items Fetched!');
+    } else {
+      res.status(500).json({ error: "Failed to fetch items" });
+    }
+  } catch (error) {
+    console.error("Error fetching items:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });

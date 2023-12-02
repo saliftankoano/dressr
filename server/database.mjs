@@ -179,6 +179,64 @@ export async function ReadAllItemsFromWardrobe(userId) {
     }
 }
 /**
+ * returns a wardrobe object with all of the specified type of items (not referenced!)
+ * @param {string} userId 
+ * @param {string} itemtype
+ * @returns {object} populatedWardrobe
+ */
+export async function ReadType(userId, itemtype) {
+    try {
+        // establish connection
+        const client = new MongoClient(MONGOURI);
+        await client.connect();
+        const DB = client.db(DBNAME);
+        const wardrobeDB = DB.collection(WARDROBE);
+
+        // get user's wardrobe data
+        const projection = {[`wardrobe.${itemtype}`]:1};
+        const conditions = { userId: {$eq:userId} };
+
+        // prevent query injection
+        const category = ['hats','tops','bottoms','layers','accessories','footwear'];
+        if(!category.includes(itemtype)){
+            console.error('Invalid Item Type!', itemtype);
+            client.close();
+            return false;
+        }
+
+        // perform query!
+        let itemIds = await wardrobeDB.findOne(conditions,{projection});
+        // so weird we gotta wrap projection in an object ...
+        client.close();
+
+        if (!itemIds) {
+            console.error('Something went wrong, item ids not found');
+            return false;
+        }
+
+        // Create a copy of the items object to avoid mutating the original while iterating
+        let items = JSON.parse(JSON.stringify(itemIds));
+
+        // Replace each item *reference* with the *actual* item object
+        if (items.wardrobe[itemtype]) {
+            for (let i = 0; i < items.wardrobe[itemtype].length; i++) {
+                const itemRef = items.wardrobe[itemtype][i];
+                const actualItem = await ReadItem(itemRef);
+                if (actualItem) {
+                    items.wardrobe[itemtype][i] = actualItem;
+                } else {
+                    console.error(`Item not found for reference: ${itemRef}`);
+                }
+            }
+        }
+
+        return items.wardrobe[itemtype];
+    } catch (err) {
+        console.error("Couldn't read user data\n", err);
+        return false;
+    }
+}
+/**
  * 
  * @param {string} itemId 
  * @returns {object} `item`

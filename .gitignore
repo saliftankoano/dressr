@@ -5,3 +5,4 @@ server/.env
 
 old
 node_modules
+server/test.js
