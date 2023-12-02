@@ -1,7 +1,12 @@
-.col {
-  background-color: #f7eef8; /* Adjust the color to match your specific pink shade */
-  border-radius: 25px; /* This gives the rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* This adds a subtle shadow effect */
+/* .col {
+  background-color: #f7eef8; 
+  border-radius: 25px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+} */
+[class*='m-'] {
+  background-color: #f7eef8; 
+  border-radius: 25px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 .row {
   background-color: #ffffff; /* White color for the inner rectangles */

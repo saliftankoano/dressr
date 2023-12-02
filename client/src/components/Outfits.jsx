@@ -148,10 +148,10 @@ function Outfit(){
 		</div>
 		</Row>
 		<Row className='ignore-row-css'> {/* Outfits & "Filters" */}
-			<Col xs={10} className='col outfit p-4 m-0'> {/* Outfit */}
+			<Col xs={10} className='outfit p-4 m-4'> {/* Outfit */}
 				{/* {userId ? <DisplayWardrobe userId={userId}></DisplayWardrobe> :  <img src={loading} alt="loading" />} */}
 			</Col>
-			<Col xs={2} className='col settings p-4 pl-0 m-0'> {/* "Filter" */}
+			<Col xs={2} className='settings p-4 m-4'> {/* "Filter" */}
 				<Row className='row colors p-2 m-2'>
 					colors
 				</Row>

@@ -35,7 +35,7 @@ async function CreateWardrobe(userId){
     }
 }
 
-function Signup(){
+ function Signup(){
     const[theme, setTheme]= localStorage('theme' ? 'dark' : 'light');
     const [toggleIcon, setToggleIcon]= useState('fa fa-toggle-off');
     const [themeText, setThemeText]= useState('Light');
@@ -55,10 +55,12 @@ function Signup(){
     function createAccount(e){
         e.preventDefault();
         createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
+        .then(async (userCredential) => {
             // console.log(userCredential);
             // Signed up 
             const user = userCredential.user;
+
+            CreateWardrobe(user.uid);
 
             updateProfile(auth.currentUser, {
                 displayName: firstName +" "+lastName, photoURL: "https://example.com/jane-q-user/profile.jpg"
