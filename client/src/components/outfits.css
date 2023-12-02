@@ -1,3 +1,13 @@
+@font-face {
+  font-family: 'CenturyGothic';
+  src: url('../assets/Fonts/CenturyGothic.ttf') format('truetype');
+}
+.colors{
+  font-family: 'CenturyGothic' sans-serif !important;
+}
+.bigger{
+  font-size: 1.5em;
+}
 [class*='m-'] {
   background-color: #f7eef8; 
   border-radius: 25px; 
@@ -25,4 +35,11 @@
     max-width: 100%; /* Make the image take up to the full width of the logo div */
     height: auto; /* Maintain the aspect ratio */
     width: auto; /* Maintain the aspect ratio */
+}
+label{
+  padding: 0px 0px 0px 0px;
+}
+*{
+  font-family: 'CenturyGothic' sans-serif !important;
+  width: auto;
 }

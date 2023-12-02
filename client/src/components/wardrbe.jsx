@@ -9,6 +9,7 @@ import auth from "../firebase.jsx";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { app } from '../firebase.jsx';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 import loading from '../assets/loading.gif';
 
@@ -154,6 +155,7 @@ async function updateWardrobe(newItem, userId) {
 	}
 }
 function Wardrobe() {
+	const navigate = useNavigate();
 	const [itemName, setItemName] = useState('');
 	const [itemColor, setItemColor] = useState('');
 	const [itemSize, setItemSize] = useState('');
@@ -171,6 +173,7 @@ function Wardrobe() {
 				if (user) {
 					resolve(user.uid); // Resolve the promise with user ID
 				} else {
+					navigate('/login');
 					reject('No user found'); // Reject the promise
 				}
 			});

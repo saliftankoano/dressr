@@ -3,11 +3,13 @@ import React, { useState } from "react";
 import {auth} from '../firebase';
 import { setPersistence, browserSessionPersistence } from 'firebase/auth';
 import Avatar from '@mui/material/Avatar'
+import { useNavigate } from "react-router-dom";
 
 // const auth = getAuth();
 
 function Dashboard(){
-    
+    const navigate = useNavigate();
+
     const[userName, setuserName]= useState('');
     const[userImageUrl, setUserImageUrl]= useState('https://cdn.vectorstock.com/i/1000x1000/71/90/blank-avatar-photo-icon-design-vector-30257190.webp')
     window.onload = function(){
@@ -20,7 +22,8 @@ function Dashboard(){
                 setUserImageUrl(auth.currentUser.photoURL)
             }
             else{
-                console.log("No user detected!");
+                navigate('/login');
+                console.error("No user detected!");
             }
         });
     }
