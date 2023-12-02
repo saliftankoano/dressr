@@ -11,8 +11,9 @@ import {UserWardrobe} from '../WardrobeBackend.js';
 
 // FIREBASE AUTH
 const db = getFirestore(app);
+
 async function CreateWardrobe(userId){
-    const wardrobe = new UserWardrobe(userId);
+    const wardrobe = new UserWardrobe();
     try {
         // Make a POST request to the create endpoint
         const response = await axios.post('http://localhost:4000/api/wardrobe/create', {

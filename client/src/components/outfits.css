@@ -1,0 +1,33 @@
+/* .col {
+  background-color: #f7eef8; 
+  border-radius: 25px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+} */
+[class*='m-'] {
+  background-color: #f7eef8; 
+  border-radius: 25px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+.row {
+  background-color: #ffffff; /* White color for the inner rectangles */
+  border-radius: 15px; /* Slightly smaller radius for the inner rectangles */
+}
+.ignore-row-css{
+  background-color: transparent;
+  border-radius: none;
+  box-sizing: none;
+}
+.ignore-css{all:unset;}
+.logoRow{
+    height:10vh;
+}
+.logo{
+    text-align: left !important;
+    height: 100%;
+}
+.logo img {
+    max-height: 100%; /* Make the image take up to the full height of the logo div */
+    max-width: 100%; /* Make the image take up to the full width of the logo div */
+    height: auto; /* Maintain the aspect ratio */
+    width: auto; /* Maintain the aspect ratio */
+}
