@@ -438,9 +438,8 @@ export async function GenerateOutfit(weather, userId){
         modifiedWardrobe.add(bottomsItem, 'bottoms');
         modifiedWardrobe.add(hatsItem, 'hats');
         modifiedWardrobe.add(accessoriesItem, 'accessories');
-        console.log(modifiedWardrobe);
 
-        return data.wardrobe;
+        return modifiedWardrobe;
     }catch(err){
         console.error("Couldn't generate outfit!\n", err);
         return false;

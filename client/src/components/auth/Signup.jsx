@@ -14,7 +14,7 @@ import {UserWardrobe} from '../WardrobeBackend.js';
 const auth = getAuth();
 const db = getFirestore(app);
 async function CreateWardrobe(userId){
-    const wardrobe = new UserWardrobe(userId);
+    const wardrobe = new UserWardrobe();
     try {
         // Make a POST request to the create endpoint
         const response = await axios.post('http://localhost:4000/api/wardrobe/create', {
@@ -39,6 +39,7 @@ async function CreateWardrobe(userId){
     }
 }
 
+ function Signup(){
 function Signup(){
     //Toggle Button
     const[theme, setTheme]= localStorage('theme' ? 'dark' : 'light');
@@ -59,69 +60,42 @@ function Signup(){
     const[url, setUrl]= useState('');
     const[userId, setUserId]= useState('')
 
-    function handleProfile(e){
-        if(e.target.files[0]){
-            setProfilePic(e.target.files[0]);
-        }
-    }
-    async function writeToDB(userId) {
-        try{
-            await setDoc(doc(db, "users",""+email), {
-                firstName: firstName,
-                lastName: lastName,
-                dob: dob,
-                email: email
-                });
-            window.location.href = "./dashboard";
-        }
-        catch(err){
-            console.error("writeToDB failed. reason :", err)
-        }
-    };
-    
-    async function createAccount(e){
+    function createAccount(e){
         e.preventDefault();
-        try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        createUserWithEmailAndPassword(auth, email, password)
+        .then(async (userCredential) => {
+            // console.log(userCredential);
+            // Signed up 
             const user = userCredential.user;
-            setUserId(user.uid);
-        
-            await updateProfile(user, {
-              displayName: firstName,
-              photoURL: url,
-            });
-        
-            console.log("User name: " + user.displayName);
-        
-            // Rest of your code...
-        
-            // Log the current user's display name after the authentication state is updated
-            auth.onAuthStateChanged(function (user) {
-              setPersistence(auth, browserSessionPersistence);
-              console.log("Current User name: " + auth.currentUser.displayName);
-            });
-            const storage = getStorage();
-            // Create a storage reference from our storage service
-            const storageRef = ref(storage, `profiles/${auth.currentUser.uid}`);
-            const metadata = { contentType: profilePic.type }; // Set the content type
-            
-            try{
-                const snapshot = await uploadBytes(storageRef, profilePic, metadata);
-                console.log("Uploaded a file: "+snapshot);
-                const downloadUrl = await getDownloadURL(storageRef);
-                // Update the user's photoURL
-                await updateProfile(auth.currentUser, {
-                    photoURL: downloadUrl,
+
+            CreateWardrobe(user.uid);
+
+            updateProfile(auth.currentUser, {
+                displayName: firstName +" "+lastName, photoURL: "https://example.com/jane-q-user/profile.jpg"
+                }).then(() => {
+                    // Profile updated!
+                    console.log("Name: "+user.displayName)
+                }).catch((error) => {
+                    // An error occurred
+                    console.log(error)
+                }
+            );
+
+            try {
+                addDoc(collection(db, "users"), {
+                    firstName: {firstName},
+                    lastName: {lastName},
+                    dob: {dob},
+                    emal: {email}
                 });
-                // Write to the database
-                writeToDB(userId);
             }
-            catch(error){
-                console.error('Error uploading file:', error);
+            catch (e) {
+                console.error("Error adding document: ", e);
             }
-            
-            writeToDB(userId);
-        }catch (error) {
+
+            window.location.href = "./dashboard";            
+        })
+        .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log(errorCode + "  " + errorMessage);

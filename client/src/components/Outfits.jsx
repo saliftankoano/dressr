@@ -1,5 +1,6 @@
 import ModalBody from 'react-bootstrap/esm/ModalBody';
-import './styles.css'
+// import './styles.css';
+import './outfits.css';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Weather } from './WardrobeBackend';
@@ -113,6 +114,7 @@ function DisplayWardrobe(userId) {
 function Outfit(){
     const[userId, setuserId]= useState("");
 	
+	// Get the currently signed-in user
 	useEffect(() => {
 		const checkAuthState = () => {
 			return new Promise((resolve, reject) => {
@@ -134,23 +136,31 @@ function Outfit(){
 				console.error(error);
 			});
 		}, []);
-	console.log('userId:',userId)
 
     return(
     <>
-    {/* Back Button */}
-    <a href='./dashboard'><button id='outfit'>Home</button></a>
-
-	<Container className='full'>
-		<Row>
-			{/* <Col>
-				<div align="center">
-					<h2>Outfits</h2>
-					<button onClick={handleClick}>Generate Outfit!</button>
-				</div>
-			</Col> */}
-			<Col> {/* Generate User Outfit! */}
-				{userId ? <DisplayWardrobe userId={userId}></DisplayWardrobe> :  <img src={loading} alt="loading" />}
+	<Container fluid> {/* Complete Webpage */}
+		<Row className='logoRow ignore-row-css'> {/* Logo & Bar */}
+		<div className='logo'>
+			<a href='/dashboard'>
+				<img src='src/assets/logo.png' alt='logo'/>
+			</a>
+		</div>
+		</Row>
+		<Row className='ignore-row-css'> {/* Outfits & "Filters" */}
+			<Col xs={10} className='outfit p-4 m-4'> {/* Outfit */}
+				{/* {userId ? <DisplayWardrobe userId={userId}></DisplayWardrobe> :  <img src={loading} alt="loading" />} */}
+			</Col>
+			<Col xs={2} className='settings p-4 m-4'> {/* "Filter" */}
+				<Row className='row colors p-2 m-2'>
+					colors
+				</Row>
+				<Row className='row fabric p-2 m-2'>
+					fabric
+				</Row>
+				<Row className='row style p-2 m-2'>
+					style
+				</Row>
 			</Col>
 		</Row>
 	</Container>

@@ -23,7 +23,32 @@ getDocs(colRef).then((snapshot)=>{
     }).catch(error=>{
         console.log(error.message)
     })
+async function DeleteItem(itemId, userId) {
+	try {
+		const response = await axios.post('http://localhost:4000/api/wardrobe/delete-item', 
+		{
+			itemId
+			}, {
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
 
+		if (response.status === 200) {
+		const data = response.data;
+		if (data.success) {
+			console.log('Item deleted successfully');
+		} else {
+			console.error('Failed to delete the item');
+		}
+		} else {
+		console.error('Request failed with status:', response.status);
+		}
+	} catch (error) {
+		console.error('Error deleting the item:', error);
+	}
+
+}
 async function fetchWardrobe(userId) {
 	try {
 		console.log('fetchwardrobe: ',userId);
@@ -81,7 +106,7 @@ function DisplayWardrobe(userId) {
 
 	return (
 		<div>
-		<h2>Wardrobe</h2>
+		<h2>Wardrbe</h2>
 		{Object.keys(wardrobeData).map(category => {
 			if (Array.isArray(wardrobeData[category])) {
 			return (
@@ -91,6 +116,7 @@ function DisplayWardrobe(userId) {
 					{wardrobeData[category].map((item, index) => (
 					<li key={index}>
 						{item.name}: {item.color}, {item.season}, {item.size}, {item.type}, {item.season}, {item.gender}
+						{/* add this in when you can delete the reference as well <button onClick={() => DeleteItem(item._id)}>delete</button> */}
 					</li>
 					))}
 				</ul>
