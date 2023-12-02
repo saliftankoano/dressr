@@ -140,28 +140,25 @@ function Outfit(){
     return(
     <>
 	<Container fluid> {/* Complete Webpage */}
-		<Row className='logoRow ignore-row-css'> {/* Logo & Bar */}
+		<Row className='logoRow'> {/* Logo & Bar */}
 		<div className='logo'>
 			<a href='/dashboard'>
 				<img src='src/assets/logo.png' alt='logo'/>
 			</a>
-		</div>
-		</Row>
-		<Row className='ignore-row-css'> {/* Outfits & "Filters" */}
-			<Col xs={10} className='outfit p-4 m-4'> {/* Outfit */}
-				{/* {userId ? <DisplayWardrobe userId={userId}></DisplayWardrobe> :  <img src={loading} alt="loading" />} */}
-			</Col>
-			<Col xs={2} className='settings p-4 m-4'> {/* "Filter" */}
-				<Row className='row colors p-2 m-2'>
+		</div></Row>
+		<Row className=''> {/* Outfits & "Filters" */}
+			<Col xs={10} className='outfit p-4 m-2'> {/* Outfit */}
+				{userId ? <DisplayWardrobe userId={userId}></DisplayWardrobe> :  <img src={loading} alt="loading" />}</Col>
+			<Col className='settings p-4 m-2'> {/* "Filter" */}
+				<Row className='selectors colors p-4 mb-4'>
 					colors
 				</Row>
-				<Row className='row fabric p-2 m-2'>
+				<Row className='selectors fabric p-4 mb-4'>
 					fabric
 				</Row>
-				<Row className='row style p-2 m-2'>
+				<Row className='selectors style p-4'>
 					style
-				</Row>
-			</Col>
+				</Row></Col>
 		</Row>
 	</Container>
     </>

@@ -58,7 +58,7 @@ async function fetchWardrobe(userId) {
 			},
 			params: {userId},
 			});
-		console.log(response);
+		// console.log(response);
 
 		if (response.status === 200) {
 			if (response.data.wardrobe) {
@@ -76,7 +76,7 @@ async function fetchWardrobe(userId) {
 	return null;
 }
 function DisplayWardrobe(userId) {
-	console.log(`display wardrobe caled with userId ${userId.userId}`)
+	console.log(`display wardrobe caled for userId ${userId.userId}`)
 	const [wardrobeData, setWardrobeData] = useState(null);
 	const [error, setError] = useState(null);
 

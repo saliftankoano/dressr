@@ -130,7 +130,7 @@ app.get('/api/fetchWardrobe', async (req, res) => {
   }
 });
 /**
- * gets all items from wardrobe
+ * gets items from wardrobe by type
  * @param {string} userId 
  * @param {string} itemType 
  * @returns {object} wardrobe

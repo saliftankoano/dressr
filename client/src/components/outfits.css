@@ -1,14 +1,9 @@
-/* .col {
-  background-color: #f7eef8; 
-  border-radius: 25px; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-} */
 [class*='m-'] {
   background-color: #f7eef8; 
   border-radius: 25px; 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
-.row {
+.selectors {
   background-color: #ffffff; /* White color for the inner rectangles */
   border-radius: 15px; /* Slightly smaller radius for the inner rectangles */
 }
