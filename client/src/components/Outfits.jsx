@@ -113,7 +113,13 @@ function DisplayWardrobe(userId) {
 
 function Outfit(){
     const[userId, setuserId]= useState("");
-	
+	const colors = ['red', 'green', 'blue', 'orange', 'purple'];
+	const fabrics = ['cotton', 'wool', 'polyester', 'silk', 'leather'];
+	const styles = ['casual', 'formal', 'business casual', 'athletic', 'business formal'];
+	const [selectedColor, setSelectedColor] = useState('');
+	const [selectedFabric, setSelectedFabric] = useState('');
+	const [selectedStyle, setSelectedStyle] = useState('');
+
 	// Get the currently signed-in user
 	useEffect(() => {
 		const checkAuthState = () => {
@@ -147,17 +153,74 @@ function Outfit(){
 			</a>
 		</div></Row>
 		<Row className=''> {/* Outfits & "Filters" */}
-			<Col xs={10} className='outfit p-4 m-2'> {/* Outfit */}
+			<Col xs={10} className='outfit p-4 m-2 ml-5'> {/* Outfit */}
 				{userId ? <DisplayWardrobe userId={userId}></DisplayWardrobe> :  <img src={loading} alt="loading" />}</Col>
 			<Col className='settings p-4 m-2'> {/* "Filter" */}
-				<Row className='selectors colors p-4 mb-4'>
-					colors
+				<Row className='selectors colors p-4 mb-4'> {/* "Color" */}
+					<p className='bigger'>colors</p>
+					<form>
+						<div className="color-options">
+						{colors.map((color, index) => (
+							<label key={index}>
+							<input
+								type="checkbox"
+								name="color"
+								value={color}
+								checked={selectedColor === color}
+								onChange={() => setSelectedColor(color)}
+							/>
+							<span
+								className={`color-option ${color === 'green' ? 'green-check' : ''}`}
+							></span>
+							{color}
+							</label>
+						))}
+						</div>
+					</form>
 				</Row>
-				<Row className='selectors fabric p-4 mb-4'>
-					fabric
+				<Row className='selectors fabric p-4 mb-4'> {/* "Fabric" */}
+					<p className='bigger'>fabric</p>
+					<form>
+						<div className="color-options">
+						{fabrics.map((fabric, index) => (
+							<label key={index}>
+							<input
+								type="checkbox"
+								name="fabric"
+								value={fabric}
+								checked={selectedColor === fabric}
+								onChange={() => setSelectedFabric(fabric)}
+							/>
+							<span
+								className={`color-option ${fabric === 'green' ? 'green-check' : ''}`}
+							></span>
+							{fabric}
+							</label>
+						))}
+						</div>
+					</form>
 				</Row>
-				<Row className='selectors style p-4'>
-					style
+				<Row className='selectors style p-4'> {/* "Style" */}
+					<p className='bigger'>styles</p>
+					<form>
+						<div className="color-options">
+						{styles.map((style, index) => (
+							<label key={index}>
+							<input
+								type="checkbox"
+								name="style"
+								value={style}
+								checked={selectedColor === style}
+								onChange={() => setSelectedStyle(style)}
+							/>
+							<span
+								className={`color-option ${style === 'green' ? 'green-check' : ''}`}
+							></span>
+							{style}
+							</label>
+						))}
+						</div>
+					</form>
 				</Row></Col>
 		</Row>
 	</Container>
