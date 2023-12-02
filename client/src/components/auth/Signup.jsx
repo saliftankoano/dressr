@@ -89,6 +89,7 @@ function Signup(){
               displayName: firstName,
               photoURL: url,
             });
+            await CreateWardrobe(user.uid);
         
             console.log("User name: " + user.displayName);
         
