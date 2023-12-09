@@ -5,6 +5,7 @@
 }
 .landingPage{
   width: 100vw;
+  height: 100vh;
   background: #DCDDFA;
   background: radial-gradient(circle,#fddcff 0%,#DCDDFA 100%);
 }
@@ -48,6 +49,7 @@ p{
 .content{
   display: inline-flex;
   height: 92.5dvh;
+  width: 100vw;
 }
 .descriptions{
   width: 46%;
@@ -58,8 +60,8 @@ p{
 #explain{
   margin-top: 2dvh;
   width: 80%;
-  font-family: 'Open Sans', sans-serif;
-
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
 }
 .clothing{
   width: 54%;

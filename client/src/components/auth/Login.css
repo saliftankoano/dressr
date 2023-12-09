@@ -33,6 +33,7 @@ a{
     background: radial-gradient(circle,#fddcff 0%,#DCDDFA 100%);
     color: var(--text-primary);
     height: 100vh;
+    width: 100vw;
     display: flex;
     flex-direction: column;
     justify-content: center;

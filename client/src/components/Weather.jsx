@@ -56,7 +56,7 @@ function Weather() {
     };
 
     return (
-        <div>
+        <div className="weather">
             <div>
                 <h1 className="logo">DRESSR</h1>
             </div>
@@ -69,7 +69,7 @@ function Weather() {
                     Zipcode:
                     <input name="zipcode" value={zipcode} type="text" placeholder="Enter Zip Code" onChange={handleChange} />
                 </label>
-                <button type="submit">Submit</button>
+                <button type="submit" id="submit-weather">Submit</button>
             </form>
             {loading && <p>Loading...</p>}
             {error && <p>Error: {error.message}</p>}
