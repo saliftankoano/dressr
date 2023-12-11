@@ -38,7 +38,7 @@ function Dashboard(){
                 Hello,<br/>{userName}
             </div>
             <div className="buttons">
-                <a href='./wardrbe'><button id='wardrbe' className='dash-btns'>Wardrobe</button></a>
+                <a href='./wardrbePage'><button id='wardrbe' className='dash-btns'>Wardrobe</button></a>
                 <a href='./outfit'><button id='outfit' className='dash-btns'>Outfits</button></a>
                 <a href="./weather"><button id='weather' className='dash-btns'>Weather</button>
                 </a>

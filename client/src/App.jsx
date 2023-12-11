@@ -11,6 +11,7 @@ import Weather from "./components/Weather.jsx";
 import Outfit from "./components/Outfits.jsx";
 import Signup from "./components/auth/Signup.jsx"
 import Test from './components/Test.jsx'
+import WardrbePage from "./components/WardrbePage.jsx";
 
 function App(){
     return (
@@ -22,6 +23,7 @@ function App(){
                 <Route path='/dashboard' element={<Dashboard />} />
                 <Route path='/login' element={<Login />} />
                 <Route path='/wardrbe' element={<Wardrbe />} />
+                <Route path='/wardrbePage' element={<WardrbePage />}/>
                 <Route path='/weather' element={<Weather/>} /> 
                 <Route path='/outfit' element={<Outfit/>} /> 
                 <Route path='/signup' element={<Signup/>} />
