@@ -29,7 +29,7 @@ function WardrbePage(){
 
     const [topsData, setTopsData] = useState(null);
 
-    useEffect(() => {
+/*     useEffect(() => {
         const checkAuthState = () => {
             return new Promise((resolve, reject) => {
                 const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -66,13 +66,15 @@ function WardrbePage(){
         }
 
         fetchData();
-    }, []);
+    }, []); */
 
     const topsTab = () => {
         setSampleText("HERE ARE TOPS")
         setShowTops('d-block')
         setShowBottoms('d-none')
         setShowHats('d-none')
+        setShowAccessories('d-none')
+        setShowOthers('d-none')
     };
 
     const bottoms = () => {
@@ -80,6 +82,8 @@ function WardrbePage(){
         setShowTops('d-none')
         setShowBottoms('d-block')
         setShowHats('d-none')
+        setShowAccessories('d-none')
+        setShowOthers('d-none')
     };
 
     const hats = () => {
@@ -87,6 +91,8 @@ function WardrbePage(){
         setShowTops('d-none')
         setShowBottoms('d-none')
         setShowHats('d-block')
+        setShowAccessories('d-none')
+        setShowOthers('d-none')
     };
 
     const accessories = () => {
@@ -137,8 +143,8 @@ function WardrbePage(){
             <br/>  
             <Container id="clothes">
                 <Row xs={4}>
-                    {topsData.map((top) =>(
-                    <Col className={showTops} key={top} style={{paddingBottom:'20px'}}>
+                    {Array.from({length: 16}).map((tops) =>(
+                    <Col className={showTops} key={tops} style={{paddingBottom:'20px'}}>
                         <Card>
                             <Card.Img src='https://m.media-amazon.com/images/I/A13usaonutL._AC_CLa%7C2140%2C2000%7C41wOgswhePL.png%7C0%2C0%2C2140%2C2000%2B0.0%2C0.0%2C2140.0%2C2000.0_UY580_.png'/>
                             <Card.Title>{top.name}</Card.Title>
