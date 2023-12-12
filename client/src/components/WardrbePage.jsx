@@ -4,7 +4,7 @@ import Col from 'react-bootstrap/Col'
 import Card from 'react-bootstrap/Card'
 import { Modal } from 'react-bootstrap'
 import './WardrbePage.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 function WardrbePage(){
     const [sampleText, setSampleText] = useState('SAMPLE TEXT GOES HERE');
@@ -29,7 +29,7 @@ function WardrbePage(){
 
     const [topsData, setTopsData] = useState(null);
 
-/*     useEffect(() => {
+    useEffect(() => {
         const checkAuthState = () => {
             return new Promise((resolve, reject) => {
                 const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -66,7 +66,7 @@ function WardrbePage(){
         }
 
         fetchData();
-    }, []); */
+    }, []);
 
     const topsTab = () => {
         setSampleText("HERE ARE TOPS")
@@ -75,6 +75,7 @@ function WardrbePage(){
         setShowHats('d-none')
         setShowAccessories('d-none')
         setShowOthers('d-none')
+        console.log(topsData);
     };
 
     const bottoms = () => {
