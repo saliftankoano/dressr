@@ -5,6 +5,8 @@ import Card from 'react-bootstrap/Card'
 import { Modal } from 'react-bootstrap'
 import './WardrbePage.css'
 import { useState, useEffect } from 'react'
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getFirestore, collection, getDocs } from "firebase/firestore";
 
 function WardrbePage(){
     const [sampleText, setSampleText] = useState('SAMPLE TEXT GOES HERE');
@@ -17,7 +19,7 @@ function WardrbePage(){
     const [showAccessories, setShowAccessories] = useState('d-block');
     const [showOthers, setShowOthers] = useState('d-block');
 
-    const[userId, setuserId]= useState("");
+    const[userId, setUserId]= useState("");
 
     const handleClose = () => setShowItemEntry(false);
     const handleOpen = () => setShowItemEntry(true);
@@ -30,43 +32,46 @@ function WardrbePage(){
     const [topsData, setTopsData] = useState(null);
 
     useEffect(() => {
-        const checkAuthState = () => {
-            return new Promise((resolve, reject) => {
-                const unsubscribe = onAuthStateChanged(auth, (user) => {
-                    unsubscribe(); // Unsubscribe immediately after receiving the user data
-                    if (user) {
-                        resolve(user.uid); // Resolve the promise with user ID
-                    } else {
-                        navigate('/login');
-                        reject('No user found'); // Reject the promise
-                    }
-                });
-            });
-        };
-        checkAuthState()
-            .then(uid => {
-                setuserId(uid); // Set the user ID when the user is found
-            })
-            .catch(error => {
-                console.error(error);
-            });
+        // Get the Firebase authentication instance
+        const auth = getAuth();
+    
+        // Listen for changes in the authentication state
+        const unsubscribe = onAuthStateChanged(auth, (authUser) => {
+          // Check if a user is currently logged in
+          if (authUser) {
+            // Access the UID of the currently logged-in user
+            const { uid } = authUser;
+            setUserId(uid);
+          } else {
+            setUserId(null);
+          }
 
-        const fetchData = async() => {
-            const id = userId;
-            const itemType = 'tops';
+          fetchTops(userId).then(data => {
+            if (data){
+                setTopsData(data.items)
+            }else{
+                console.error('tops data null');
+            }
+          })
+        });
+    
+        // Cleanup the subscription when the component unmounts
+        return () => unsubscribe();
+      }, []);
 
+    async function fetchTops(UserId){
+        try{
             const response = await axios.get('/api/fetchByType', {
-                params:{
-                    id,
-                    itemType
-                }
+                params: {
+                userId: UserId,
+                itemType: 'tops'
+            }
             });
-
             setTopsData(response.data.items);
+        } catch (error){
+            console.error(error);
         }
-
-        fetchData();
-    }, []);
+    }
 
     const topsTab = () => {
         setSampleText("HERE ARE TOPS")
@@ -76,6 +81,7 @@ function WardrbePage(){
         setShowAccessories('d-none')
         setShowOthers('d-none')
         console.log(topsData);
+        console.log(userId)
     };
 
     const bottoms = () => {
