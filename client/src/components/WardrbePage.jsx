@@ -11,7 +11,23 @@ import axios from 'axios';
 import {app} from '../firebase';
 
 
-const db = getFirestore(app);
+// Get the Firebase authentication instance
+const auth = getAuth();
+let userID = "";
+
+// Listen for changes in the authentication state
+onAuthStateChanged(auth, (user) => {
+  // Check if a user is currently logged in
+  if (user) {
+    // Access the UID of the currently logged-in user
+    userID = user.uid;
+    console.log("User ID:", userID);
+  } else {
+    console.log("No user is currently logged in.");
+  }
+});
+
+/* const db = getFirestore(app);
 const colRef = collection(db, "users");    
 getDocs(colRef).then((snapshot)=>{
         let users = [];
@@ -20,23 +36,26 @@ getDocs(colRef).then((snapshot)=>{
         })
     }).catch(error=>{
         console.log(error.message)
-});
+}) */
 
-async function fetchTops(id){
+async function fetchWardrbe(id){
     try{
-        const response = await axios.get('/api/fetchByType', {
-            params: {
-            userId: id,
-            itemType: 'tops'
-        }
+        console.log('fetchWardrobe: ', id)
+        const response = await axios.get('http://localhost:4000/api/fetchWardrbe', {
+            params: {id}
         });
-        setTopsData(response.data.items);
+
+        if (response){
+            return response.data.wardrobe;
+        }else{
+            console.log('data null');
+        }
     } catch (error){
-        console.error(error);
+        console.error('data null');
     }
 };
 
-function WardrbePage(userId){
+function WardrbePage(){
     const [sampleText, setSampleText] = useState('SAMPLE TEXT GOES HERE');
 
     const [showItemEntry, setShowItemEntry] = useState(false);
@@ -55,16 +74,21 @@ function WardrbePage(userId){
     const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'black', 'white', 'grey', 'tan']
     const seasons = ['winter', 'spring', 'summer', 'fall']
 
-    const [topsData, setTopsData] = useState(null);
+    const [wardrobeData, setWardrobeData] = useState(null);
+
+    const userId = userID;
+
+    console.log("the userId right now is " + userId);
 
     useEffect(() => {
-      fetchTops(userId.userId).then(data => {
-            if (data){
-                setTopsData(data.items)
-            }else{
-                console.error('tops data null');
-            }
-          })
+      fetchWardrbe(userId).then(data => {
+        if(data){
+            console.log(data)
+            setWardrobeData(data.wardrobe)
+        }else{
+            console.error('error fetching wardrobe')
+        }
+      })
     });
 
     const topsTab = () => {
@@ -74,8 +98,7 @@ function WardrbePage(userId){
         setShowHats('d-none')
         setShowAccessories('d-none')
         setShowOthers('d-none')
-        console.log(topsData);
-        console.log(userId.userId)
+        console.log();
     };
 
     const bottoms = () => {
