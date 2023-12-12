@@ -7,8 +7,36 @@ import './WardrbePage.css'
 import { useState, useEffect } from 'react'
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, collection, getDocs } from "firebase/firestore";
+import axios from 'axios';
+import {app} from '../firebase';
 
-function WardrbePage(){
+
+const db = getFirestore(app);
+const colRef = collection(db, "users");    
+getDocs(colRef).then((snapshot)=>{
+        let users = [];
+        snapshot.docs.forEach((doc)=>{
+            users.push( {...doc.data().firstName, id: doc.id,})
+        })
+    }).catch(error=>{
+        console.log(error.message)
+});
+
+async function fetchTops(id){
+    try{
+        const response = await axios.get('/api/fetchByType', {
+            params: {
+            userId: id,
+            itemType: 'tops'
+        }
+        });
+        setTopsData(response.data.items);
+    } catch (error){
+        console.error(error);
+    }
+};
+
+function WardrbePage(userId){
     const [sampleText, setSampleText] = useState('SAMPLE TEXT GOES HERE');
 
     const [showItemEntry, setShowItemEntry] = useState(false);
@@ -18,8 +46,6 @@ function WardrbePage(){
     const [showHats, setShowHats] = useState('d-block');
     const [showAccessories, setShowAccessories] = useState('d-block');
     const [showOthers, setShowOthers] = useState('d-block');
-
-    const[userId, setUserId]= useState("");
 
     const handleClose = () => setShowItemEntry(false);
     const handleOpen = () => setShowItemEntry(true);
@@ -32,46 +58,14 @@ function WardrbePage(){
     const [topsData, setTopsData] = useState(null);
 
     useEffect(() => {
-        // Get the Firebase authentication instance
-        const auth = getAuth();
-    
-        // Listen for changes in the authentication state
-        const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-          // Check if a user is currently logged in
-          if (authUser) {
-            // Access the UID of the currently logged-in user
-            const { uid } = authUser;
-            setUserId(uid);
-          } else {
-            setUserId(null);
-          }
-
-          fetchTops(userId).then(data => {
+      fetchTops(userId.userId).then(data => {
             if (data){
                 setTopsData(data.items)
             }else{
                 console.error('tops data null');
             }
           })
-        });
-    
-        // Cleanup the subscription when the component unmounts
-        return () => unsubscribe();
-      }, []);
-
-    async function fetchTops(UserId){
-        try{
-            const response = await axios.get('/api/fetchByType', {
-                params: {
-                userId: UserId,
-                itemType: 'tops'
-            }
-            });
-            setTopsData(response.data.items);
-        } catch (error){
-            console.error(error);
-        }
-    }
+    });
 
     const topsTab = () => {
         setSampleText("HERE ARE TOPS")
@@ -81,7 +75,7 @@ function WardrbePage(){
         setShowAccessories('d-none')
         setShowOthers('d-none')
         console.log(topsData);
-        console.log(userId)
+        console.log(userId.userId)
     };
 
     const bottoms = () => {
