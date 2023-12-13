@@ -5,29 +5,13 @@ import Card from 'react-bootstrap/Card'
 import { Modal } from 'react-bootstrap'
 import './WardrbePage.css'
 import { useState, useEffect } from 'react'
+import auth from "../firebase.jsx";
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import axios from 'axios';
 import {app} from '../firebase';
 
-
-// Get the Firebase authentication instance
-const auth = getAuth();
-let userID = "";
-
-// Listen for changes in the authentication state
-onAuthStateChanged(auth, (user) => {
-  // Check if a user is currently logged in
-  if (user) {
-    // Access the UID of the currently logged-in user
-    userID = user.uid;
-    console.log("User ID:", userID);
-  } else {
-    console.log("No user is currently logged in.");
-  }
-});
-
-/* const db = getFirestore(app);
+const db = getFirestore(app);
 const colRef = collection(db, "users");    
 getDocs(colRef).then((snapshot)=>{
         let users = [];
@@ -36,24 +20,31 @@ getDocs(colRef).then((snapshot)=>{
         })
     }).catch(error=>{
         console.log(error.message)
-}) */
+    })
 
-async function fetchWardrbe(id){
+async function fetchWardrobe(id){
+    if(id === ""){
+        return null
+    }
     try{
         console.log('fetchWardrobe: ', id)
-        const response = await axios.get('http://localhost:4000/api/fetchWardrbe', {
-            params: {id}
+        const response = await axios.get('http://localhost:4000/api/fetchByType', {
+            params: {
+                userId: id,
+                itemType: 'tops'
+            }
         });
 
         if (response){
-            return response.data.wardrobe;
+            console.log(response.data.items)
+            return response.data.items;
         }else{
             console.log('data null');
         }
     } catch (error){
         console.error('data null');
     }
-};
+}
 
 function WardrbePage(){
     const [sampleText, setSampleText] = useState('SAMPLE TEXT GOES HERE');
@@ -75,21 +66,43 @@ function WardrbePage(){
     const seasons = ['winter', 'spring', 'summer', 'fall']
 
     const [wardrobeData, setWardrobeData] = useState(null);
-
-    const userId = userID;
-
-    console.log("the userId right now is " + userId);
+    const [userId, setUserId] = useState('');
 
     useEffect(() => {
-      fetchWardrbe(userId).then(data => {
-        if(data){
-            console.log(data)
-            setWardrobeData(data.wardrobe)
-        }else{
-            console.error('error fetching wardrobe')
+	const checkAuthState = () => {
+		return new Promise((resolve, reject) => {
+			const unsubscribe = onAuthStateChanged(auth, (user) => {
+				unsubscribe(); // Unsubscribe immediately after receiving the user data
+				if (user) {
+					resolve(user.uid); // Resolve the promise with user ID
+				} else {
+					reject('No user found'); // Reject the promise
+				}
+			});
+		});
+	};
+	checkAuthState()
+		.then(uid => {
+			setUserId(uid); // Set the user ID when the user is found
+		})
+		.catch(error => {
+			console.error(error);
+		});
+	}, []);
+
+    useEffect(() => {
+        if (userId) { // Checks if userId is not null or undefined
+            fetchWardrobe(userId).then(data => {
+                console.log(userId, data);
+                if (data) {
+                    console.log(data);
+                    setWardrobeData(data);
+                } else {
+                    console.error('Error fetching wardrobe');
+                }
+            });
         }
-      })
-    });
+    }, [userId]); // Adds userId as a dependency
 
     const topsTab = () => {
         setSampleText("HERE ARE TOPS")
