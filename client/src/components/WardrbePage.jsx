@@ -22,12 +22,12 @@ getDocs(colRef).then((snapshot)=>{
         console.log(error.message)
     })
 
-async function fetchWardrobe(id){
+async function fetchTops(id){
     if(id === ""){
         return null
     }
     try{
-        console.log('fetchWardrobe: ', id)
+        console.log('fetchTops: ', id)
         const response = await axios.get('http://localhost:4000/api/fetchByType', {
             params: {
                 userId: id,
@@ -39,10 +39,10 @@ async function fetchWardrobe(id){
             console.log(response.data.items)
             return response.data.items;
         }else{
-            console.log('data null');
+            console.log('tops null');
         }
     } catch (error){
-        console.error('data null');
+        console.error('tops null');
     }
 }
 
@@ -50,6 +50,8 @@ function WardrbePage(){
     const [sampleText, setSampleText] = useState('SAMPLE TEXT GOES HERE');
 
     const [showItemEntry, setShowItemEntry] = useState(false);
+
+    const [isLoading, setIsLoading] = useState(true);
 
     const [showTops, setShowTops] = useState('d-block');
     const [showBottoms, setShowBottoms] = useState('d-block');
@@ -66,6 +68,7 @@ function WardrbePage(){
     const seasons = ['winter', 'spring', 'summer', 'fall']
 
     const [wardrobeData, setWardrobeData] = useState(null);
+    const [topsData, setTopsData] = useState(null);
     const [userId, setUserId] = useState('');
 
     useEffect(() => {
@@ -92,11 +95,12 @@ function WardrbePage(){
 
     useEffect(() => {
         if (userId) { // Checks if userId is not null or undefined
-            fetchWardrobe(userId).then(data => {
+            fetchTops(userId).then(data => {
                 console.log(userId, data);
                 if (data) {
                     console.log(data);
-                    setWardrobeData(data);
+                    setTopsData(data);
+                    setIsLoading(false);
                 } else {
                     console.error('Error fetching wardrobe');
                 }
@@ -179,9 +183,12 @@ function WardrbePage(){
             <h1>{sampleText}</h1>
             <br/>  
             <Container id="clothes">
+                {isLoading ? (
+                    <p>Loading...</p>
+                ) : topsData ? (
                 <Row xs={4}>
-                    {Array.from({length: 16}).map((tops) =>(
-                    <Col className={showTops} key={tops} style={{paddingBottom:'20px'}}>
+                    {topsData.map((top) =>(
+                    <Col className={showTops} key={top} style={{paddingBottom:'20px'}}>
                         <Card>
                             <Card.Img src='https://m.media-amazon.com/images/I/A13usaonutL._AC_CLa%7C2140%2C2000%7C41wOgswhePL.png%7C0%2C0%2C2140%2C2000%2B0.0%2C0.0%2C2140.0%2C2000.0_UY580_.png'/>
                             <Card.Title>{top.name}</Card.Title>
@@ -189,7 +196,9 @@ function WardrbePage(){
                         </Card>
                     </Col>
                     ))}
-                </Row>
+                </Row>) : (
+                    <p>Error loading tops</p>
+                )}
 
                 <Row xs={4}>
                     {Array.from({length: 64}).map((bottoms) =>(
