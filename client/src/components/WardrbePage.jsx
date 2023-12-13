@@ -10,6 +10,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import axios from 'axios';
 import {app} from '../firebase';
+import {Item} from './WardrobeBackend.js';
 
 const db = getFirestore(app);
 const colRef = collection(db, "users");    
@@ -46,29 +47,196 @@ async function fetchTops(id){
     }
 }
 
+async function fetchBottoms(id){
+    if(id === ""){
+        return null
+    }
+    try{
+        console.log('fetchTops: ', id)
+        const response = await axios.get('http://localhost:4000/api/fetchByType', {
+            params: {
+                userId: id,
+                itemType: 'bottoms'
+            }
+        });
+
+        if (response){
+            console.log(response.data.items)
+            return response.data.items;
+        }else{
+            console.log('bottoms null');
+        }
+    } catch (error){
+        console.error('bottoms null');
+    }
+}
+
+async function fetchHats(id){
+    if(id === ""){
+        return null
+    }
+    try{
+        console.log('fetchHats: ', id)
+        const response = await axios.get('http://localhost:4000/api/fetchByType', {
+            params: {
+                userId: id,
+                itemType: 'hats'
+            }
+        });
+
+        if (response){
+            console.log(response.data.items)
+            return response.data.items;
+        }else{
+            console.log('hats null');
+        }
+    } catch (error){
+        console.error('hats null');
+    }
+}
+
+async function fetchLayers(id){
+    if(id === ""){
+        return null
+    }
+    try{
+        console.log('fetchLayers: ', id)
+        const response = await axios.get('http://localhost:4000/api/fetchByType', {
+            params: {
+                userId: id,
+                itemType: 'layers'
+            }
+        });
+
+        if (response){
+            console.log(response.data.items)
+            return response.data.items;
+        }else{
+            console.log('layers null');
+        }
+    } catch (error){
+        console.error('layers null');
+    }
+}
+
+async function fetchFootwear(id){
+    if(id === ""){
+        return null
+    }
+    try{
+        console.log('fetchFootwear: ', id)
+        const response = await axios.get('http://localhost:4000/api/fetchByType', {
+            params: {
+                userId: id,
+                itemType: 'footwear'
+            }
+        });
+
+        if (response){
+            console.log(response.data.items)
+            return response.data.items;
+        }else{
+            console.log('footwear null');
+        }
+    } catch (error){
+        console.error('footwear null');
+    }
+}
+
+async function fetchAccessories(id){
+    if(id === ""){
+        return null
+    }
+    try{
+        console.log('fetchAccessories: ', id)
+        const response = await axios.get('http://localhost:4000/api/fetchByType', {
+            params: {
+                userId: id,
+                itemType: 'accessories'
+            }
+        });
+
+        if (response){
+            console.log(response.data.items)
+            return response.data.items;
+        }else{
+            console.log('accessories null');
+        }
+    } catch (error){
+        console.error('accessories null');
+    }
+}
+
+async function updateWardrobe(newItem, userId) {
+	try {
+		const response = await axios.post('http://localhost:4000/api/wardrobe/update', {
+			newItem,
+			userId
+			}, {
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
+
+		if (response.status === 200) {
+		const data = response.data;
+		if (data.success) {
+			console.log('Wardrobe updated successfully');
+		} else {
+			console.error('Failed to update the wardrobe');
+		}
+		} else {
+		console.error('Request failed with status:', response.status);
+		}
+	} catch (error) {
+		console.error('Error updating the wardrobe:', error);
+	}
+}
+
 function WardrbePage(){
-    const [sampleText, setSampleText] = useState('SAMPLE TEXT GOES HERE');
+    const [sampleText, setSampleText] = useState('');
 
     const [showItemEntry, setShowItemEntry] = useState(false);
 
-    const [isLoading, setIsLoading] = useState(true);
+    const [itemName, setItemName] = useState('');
+	const [itemColor, setItemColor] = useState('');
+	const [itemSize, setItemSize] = useState('');
+	const [itemType, setItemType] = useState('');
+	const [itemSeason, setItemSeason] = useState('');
+	const [itemGender, setItemGender] = useState('');
+
+    const [isLoadingTops, setIsLoadingTops] = useState(true);
+    const [isLoadingBottoms, setIsLoadingBottoms] = useState(true);
+    const [isLoadingHats, setIsLoadingHats] = useState(true);
+    const [isLoadingLayers, setIsLoadingLayers] = useState(true);
+    const [isLoadingAccessories, setIsLoadingAccessories] = useState(true);
+    const [isLoadingFootwear, setIsLoadingFootwear] = useState(true);
 
     const [showTops, setShowTops] = useState('d-block');
     const [showBottoms, setShowBottoms] = useState('d-block');
     const [showHats, setShowHats] = useState('d-block');
     const [showAccessories, setShowAccessories] = useState('d-block');
+    const [showLayers, setShowLayers] = useState('d-block');
+    const [showFootwear, setShowFootwear] = useState('d-block');
     const [showOthers, setShowOthers] = useState('d-block');
 
     const handleClose = () => setShowItemEntry(false);
     const handleOpen = () => setShowItemEntry(true);
 
-    const clothes = ['tops', 'bottoms', 'hats', 'accessories', 'others']
+    const clothes = ['tops', 'bottoms', 'layers', 'footwear', 'hats', 'accessories']
     const sizes = ['xs','s','m','l','xl']
     const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'black', 'white', 'grey', 'tan']
     const seasons = ['winter', 'spring', 'summer', 'fall']
+    const gender = ['male', 'female', 'unisex']
 
     const [wardrobeData, setWardrobeData] = useState(null);
     const [topsData, setTopsData] = useState(null);
+    const [bottomsData, setBottomsData] = useState(null);
+    const [hatsData, setHatsData] = useState(null);
+    const [layersData, setLayersData] = useState(null);
+    const [accessoriesData, setAccessoriesData] = useState(null);
+    const [footwearData, setFootwearData] = useState(null);
+
     const [userId, setUserId] = useState('');
 
     useEffect(() => {
@@ -100,13 +268,78 @@ function WardrbePage(){
                 if (data) {
                     console.log(data);
                     setTopsData(data);
-                    setIsLoading(false);
+                    setIsLoadingTops(false);
                 } else {
-                    console.error('Error fetching wardrobe');
+                    console.error('Error fetching tops');
+                }
+            });
+
+            fetchBottoms(userId).then(data => {
+                console.log(userId, data);
+                if (data) {
+                    console.log(data);
+                    setBottomsData(data);
+                    setIsLoadingBottoms(false);
+                } else {
+                    console.error('Error fetching bottoms');
+                }
+            });
+
+            fetchHats(userId).then(data => {
+                console.log(userId, data);
+                if (data) {
+                    console.log(data);
+                    setHatsData(data);
+                    setIsLoadingHats(false);
+                } else {
+                    console.error('Error fetching hats');
+                }
+            });
+
+            fetchAccessories(userId).then(data => {
+                console.log(userId, data);
+                if (data) {
+                    console.log(data);
+                    setAccessoriesData(data);
+                    setIsLoadingAccessories(false);
+                } else {
+                    console.error('Error fetching accessories');
+                }
+            });
+
+            fetchLayers(userId).then(data => {
+                console.log(userId, data);
+                if (data) {
+                    console.log(data);
+                    setLayersData(data);
+                    setIsLoadingLayers(false);
+                } else {
+                    console.error('Error fetching layers');
+                }
+            });
+
+            fetchFootwear(userId).then(data => {
+                console.log(userId, data);
+                if (data) {
+                    console.log(data);
+                    setFootwearData(data);
+                    setIsLoadingFootwear(false);
+                } else {
+                    console.error('Error fetching footwear');
                 }
             });
         }
     }, [userId]); // Adds userId as a dependency
+
+    const allTab = () => {
+        setSampleText("")
+        setShowTops('d-block')
+        setShowBottoms('d-block')
+        setShowHats('d-block')
+        setShowAccessories('d-block')
+        setShowLayers('d-block')
+        setShowFootwear('d-block')
+    }
 
     const topsTab = () => {
         setSampleText("HERE ARE TOPS")
@@ -114,8 +347,8 @@ function WardrbePage(){
         setShowBottoms('d-none')
         setShowHats('d-none')
         setShowAccessories('d-none')
-        setShowOthers('d-none')
-        console.log();
+        setShowLayers('d-none')
+        setShowFootwear('d-none')
     };
 
     const bottoms = () => {
@@ -124,7 +357,8 @@ function WardrbePage(){
         setShowBottoms('d-block')
         setShowHats('d-none')
         setShowAccessories('d-none')
-        setShowOthers('d-none')
+        setShowLayers('d-none')
+        setShowFootwear('d-none')
     };
 
     const hats = () => {
@@ -133,7 +367,18 @@ function WardrbePage(){
         setShowBottoms('d-none')
         setShowHats('d-block')
         setShowAccessories('d-none')
-        setShowOthers('d-none')
+        setShowLayers('d-none')
+        setShowFootwear('d-none')
+    };
+
+    const layers = () => {
+        setSampleText("HERE ARE LAYERS")
+        setShowTops('d-none')
+        setShowBottoms('d-none')
+        setShowHats('d-none')
+        setShowAccessories('d-none')
+        setShowLayers('d-block')
+        setShowFootwear('d-none')
     };
 
     const accessories = () => {
@@ -142,17 +387,32 @@ function WardrbePage(){
         setShowBottoms('d-none')
         setShowHats('d-none')
         setShowAccessories('d-block')
+        setShowLayers('d-none')
+        setShowFootwear('d-none')
     };
 
-    const others = () => {
-        setSampleText("HERE ARE OTHERS")
+    const footwears = () => {
         setSampleText("HERE ARE ACCESSORIES")
         setShowTops('d-none')
         setShowBottoms('d-none')
         setShowHats('d-none')
         setShowAccessories('d-none')
-        setShowOthers('d-block')
+        setShowLayers('d-none')
+        setShowFootwear('d-block')
     };
+
+    const handleSubmit = (e) => {
+        e.preventDefault(); // Prevents the default form submission behavior
+    };
+
+    const handleItemSubmit = (e) => {
+        updateWardrobe(new Item(itemName, itemColor, itemSize, itemType, itemSeason, itemGender), userId)
+
+        setShowItemEntry(false);
+        window.location.reload();
+    }
+
+    
     
     return(
         <section className='wardrbePage'>
@@ -160,11 +420,13 @@ function WardrbePage(){
             <div className='nav-bar'>
                 <div className='logo'>Dressr</div>
                 <div className='clothing-categories'>
+                    <Button variant='link' id="cat" onClick={allTab}>all</Button>
                     <Button variant='link' id="cat" onClick={topsTab}>tops</Button>
                     <Button variant='link' id="cat" onClick={bottoms}>bottoms</Button>
+                    <Button variant='link' id="cat" onClick={layers}>layers</Button>
+                    <Button variant='link' id="cat" onClick={footwears}>footwear</Button>
                     <Button variant='link' id="cat" onClick={hats}>hats</Button>
                     <Button variant='link' id="cat" onClick={accessories}>accessories</Button>
-                    <Button variant='link' id="cat" onClick={others}>others</Button>
                 </div>
                 <Row id="search-bar">
                 <Col>
@@ -183,8 +445,8 @@ function WardrbePage(){
             <h1>{sampleText}</h1>
             <br/>  
             <Container id="clothes">
-                {isLoading ? (
-                    <p>Loading...</p>
+                {isLoadingTops ? (
+                    <p>Loading Tops...</p>
                 ) : topsData ? (
                 <Row xs={4}>
                     {topsData.map((top) =>(
@@ -200,53 +462,96 @@ function WardrbePage(){
                     <p>Error loading tops</p>
                 )}
 
-                <Row xs={4}>
-                    {Array.from({length: 64}).map((bottoms) =>(
-                    <Col className={showBottoms} key={bottoms} style={{paddingBottom:'20px'}}>
-                        <Card>
-                            <Card.Img src='https://cdn11.bigcommerce.com/s-axz3gp0dm3/images/stencil/640w/products/3041/20145/Mens-Burgundy-Pleated-Corduroy-Pants-MT08__10687.1679660824.jpg?c=1'/>
-                            <Card.Title>BOTTOMS</Card.Title>
-                            <Card.Text>burgundy corduory pants</Card.Text>
-                        </Card>
-                    </Col>
-                    ))}
-                </Row>
+                {isLoadingBottoms ? (
+                    <p>Loading Bottoms...</p>
+                ) : bottomsData ? (
 
                 <Row xs={4}>
-                    {Array.from({length: 64}).map((hats) =>(
-                    <Col className={showHats} key={hats} style={{paddingBottom:'20px'}}>
+                    {bottomsData.map((bottom) =>(
+                    <Col className={showBottoms} key={bottom} style={{paddingBottom:'20px'}}>
                         <Card>
-                            <Card.Img src='https://m.media-amazon.com/images/W/MEDIAX_792452-T1/images/I/814DZwHk7iL._AC_SX385_.jpg'/>
-                            <Card.Title>HATS</Card.Title>
-                            <Card.Text>kirby hat</Card.Text>
+                            <Card.Img src='https://ih1.redbubble.net/image.284637185.1821/leggings,l,x540,front-pad,600x600,f8f8f8.jpg'/>
+                            <Card.Title>{bottom.name}</Card.Title>
+                            <Card.Text>{bottom.size},{bottom.gender}, {bottom.color}, {bottom.type}, best worn in {bottom.season}</Card.Text>
                         </Card>
                     </Col>
                     ))}
-                </Row>
+                </Row>) : (
+                    <p>Error loading bottoms...</p>
+                )}
+
+                {isLoadingLayers ? (
+                    <p>Loading Layers...</p>
+                ) : layersData ? (
 
                 <Row xs={4}>
-                    {Array.from({length: 64}).map((accessories) =>(
-                    <Col className={showAccessories} key={accessories} style={{paddingBottom:'20px'}}>
+                    {layersData.map((layer) =>(
+                    <Col className={showLayers} key={layer} style={{paddingBottom:'20px'}}>
                         <Card>
-                            <Card.Img src='https://kaiworksnyc.com/cdn/shop/files/yugioha.png?v=1700611710&width=713'/>
-                            <Card.Title>ACCESSORIES</Card.Title>
-                            <Card.Text>millenium puzzle necklace</Card.Text>
+                            <Card.Img src='https://pbs.twimg.com/media/EkeX6Q1X0AAtZeU.jpg'/>
+                            <Card.Title>{layer.name}</Card.Title>
+                            <Card.Text>{layer.size}, {layer.gender}, {layer.color}, {layer.type}, best worn in {layer.season}</Card.Text>
                         </Card>
                     </Col>
                     ))}
-                </Row>
+                </Row>) : (
+                    <p>Error loading layers...</p>
+                )}
+
+                {isLoadingFootwear ? (
+                    <p>Loading Footwear...</p>
+                ) : footwearData ? (
 
                 <Row xs={4}>
-                    {Array.from({length: 64}).map((others) =>(
-                    <Col className={showOthers} key={others} style={{paddingBottom:'20px'}}>
+                    {footwearData.map((footwear) =>(
+                    <Col className={showFootwear} key={footwear} style={{paddingBottom:'20px'}}>
                         <Card>
-                            <Card.Img src='https://i5.walmartimages.com/seo/Nickelodean-Nickelodeon-Little-Boys-TMNT-Umbrella-with-Character-Handle-Age-2-7_32fc3c8b-c84e-4e94-bc61-48bd2a6adb23_1.60a2b5d553d9b04a49aad055d1d68d87.jpeg'/>
-                            <Card.Title>OTHERS</Card.Title>
-                            <Card.Text>ninja turtle umbrella</Card.Text>
+                            <Card.Img src='https://slippezz.com/cdn/shop/files/Screenshot2023-08-09at9.50.34PM.png?v=1691632244'/>
+                            <Card.Title>{footwear.name}</Card.Title>
+                        <Card.Text>{footwear.size}, {footwear.gender}, {footwear.color}, {footwear.type}, best worn in {footwear.season}</Card.Text>
+                        </Card>
+                    </Col>
+                    ))}
+                </Row>) : (
+                    <p>Your js are fake</p>
+                )}
+
+                {isLoadingHats ? (
+                    <p>Loading Hats...</p>
+                ) :hatsData ? (
+                    <Row xs={4}>
+                    {hatsData.map((hat) =>(
+                    <Col className={showHats} key={hat} style={{paddingBottom:'20px'}}>
+                        <Card>
+                            <Card.Img src='https://images3.teeshirtpalace.com/images/productImages/question-mark-logo--black-ypwh-garment.webp?width=700'/>
+                            <Card.Title>{hat.name}</Card.Title>
+                            <Card.Text>{hat.size}, {hat.gender}, {hat.color}, {hat.type}, best worn in {hat.season}</Card.Text>
                         </Card>
                     </Col>
                     ))}
                 </Row>
+                ) : (
+                    <p>Error loading hats</p>
+                )}
+
+                
+                {isLoadingAccessories ? (
+                    <p>Loading Accessories...</p>
+                ) : accessoriesData ? (
+                    <Row xs={4}>
+                    {accessoriesData.map((accessory) =>(
+                    <Col className={showAccessories} key={accessory} style={{paddingBottom:'20px'}}>
+                        <Card>
+                            <Card.Img src='https://i5.walmartimages.com/asr/7190f39d-0ab2-481d-85d5-ffc9d35088e6_1.9c384220d9a88882a7cf3ac7966f9571.jpeg?odnHeight=640&odnWidth=640&odnBg=FFFFFF'/>
+                            <Card.Title>{accessory.name}</Card.Title>
+                            <Card.Text>{accessory.size}, {accessory.gender}, {accessory.color}, {accessory.type}, best worn in {accessory.season}</Card.Text>
+                        </Card>
+                    </Col>
+                    ))}
+                </Row>
+                ) : (
+                    <p>Error loading accessories</p>
+                )}
             </Container>
 
             <Modal show={showItemEntry} onHide={handleClose}>
@@ -254,7 +559,13 @@ function WardrbePage(){
                     <div style={{fontWeight:'Bold',fontSize:'25px'}}>Add Item</div>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form>
+                    <Form onSubmit={handleSubmit}>
+                    <Form.Label><div style={{fontSize:'18.5px'}}>Name</div></Form.Label>
+                    <Form.Control
+                        onChange={(e) => setItemName(e.target.value)}
+                        required
+                    />
+                    <br/>
                     <Form.Label><div style={{fontSize:'18.5px'}}>Clothing</div></Form.Label>
                         {clothes.map((clothing) => (
                             <div key='clothing'>
@@ -262,6 +573,9 @@ function WardrbePage(){
                                     label={clothing}
                                     type='radio'
                                     name='clothing-label'
+                                    value={clothing}
+                                    onChange={(e) => setItemType(e.target.value)}
+                                    required
                                 />
                             </div>
                         ))}
@@ -273,6 +587,9 @@ function WardrbePage(){
                                     label={size}
                                     type='radio'
                                     name='size-label'
+                                    value={size}
+                                    onChange={(e) => setItemSize(e.target.value)}
+                                    required
                                 />
                             </div>
                         ))}
@@ -282,8 +599,11 @@ function WardrbePage(){
                             <div key='color'>
                                 <Form.Check
                                     label={color}
-                                    type='checkbox'
+                                    type='radio'
                                     name='color-label'
+                                    value={color}
+                                    onChange = {(e) => setItemColor(e.target.value)}
+                                    required
                                 />
                             </div>
                         ))}
@@ -293,15 +613,31 @@ function WardrbePage(){
                             <div key='season'>
                                 <Form.Check
                                     label={season}
-                                    type='checkbox'
+                                    type='radio'
                                     name='season-label'
+                                    value={season}
+                                    onChange={(e) => setItemSeason(e.target.value)}
+                                    required
+                                />
+                            </div>
+                        ))}
+                    <Form.Label><div style={{fontSize:'18.5px'}}>Gender</div></Form.Label>
+                        {gender.map((gender) => (
+                            <div key='gender'>
+                                <Form.Check
+                                    label={gender}
+                                    type='radio'
+                                    name='gender-label'
+                                    value={gender}
+                                    onChange={(e) => setItemGender(e.target.value)}
+                                    required
                                 />
                             </div>
                         ))}
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button>Add Item</Button>
+                    <Button onClick={handleItemSubmit}>Add Item</Button>
                 </Modal.Footer>
             </Modal>
         </section>
